@@ -33,27 +33,17 @@
         shape-rendering: crispEdges;
       }
 
-      .path {
+      .path, .point {
         fill: none;
         stroke-width: 5px;
-        marker-start: url(#arrow);
-        marker-mid: url(#arrow);
-        marker-end: url(#arrow);
       }
 
-      .path.p {
-        stroke-width: 5px;
+      .path.p, .point.p {
         stroke: DarkSlateBlue;
       }
 
-      .path.q {
+      .path.q, .point.q {
         stroke: Green;
-      }
-
-      #arrow {
-        fill: none;
-        stroke-width: 5px;
-        stroke: black;
       }
 
     </style>
@@ -80,19 +70,6 @@
 
       var defs = svg.append("defs");
 
-      var arrow = defs.append("marker")
-        .attr("id", "arrow")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", 4)
-        .attr("markerHeight", 4)
-        .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 5)
-        .attr("refY", 0)
-        .attr("orient", "auto")
-        .append("path")
-          .attr("d", "M0,-5L10,0L0,5")
-          .attr("class", "arrowHead");
-
       var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -107,6 +84,11 @@
       var yGridG = g.append("g")
         .attr("class", "y grid");
 
+      var path_p = g.append("path")
+        .attr("class", "path p");
+      var path_q = g.append("path")
+        .attr("class", "path q");
+
       var xScale = d3.scaleLinear().domain([0,10]).range([0, innerWidth]);
       var yScale = d3.scaleLinear().domain([0,10]).range([innerHeight, 0]);
 
@@ -115,11 +97,6 @@
       var xGrid = d3.axisTop(xScale).tickFormat("").tickSize(innerHeight);
       var yGrid = d3.axisRight(yScale).tickFormat("").tickSize(innerWidth);
 
-      var path_p = g.append("path")
-        .attr("class", "path p");
-      var path_q = g.append("path")
-        .attr("class", "path q");
-
       svg.on("click", function() {
 
           var coords = d3.mouse(this);
@@ -127,22 +104,23 @@
             x: precisionRound(xScale.invert(coords[0]), 2),
             y: precisionRound(yScale.invert(coords[1]), 2)
           };
-          points_p.push(newPoint);
+          coords_p.push(newPoint);
+          console.log("clicked: "+ JSON.stringify(newPoint));
 
-          render()
+          render({p: coords_p, q: coords_q});
         });
 
       var line = d3.line()
         .x(function(d) { return xScale(d[xColumn]); })
         .y(function(d) { return yScale(d[yColumn]); });
 
-      var points_p = [
+      var coords_p = [
         { x: 1, y: 1 },
         { x: 4, y: 4 },
         { x: 7, y: 3 }
       ];
 
-      var points_q = [
+      var coords_q = [
         { x: 2, y: 1 },
         { x: 8, y: 2 },
         { x: 5, y: 5 },
@@ -150,17 +128,41 @@
         { x: 9, y: 7 },
       ];
 
-      function render() {
-        xAxisG.call(xAxis);
-        yAxisG.call(yAxis);
-        xGridG.call(xGrid);
-        yGridG.call(yGrid);
+      xAxisG.call(xAxis);
+      yAxisG.call(yAxis);
+      xGridG.call(xGrid);
+      yGridG.call(yGrid);
 
-        path_p.attr("d", line(points_p));
-        path_q.attr("d", line(points_q));
+      function render(data) {
+
+
+        //Bind data
+        var points_p = g.selectAll(".point.p").data(data.p);
+        var points_q = g.selectAll(".point.q").data(data.q);
+
+        path_p.attr("d", line(data.p));
+        path_q.attr("d", line(data.q));
+
+        //Enter
+        var points_p_enter = points_p.enter().append("path")
+          .attr("class", "point p")
+          .attr("d", "M-10 -10 L0 0 L10 -10");
+        var points_q_enter = points_q.enter().append("path")
+          .attr("class", "point q")
+          .attr("d", "M-10 -10 L0 0 L10 -10");
+
+        //Update
+        points_p.merge(points_p_enter)
+          .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")" });
+        points_q.merge(points_q_enter)
+          .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")" });
+
+        //Exit
+        points_p.exit().remove();
+        points_q.exit().remove();
       }
 
-      render();
+      render({p: coords_p, q: coords_q});
 
     </script>
   </body>
