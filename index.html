@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Example</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+    <style>
+
+      .chart-line {
+        fill: none;
+        stroke: black;
+        stroke-width: 1px;
+      }
+
+      .axis text {
+        font-family: 'Poiret One', cursive;
+        font-size: 12pt;
+      }
+      .axis .label {
+        font-size: 22pt;
+      }
+
+      .axis path, .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+
+      .grid path, .grid line {
+        fill: none;
+        stroke: rgba(0, 0, 0, 0.3);
+        shape-rendering: crispEdges;
+      }
+
+      .path {
+        fill: none;
+        stroke-width: 5px;
+        marker-start: url(#arrow);
+        marker-mid: url(#arrow);
+        marker-end: url(#arrow);
+      }
+
+      .path.p {
+        stroke-width: 5px;
+        stroke: DarkSlateBlue;
+      }
+
+      .path.q {
+        stroke: Green;
+      }
+
+      #arrow {
+        fill: none;
+        stroke-width: 5px;
+        stroke: black;
+      }
+
+    </style>
+  </head>
+  <body>
+    <script>
+      function precisionRound(number, precision) {
+        var factor = Math.pow(10, precision);
+        return Math.round(number * factor) / factor;
+      }
+
+      var outerWidth = window.innerWidth;
+      var outerHeight = window.innerHeight;
+      var margin = { left: 5, top: 5, right: 5, bottom: 5 };
+      var innerWidth  = outerWidth  - margin.left - margin.right;
+      var innerHeight = outerHeight - margin.top  - margin.bottom;
+
+      var xColumn = "x";
+      var yColumn = "y";
+
+      var svg = d3.select("body").append("svg")
+        .attr("width", outerWidth)
+        .attr("height", outerHeight);
+
+      var defs = svg.append("defs");
+
+      var arrow = defs.append("marker")
+        .attr("id", "arrow")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", 4)
+        .attr("markerHeight", 4)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 5)
+        .attr("refY", 0)
+        .attr("orient", "auto")
+        .append("path")
+          .attr("d", "M0,-5L10,0L0,5")
+          .attr("class", "arrowHead");
+
+      var g = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var xAxisG = g.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + innerHeight + ")");
+      var yAxisG = g.append("g")
+        .attr("class", "y axis");
+      var xGridG = g.append("g")
+        .attr("class", "x grid")
+        .attr("transform", "translate(0," + innerHeight + ")");
+      var yGridG = g.append("g")
+        .attr("class", "y grid");
+
+      var xScale = d3.scaleLinear().domain([0,10]).range([0, innerWidth]);
+      var yScale = d3.scaleLinear().domain([0,10]).range([innerHeight, 0]);
+
+      var xAxis = d3.axisTop(xScale);
+      var yAxis = d3.axisRight(yScale);
+      var xGrid = d3.axisTop(xScale).tickFormat("").tickSize(innerHeight);
+      var yGrid = d3.axisRight(yScale).tickFormat("").tickSize(innerWidth);
+
+      var path_p = g.append("path")
+        .attr("class", "path p");
+      var path_q = g.append("path")
+        .attr("class", "path q");
+
+      svg.on("click", function() {
+
+          var coords = d3.mouse(this);
+          var newPoint = {
+            x: precisionRound(xScale.invert(coords[0]), 2),
+            y: precisionRound(yScale.invert(coords[1]), 2)
+          };
+          points_p.push(newPoint);
+
+          render()
+        });
+
+      var line = d3.line()
+        .x(function(d) { return xScale(d[xColumn]); })
+        .y(function(d) { return yScale(d[yColumn]); });
+
+      var points_p = [
+        { x: 1, y: 1 },
+        { x: 4, y: 4 },
+        { x: 7, y: 3 }
+      ];
+
+      var points_q = [
+        { x: 2, y: 1 },
+        { x: 8, y: 2 },
+        { x: 5, y: 5 },
+        { x: 8, y: 8 },
+        { x: 9, y: 7 },
+      ];
+
+      function render() {
+        xAxisG.call(xAxis);
+        yAxisG.call(yAxis);
+        xGridG.call(xGrid);
+        yGridG.call(yGrid);
+
+        path_p.attr("d", line(points_p));
+        path_q.attr("d", line(points_q));
+      }
+
+      render();
+
+    </script>
+  </body>
+</html>
