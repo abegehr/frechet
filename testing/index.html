@@ -7,44 +7,6 @@
     <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
     <style>
 
-      .chart-line {
-        fill: none;
-        stroke: black;
-        stroke-width: 1px;
-      }
-
-      .axis text {
-        font-family: 'Poiret One', cursive;
-        font-size: 12pt;
-      }
-      .axis .label {
-        font-size: 22pt;
-      }
-
-      .axis path, .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-
-      .grid path, .grid line {
-        fill: none;
-        stroke: rgba(0, 0, 0, 0.3);
-        shape-rendering: crispEdges;
-      }
-
-      .path, .point {
-        fill: none;
-        stroke-width: 5px;
-      }
-
-      .path.p, .point.p {
-        stroke: DarkSlateBlue;
-      }
-
-      .path.q, .point.q {
-        stroke: Green;
-      }
 
     </style>
   </head>
@@ -97,6 +59,23 @@
       var xGrid = d3.axisTop(xScale).tickFormat("").tickSize(innerHeight);
       var yGrid = d3.axisRight(yScale).tickFormat("").tickSize(innerWidth);
 
+      function rotate_point(points, d, i) {
+        console.log("d: " + JSON.stringify(d) + " i: " + i);
+        if (i > 0) {
+          prev = points[i-1];
+        } else {
+          prev = d
+          d = points[1]
+        }
+        prev = i>0? points[i-1] : points[1];
+        dx = d.x - prev.x;
+        dy = d.y - prev.y;
+
+        rad = Math.atan2(dy,dx);
+        deg = -rad * 180 / Math.PI;
+        return "rotate(" + deg + ")";
+      }
+
       svg.on("click", function() {
 
           var coords = d3.mouse(this);
@@ -117,7 +96,7 @@
       var coords_p = [
         { x: 1, y: 1 },
         { x: 4, y: 4 },
-        { x: 7, y: 3 }
+        { x: 7, y: 3 },
       ];
 
       var coords_q = [
@@ -135,7 +114,6 @@
 
       function render(data) {
 
-
         //Bind data
         var points_p = g.selectAll(".point.p").data(data.p);
         var points_q = g.selectAll(".point.q").data(data.q);
@@ -146,16 +124,28 @@
         //Enter
         var points_p_enter = points_p.enter().append("path")
           .attr("class", "point p")
-          .attr("d", "M-10 -10 L0 0 L10 -10");
+          .attr("d", "M-20 -20 L0 0 L-20 20")
+          .attr("transform", rotate_p);
         var points_q_enter = points_q.enter().append("path")
           .attr("class", "point q")
-          .attr("d", "M-10 -10 L0 0 L10 -10");
+          .attr("d", "M-20 -20 L0 0 L-20 20")
+          .attr("transform", rotate_q);
 
         //Update
+        var rotate_p = function(d, i) { return rotate_point(data.p, d, i); };
+        var rotate_q = function(d, i) { return rotate_point(data.q, d, i); };
         points_p.merge(points_p_enter)
-          .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")" });
+          .attr("transform", function(d, i) {
+            translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
+            translate += " " + rotate_p(d, i)
+            return translate
+          });
         points_q.merge(points_q_enter)
-          .attr("transform", function(d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")" });
+          .attr("transform", function(d, i) {
+            translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
+            translate += " " + rotate_q(d, i)
+            return translate
+          });
 
         //Exit
         points_p.exit().remove();
