@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/react-fontawesome": "^0.0.20",
     "chart.js": "^2.7.2",
     "d3": "^5.3.0",
     "react": "^16.3.2",
-    "react-chartjs": "^1.2.0",
     "react-dom": "^16.3.2",
     "react-list": "^0.8.8",
     "react-numeric-input": "^2.2.3",

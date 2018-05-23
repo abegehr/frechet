@@ -3,7 +3,8 @@ import './InputList.css';
 
 import ReactList from 'react-list';
 import NumericInput from 'react-numeric-input';
-
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faMinus from '@fortawesome/fontawesome-free-solid/faMinus'
 
 
 class InputList extends Component {
@@ -22,9 +23,12 @@ class InputList extends Component {
 
   renderPoint(index, key, point, path) {
     return (
-      <div key={key}>{index}: (
+      <div key={key}>
+        {index}: (
         <NumericInput step={0.5} precision={2} value={point.x} snap onChange={this.onValueChange(index, key, path, "x")}/> |
-        <NumericInput step={0.5} precision={2} value={point.y} snap onChange={this.onValueChange(index, key, path, "y")}/> )
+        <NumericInput step={0.5} precision={2} value={point.y} snap onChange={this.onValueChange(index, key, path, "y")}/>
+        )
+        <FontAwesomeIcon icon={faMinus} onClick={this.onRemoveClick(index, key, path)} />
       </div>
     );
   }
@@ -34,7 +38,16 @@ class InputList extends Component {
       var newData = this.props.data;
       newData[path][index][coord] = valueAsNumber;
       this.props.dataChanged(newData);
-      console.log("newData: ", newData);
+    };
+  }
+
+  onRemoveClick(index, key, path) {
+    return () => {
+      var newData = this.props.data;
+      if (newData[path].length > 2) {
+        newData[path].pop(index);
+        this.props.dataChanged(newData);
+      }
     };
   }
 
