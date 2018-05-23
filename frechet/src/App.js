@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Button } from 'react-bootstrap';
+
 import InputCoord from './components/InputCoord'
 import InputList from './components/InputList'
+
+import logo from './logo.svg';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -45,6 +48,10 @@ class App extends Component {
     this.setState({selectedPath: path});
   }
 
+  go() {
+    console.log("Go! ", this.state.data);
+  }
+
   render() {
     return (
       <div className="App">
@@ -53,6 +60,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
 
+        {/* Input */}
         <InputCoord data={this.state.data}
           dataChanged={this.dataChanged.bind(this)}
           size={{ width: 500, height: 500 }}
@@ -69,6 +77,11 @@ class App extends Component {
           selected={this.state.selectedPath === "q"}
           select={() => {this.selectPath("q")}}
           maxHeight={400} />
+
+        {/* Action */}
+        <Button onClick={this.go.bind(this)}>Go!</Button>
+
+        {/* Result */}
 
       </div>
     );

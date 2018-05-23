@@ -103,9 +103,7 @@ class InputCoord extends Component {
           x: precisionRound(xScale.invert(coords[0]), 2),
           y: precisionRound(yScale.invert(coords[1]), 2)
         };
-        console.log("clicked: "+ JSON.stringify(newPoint));
 
-        console.log("props: ", this.props);
         var newData = this.props.data;
         if (newData[this.props.selectedPath]) {
           newData[this.props.selectedPath].push(newPoint);
