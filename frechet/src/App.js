@@ -23,12 +23,26 @@ class App extends Component {
           {x: 2, y: 6},
           {x: 5, y: 7},
         ]
-      }
+      },
+      selectedPath: "p",
     };
+
   }
 
   dataChanged(newData) {
     this.setState({data: newData});
+  }
+
+  pathChanged(path) {
+    return (points) => {
+      var newData = this.state.data;
+      newData[path] = points;
+      this.setState({data: newData});
+    }
+  }
+
+  selectPath(path) {
+    this.setState({selectedPath: path});
   }
 
   render() {
@@ -39,8 +53,22 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
 
-        <InputCoord data={this.state.data} dataChanged={this.dataChanged.bind(this)} size={{ width: 500, height: 500 }} />
-        <InputList data={this.state.data} dataChanged={this.dataChanged.bind(this)} />
+        <InputCoord data={this.state.data}
+          dataChanged={this.dataChanged.bind(this)}
+          size={{ width: 500, height: 500 }}
+          selectedPath={this.state.selectedPath}/>
+        <InputList id="p" label="Path P"
+          points={this.state.data.p}
+          pointsChanged={this.pathChanged("p")}
+          selected={this.state.selectedPath === "p"}
+          select={() => {this.selectPath("p")}}
+          maxHeight={400} />
+        <InputList id="q" label="Path Q"
+          points={this.state.data.q}
+          pointsChanged={this.pathChanged("q")}
+          selected={this.state.selectedPath === "q"}
+          select={() => {this.selectPath("q")}}
+          maxHeight={400} />
 
       </div>
     );

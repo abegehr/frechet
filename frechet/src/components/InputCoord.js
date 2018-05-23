@@ -16,7 +16,6 @@ function rotate_point(points, d, i) {
     prev = d;
     d = points[1];
   }
-  prev = i>0? points[i-1] : points[1];
   var dx = d.x - prev.x;
   var dy = d.y - prev.y;
 
@@ -106,9 +105,11 @@ class InputCoord extends Component {
         };
         console.log("clicked: "+ JSON.stringify(newPoint));
 
+        console.log("props: ", this.props);
         var newData = this.props.data;
-        newData.p.push(newPoint); //TODO: update selected path
-
+        if (newData[this.props.selectedPath]) {
+          newData[this.props.selectedPath].push(newPoint);
+        }
         this.props.dataChanged(newData);
       });
   }
@@ -173,7 +174,6 @@ class InputCoord extends Component {
     if (newYRange.min !== yDomain[0] || newYRange.max !== yDomain[1]) {
       yScale.domain([newYRange.min, newYRange.max]);
     }
-
 
     //bind data
     const svg = d3.select(this.svg);

@@ -8,68 +8,61 @@ import faMinus from '@fortawesome/fontawesome-free-solid/faMinus'
 
 
 class InputList extends Component {
-  constructor(props){
-    super(props);
-    console.log("props: ", this.props);
-  }
 
-  renderP(index, key) {
-    return this.renderPoint(index, key, this.props.data.p[index], "p")
-  }
+  renderPoint(index, key) {
+    const step = 0.5;
+    const percision = 2;
+    const point = this.props.points[index];
 
-  renderQ(index, key) {
-    return this.renderPoint(index, key, this.props.data.q[index], "q")
-  }
-
-  renderPoint(index, key, point, path) {
     return (
       <div key={key}>
         {index}: (
-        <NumericInput step={0.5} precision={2} value={point.x} snap onChange={this.onValueChange(index, key, path, "x")}/> |
-        <NumericInput step={0.5} precision={2} value={point.y} snap onChange={this.onValueChange(index, key, path, "y")}/>
+        <NumericInput step={step} precision={percision} value={point.x} snap onChange={this.onValueChange(index, key, "x")}/> |
+        <NumericInput step={step} precision={percision} value={point.y} snap onChange={this.onValueChange(index, key, "y")}/>
         )
-        <FontAwesomeIcon icon={faMinus} onClick={this.onRemoveClick(index, key, path)} />
+        <FontAwesomeIcon icon={faMinus} onClick={this.onRemoveClick(index, key)} />
       </div>
     );
   }
 
-  onValueChange(index, key, path, coord) {
+  onValueChange(index, key, coord) {
     return (valueAsNumber, valueAsString, input) => {
-      var newData = this.props.data;
-      newData[path][index][coord] = valueAsNumber;
-      this.props.dataChanged(newData);
+      var newPoints = this.props.points;
+      newPoints[index][coord] = valueAsNumber;
+      this.props.pointsChanged(newPoints);
     };
   }
 
-  onRemoveClick(index, key, path) {
+  onRemoveClick(index, key) {
     return () => {
-      var newData = this.props.data;
-      if (newData[path].length > 2) {
-        newData[path].splice(index, 1);
-        this.props.dataChanged(newData);
+      var newPoints = this.props.points;
+      if (newPoints.length > 2) {
+        newPoints.splice(index, 1);
+        this.props.pointsChanged(newPoints);
       }
     };
   }
 
+  onSelect() {
+    this.props.select();
+  }
+
   render() {
-  console.log("props: ", this.props);
+    var classes = "inputlist";
+    classes += " "+this.props.id;
+    if (this.props.selected) {
+      classes += " selected";
+    }
+
     return (
-      <div>
-        <p>Path P</p>
-        <div style={{overflow: 'auto', maxHeight: 400}}>
+      <div className={classes}>
+        <p onClick={this.onSelect.bind(this)}>{this.props.label}</p>
+        <div style={{overflow: 'auto', maxHeight: this.props.maxHeight}}>
           <ReactList
-            itemRenderer={this.renderP.bind(this)}
-            length={this.props.data.p.length}
+            itemRenderer={this.renderPoint.bind(this)}
+            length={this.props.points.length}
             type='uniform'
             />
-        </div>
-        <p>Path Q</p>
-        <div style={{overflow: 'auto', maxHeight: 400}}>
-          <ReactList
-            itemRenderer={this.renderQ.bind(this)}
-            length={this.props.data.q.length}
-            type='uniform'
-          />
         </div>
       </div>
     );
