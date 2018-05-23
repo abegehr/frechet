@@ -217,8 +217,8 @@ class InputCoord extends Component {
     //Bind data
     const svg = d3.select(this.svg);
     var g = svg.select("g");
-    var points_p = g.selectAll(".point.p").data(coords_p);
-    var points_q = g.selectAll(".point.q").data(coords_q);
+    var points_p = g.selectAll(".point.p").data(coords_p, function(d, i){ return i; });
+    var points_q = g.selectAll(".point.q").data(coords_q, function(d, i){ return i; });
     var path_p = g.select(".path.p");
     var path_q = g.select(".path.q");
 

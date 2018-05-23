@@ -45,7 +45,7 @@ class InputList extends Component {
     return () => {
       var newData = this.props.data;
       if (newData[path].length > 2) {
-        newData[path].pop(index);
+        newData[path].splice(index, 1);
         this.props.dataChanged(newData);
       }
     };
