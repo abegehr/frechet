@@ -47,6 +47,15 @@ class InputList extends Component {
     this.props.select();
   }
 
+  addPoint() {
+    var newPoint = {x: 0, y: 0};
+
+    var newPoints = this.props.points;
+    newPoints.push(newPoint);
+
+    this.props.pointsChanged(newPoints);
+  }
+
   render() {
     var classes = "inputlist";
     classes += " "+this.props.id;
@@ -63,6 +72,9 @@ class InputList extends Component {
             length={this.props.points.length}
             type='uniform'
             />
+          <button onClick={this.addPoint.bind(this)}>
+            add point
+          </button>
         </div>
       </div>
     );

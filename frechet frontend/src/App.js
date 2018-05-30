@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
 
 import InputCoord from './components/InputCoord'
 import InputList from './components/InputList'
@@ -55,10 +54,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+        <h1>Lexicographic Fréchet Matchings</h1>
 
         {/* Input */}
         <InputCoord data={this.state.data}
@@ -79,9 +75,10 @@ class App extends Component {
           maxHeight={400} />
 
         {/* Action */}
-        <Button onClick={this.go.bind(this)}>Go!</Button>
+        <button onClick={this.go.bind(this)}>Go!</button>
 
         {/* Result */}
+
 
       </div>
     );
