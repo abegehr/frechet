@@ -20,9 +20,20 @@ def index():
     vec_p = xy_to_vectors([p['x'] for p in path_p], [p['y'] for p in path_p])
     vec_q = xy_to_vectors([q['x'] for q in path_q], [q['y'] for q in path_q])
 
+    # calculations
     cell_matrix = CellMatrix(vec_p, vec_q, traverse = 1)
 
-    return jsonify({'length': {'p': 15, 'q':10}});#, 'log': str(cell_matrix)})
+    # sampling
+    sample = cell_matrix.sample_l(10, 100, heatmap_n=100)
+
+    return jsonify({
+        "length": {"p": 15, "q":10}, "heatmap": sample["heatmap"],
+        "bounds-l": sample["bounds-l"],}); #"borders-v": sample["borders-v"],
+    #    "borders-h": sample["borders-h"], "cells": sample["cells"],
+    #    "traversals": sample["traversals"],
+    #    "cross-section-p": sample["cross-section-p"],
+    #    "cross-section-q": sample["cross-section-p"]
+#    });#, 'log': str(cell_matrix)})
 
 if __name__ == "__main__":
     app.run(debug=True)

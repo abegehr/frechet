@@ -75,7 +75,7 @@ class App extends Component {
       results = (
         <div className="results">
           <ResultHeatmap data={this.state.result}
-            maxsize={{ width: 500, height: 500 }}/>
+            maxsize={{ width: 800, height: 800 }}/>
         </div>
       );
     }
