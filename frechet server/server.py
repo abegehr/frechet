@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from frechet_alg.Algorithm import CellMatrix
 from frechet_alg.Geometry import Vector
-from frechet_alg.Graphics import xy_to_vectors
+from frechet_alg.Graphics import xy_to_vectors, vectors_to_xy
 
 app = Flask(__name__)
 CORS(app)
@@ -26,11 +26,28 @@ def index():
     # sampling
     sample = cell_matrix.sample_l(10, 100, heatmap_n=100)
 
+    # lengths
+    length = {'p': sample['size'][0], 'q': sample['size'][1]}
+
+    # traversals
+    traversals = [dict((k, traversal[k]) for k in ('epsilon-bounds', 'traversal-3d', 'traversal-3d-l')) for traversal in sample['traversals']]
+
+    # cell borders
+    borders_v = sample["borders-v"]
+    borders_h = sample["borders-h"]
+    borders = [[b[1][0].x for b in borders_v],[b[1][0].y for b in borders_h]]
+
+    # l-lines
+    l_lines = []
+    for cell in sample["cells"]:
+        l_lines.extend([vectors_to_xy(l[1]) for l in cell[1]['l-lines']])
+
+
     return jsonify({
-        "length": {"p": 15, "q":10}, "heatmap": sample["heatmap"],
-        "bounds-l": sample["bounds-l"],}); #"borders-v": sample["borders-v"],
+        "length": length, "heatmap": sample["heatmap"],
+        "bounds_l": sample["bounds-l"], "traversals": traversals,
+        "borders": borders, "l_lines": l_lines})
     #    "borders-h": sample["borders-h"], "cells": sample["cells"],
-    #    "traversals": sample["traversals"],
     #    "cross-section-p": sample["cross-section-p"],
     #    "cross-section-q": sample["cross-section-p"]
 #    });#, 'log': str(cell_matrix)})
