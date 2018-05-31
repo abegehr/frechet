@@ -12,7 +12,7 @@
 
 # -*- coding: utf-8 -*-
 
-from Geometry import *
+from .Geometry import *
 
 
 CellCoord = (int, int)

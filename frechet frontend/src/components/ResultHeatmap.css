@@ -1,0 +1,40 @@
+@import url('http://fonts.googleapis.com/css?family=Poiret+One');
+
+.chart-line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.axis text {
+  font-family: 'Poiret One', cursive;
+  font-size: 12pt;
+}
+.axis .label {
+  font-size: 22pt;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.grid path, .grid line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.3);
+  shape-rendering: crispEdges;
+}
+
+.path, .point {
+  fill: none;
+  stroke-width: 5px;
+}
+
+.path.p, .point.p {
+  stroke: DarkSlateBlue;
+}
+
+.path.q, .point.q {
+  stroke: Green;
+}

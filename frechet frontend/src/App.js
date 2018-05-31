@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import InputCoord from './components/InputCoord'
 import InputList from './components/InputList'
+import ResultHeatmap from './components/ResultHeatmap'
 
-import logo from './logo.svg';
 import './App.css';
+
+const frechet_api_url = 'http://127.0.0.1:5000'
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +29,8 @@ class App extends Component {
         ]
       },
       selectedPath: "p",
+      showResults: false,
+      result: {}
     };
 
   }
@@ -49,9 +53,33 @@ class App extends Component {
 
   go() {
     console.log("Go! ", this.state.data);
+
+    fetch(frechet_api_url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state.data)
+    }).then((response) => {
+      return response.json();
+    }).then((result) => {
+      console.log("result: ", result);
+      this.setState({showResults: true, result: result});
+    });
   }
 
   render() {
+    var results;
+    if (this.state.showResults) {
+      results = (
+        <div className="results">
+          <ResultHeatmap data={this.state.result}
+            maxsize={{ width: 500, height: 500 }}/>
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Lexicographic Fréchet Matchings</h1>
@@ -73,12 +101,18 @@ class App extends Component {
           selected={this.state.selectedPath === "q"}
           select={() => {this.selectPath("q")}}
           maxHeight={400} />
+        <br />
 
         {/* Action */}
         <button onClick={this.go.bind(this)}>Go!</button>
+        <br />
 
         {/* Result */}
+        {results}
 
+        <br />
+        <br />
+        <br />
 
       </div>
     );
