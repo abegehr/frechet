@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import InputCoord from './components/InputCoord'
 import InputList from './components/InputList'
-import ResultHeatmap from './components/ResultHeatmap'
+import Results from './components/Results'
 
 import './App.css';
 
@@ -73,10 +73,8 @@ class App extends Component {
     var results;
     if (this.state.showResults) {
       results = (
-        <div className="results">
-          <ResultHeatmap data={this.state.result}
-            maxsize={{ width: 800, height: 800 }}/>
-        </div>
+        <Results data={this.state.result}
+          maxSize={{width: 1400, height: 1000}} />
       );
     }
 

@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from math import sqrt
 from frechet_alg.Algorithm import CellMatrix
 from frechet_alg.Geometry import Vector
 from frechet_alg.Graphics import xy_to_vectors, vectors_to_xy
@@ -27,10 +28,23 @@ def index():
     sample = cell_matrix.sample_l(10, 100, heatmap_n=100)
 
     # lengths
-    length = {'p': sample['size'][0], 'q': sample['size'][1]}
+    lengths = {'p': sample['size'][0], 'q': sample['size'][1]}
 
     # traversals
-    traversals = [dict((k, traversal[k]) for k in ('epsilon-bounds', 'traversal-3d', 'traversal-3d-l')) for traversal in sample['traversals']]
+    traversals = []
+    for traversal in sample['traversals']:
+        epsilon = traversal['traversal-3d-l'][2]
+        xs = traversal['traversal-3d'][0]
+        ys = traversal['traversal-3d'][1]
+        zs = traversal['traversal-3d'][2]
+        ts = [0]
+        for i in range(1, len(xs)):
+            dx = xs[i] - xs[i-1]
+            dy = ys[i] - ys[i-1]
+            t = sqrt(dx**2 + dy**2)
+            ts.append(ts[i-1] + t)
+        traversal_dict = {'x': xs, 'y': ys, 'z': zs, 't': ts, 'epsilon': epsilon, 'length': ts[-1]}
+        traversals.append(traversal_dict)
 
     # cell borders
     borders_v = sample["borders-v"]
@@ -40,11 +54,14 @@ def index():
     # l-lines
     l_lines = []
     for cell in sample["cells"]:
-        l_lines.extend([vectors_to_xy(l[1]) for l in cell[1]['l-lines']])
+        for l_vec in cell[1]['l-lines']:
+            l = vectors_to_xy(l_vec[1])
+            if (len(l) == 2 and len(l[0]) == 2 and len(l[1]) == 2):
+                l_lines.append(l)
 
 
     return jsonify({
-        "length": length, "heatmap": sample["heatmap"],
+        "lengths": lengths, "heatmap": sample["heatmap"],
         "bounds_l": sample["bounds-l"], "traversals": traversals,
         "borders": borders, "l_lines": l_lines})
     #    "borders-h": sample["borders-h"], "cells": sample["cells"],
