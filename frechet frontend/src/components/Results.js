@@ -3,6 +3,35 @@ import './Results.css';
 import Plot from 'react-plotly.js';
 
 class Results extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      settings: {
+        show_l_lines: true,
+        show_contours: true,
+        show_critical_events: true,
+        show_cell_borders: true
+      }
+    };
+
+    this.toggleSetting = this.toggleSetting.bind(this);
+  }
+
+  toggleSetting(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    console.log("this: ", this);
+    console.log("this.state: ", this.state);
+
+    var newSettings = this.state.settings;
+    newSettings[name] = value;
+
+    this.setState({
+      settings: newSettings
+    });
+  }
 
   render() {
     console.log("this.props.data.heatmap: ", this.props.data.heatmap);
@@ -14,7 +43,7 @@ class Results extends Component {
     var contour_size = (bounds_l[1] - bounds_l[0])/10;
 
     // heatmap
-    var heatmap_data = {
+    const heatmap_data = {
       x: this.props.data.heatmap[0][0],
       y: this.props.data.heatmap[1].map((ys, i) => {return ys[0]}),
       z: this.props.data.heatmap[2],
@@ -24,6 +53,9 @@ class Results extends Component {
         start: bounds_l[0],
         end: bounds_l[1],
         size: contour_size
+      },
+      line:{
+        smoothing: 0
       }
     };
 
@@ -92,9 +124,16 @@ class Results extends Component {
       this.props.maxSize.width*(max_p/max_q));
     var heatmap_height = heatmap_margin.t + heatmap_margin.b + Math.min(this.props.maxSize.height,
       this.props.maxSize.height*(max_q/max_p));
+    var heatmap_shapes = [];
+    if (this.state.settings.show_l_lines) {
+      heatmap_shapes.push(...l_lines);
+    }
+    if (this.state.settings.show_cell_borders) {
+      heatmap_shapes.push(...borders);
+    }
     var heatmap_layout = {
       title: 'Heatmap',
-      shapes: [...borders, ...l_lines],
+      shapes: heatmap_shapes,
       autosize: true,
       margin: heatmap_margin,
       xaxis: {
@@ -124,7 +163,41 @@ class Results extends Component {
     console.log("traversals_cross_section_data: ", traversals_cross_section_data)
 
     return (
-      <div className="Results">
+      <div className="results">
+        <div className="settings">
+          <label className="show_l_lines">
+            show l-lines
+            <input
+              name="show_l_lines"
+              type="checkbox"
+              checked={this.state.settings.show_l_lines}
+              onChange={this.toggleSetting} />
+          </label>
+          <label className="show_contours">
+            show contours
+            <input
+              name="show_contours"
+              type="checkbox"
+              checked={this.state.settings.show_contours}
+              onChange={this.toggleSetting} />
+          </label>
+          <label className="show_critical_events">
+            show critical events
+            <input
+              name="show_critical_events"
+              type="checkbox"
+              checked={this.state.settings.show_critical_events}
+              onChange={this.toggleSetting} />
+          </label>
+          <label className="show_cell_borders">
+            show cell borders
+            <input
+              name="show_cell_borders"
+              type="checkbox"
+              checked={this.state.settings.show_cell_borders}
+              onChange={this.toggleSetting} />
+          </label>
+        </div>
         <Plot
           className="heatmap"
           data={ [heatmap_data, ...traversals_data] }
