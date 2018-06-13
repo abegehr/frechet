@@ -767,8 +767,8 @@ class CellMatrix:
         self.cross_sections_ver = self.calculate_cross_sections(self.q, self.p.points)
 
         # generate and save TwoLineSegments & Cells
-        self.twoLSs: [[TwoLineSegments]] = []
-        self.cells: [[Cell]] = []
+        self.twoLSs = []
+        self.cells = []
         for i_p in range(self.p.count):
             self.twoLSs.append([])
             self.cells.append([])
@@ -984,7 +984,7 @@ class CellMatrix:
         reachable_hor = [[Bounds1D.nan() for i_q in range(d_q + 1)] for i_p in range(d_p)]
         reachable_ver = [[Bounds1D.nan() for i_q in range(d_q)] for i_p in range(d_p + 1)]
 
-        start_cell: Cell = cells[start_i_p][start_i_q]
+        start_cell = cells[start_i_p][start_i_q]
 
         if d_p > 0:
             reachable_bottom = bounds_hor[0].cut(start_cell.free_bounds_horizontal(offsets_ver[0], epsilon))
@@ -1075,7 +1075,7 @@ class CellMatrix:
         for point in points:
             tmp_epsilon = self.epsilon_from_point(point)
             epsilons.append(tmp_epsilon)
-        epsilon: float = max(epsilons)
+        epsilon = max(epsilons)
 
         traversal = Traversal(self, start_cm, end_cm, points, epsilon, epsilons)
 
@@ -1084,8 +1084,8 @@ class CellMatrix:
         elif about_equal(start.x, end.x) or about_equal(start.y, end.y):
             cc_a = self.cm_point_a(start)[1]
             cc_b = self.cm_point_b(end)[1]
-            cell_a: Cell = self.cells[cc_a[0]][cc_a[1]]
-            cell_b: Cell = self.cells[cc_b[0]][cc_b[1]]
+            cell_a = self.cells[cc_a[0]][cc_a[1]]
+            cell_b = self.cells[cc_b[0]][cc_b[1]]
             if about_equal(start.y, end.y):
                 hyperbola_a = cell_a.hyperbola_horizontal(start.y)
                 hyperbola_b = cell_b.hyperbola_horizontal(end.y)
@@ -1152,8 +1152,8 @@ class CellMatrix:
 
         if max_ab_epsilon >= critical_epsilon or (critical_epsilon > max_ab_epsilon and self.decide_traversal(a_cm, b_cm, max_ab_epsilon)):
 
-            a_cell: Cell = self.cells[cc_a[0]][cc_a[1]]
-            b_cell: Cell = self.cells[cc_b[0]][cc_b[1]]
+            a_cell = self.cells[cc_a[0]][cc_a[1]]
+            b_cell = self.cells[cc_b[0]][cc_b[1]]
 
             if about_equal(a_epsilon, b_epsilon):
                 # do steepest decent from A and B
@@ -1390,7 +1390,7 @@ class CellMatrix:
             i_epsilon = 0
             traversals_and_slopes = []
             while not traversed and i_epsilon < len(possible_critical_epsilons):
-                epsilon: float = possible_critical_epsilons[i_epsilon]
+                epsilon = possible_critical_epsilons[i_epsilon]
                 a3 = steepest_decent_helper_point_for_epsilon(a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
                                                               a_bounds_ver, a2, epsilon)
                 b3 = steepest_decent_helper_point_for_epsilon(b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
@@ -1465,7 +1465,7 @@ class CellMatrix:
             return [tra[1] for tra in traversals_and_slopes]
 
         # critical event is higher
-        critical_traversals: list = critical_event[1]
+        critical_traversals = critical_event[1]
 
         traversals_and_slopes = []
         for i in range(len(critical_traversals)):
@@ -1615,7 +1615,7 @@ class CellMatrix:
                 while x <= self.p.offsets[c_a + 1] or (c_a >= self.p.count - 1 and i_x <= n_p):
                     xs[-1].append(x)
                     ys[-1].append(y)
-                    cell: Cell = self.cells[c_a][c_b]
+                    cell = self.cells[c_a][c_b]
                     z = cell.lp(Vector(x - self.p.offsets[c_a], y - self.q.offsets[c_b]))
                     zs[-1].append(z)
 
