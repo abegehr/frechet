@@ -4,11 +4,39 @@ from flask_cors import CORS
 from math import sqrt
 from frechet_alg.Algorithm import CellMatrix
 from frechet_alg.Geometry import Vector
-from frechet_alg.Graphics import xy_to_vectors, vectors_to_xy
 
 app = Flask(__name__)
 CORS(app)
 
+def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):  # converts array of vectors to x- & y-coordinate arrays
+    x = []
+    y = []
+
+    for vector in vectors:
+        if isinstance(vector, Vector):
+            x.append(vector.x)
+            y.append(vector.y)
+        else:
+            print("Error: not a Vector: " + str(vector))
+
+    return x, y
+
+def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:  # converts x- & y-coordinate arrays to arrays of vectors
+    vectors = []
+
+    for i in range(min(len(xs), len(ys))):
+        x = xs[i]
+        y = ys[i]
+        if isinstance(x, Number) and isinstance(y, Number):
+            vectors.append(Vector(x, y))
+        else:
+            print("Error: either is not a valid float: x:" + str(x) + " y:" + str(y))
+
+    return vectors
+
+@app.route("/test")
+def test():
+    return "test: success!"
 
 @app.route("/", methods=['POST'])
 def index():
