@@ -6,7 +6,7 @@ import Results from './components/Results'
 
 import './App.css';
 
-const frechet_api_url = 'http://127.0.0.1:5000'
+const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL
 
 class App extends Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class App extends Component {
   go() {
     console.log("Go! ", this.state.data);
 
-    fetch(frechet_api_url, {
+    fetch(frechet_server_url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
