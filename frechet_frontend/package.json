@@ -2,7 +2,7 @@
   "name": "frechet",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://userpage.fu-berlin.de/abegehr/frechet/",
+  "homepage": "https://abegehr.github.io/frechet-webapp/",
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
