@@ -88,15 +88,22 @@ def index():
             if (len(l) == 2 and len(l[0]) == 2 and len(l[1]) == 2):
                 l_lines.append(l)
 
+    # critical_events
+    critical_events = []
+    for critical_event in sample["critical-traversals"]:
+        xs, ys = vectors_to_xy(critical_event.points)
+        e = critical_event.epsilon
+        critical_events.append([xs, ys, e])
+
 
     return jsonify({
         "lengths": lengths, "heatmap": sample["heatmap"],
         "bounds_l": sample["bounds-l"], "traversals": traversals,
-        "borders": borders, "l_lines": l_lines})
-    #    "borders-h": sample["borders-h"], "cells": sample["cells"],
+        "borders": borders, "l_lines": l_lines,
+        "critical_events": critical_events})
     #    "cross-section-p": sample["cross-section-p"],
     #    "cross-section-q": sample["cross-section-p"]
-#    });#, 'log': str(cell_matrix)})
+    #    });#, 'log': str(cell_matrix)})
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True)

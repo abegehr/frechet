@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './Results.css';
 import Plot from 'react-plotly.js';
 
+function round(num) {
+  return Math.round(num*100)/100;
+}
+
 class Results extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +14,8 @@ class Results extends Component {
         show_l_lines: true,
         show_contours: true,
         show_critical_events: true,
-        show_cell_borders: true
+        show_cell_borders: true,
+        show_traversals: true
       }
     };
 
@@ -34,15 +39,32 @@ class Results extends Component {
   }
 
   render() {
-    console.log("this.props.data.heatmap: ", this.props.data.heatmap);
+    // settings
+    const max_p = this.props.data.lengths.p;
+    const max_q = this.props.data.lengths.q;
+    const max_width = this.props.maxSize.width;
+    const max_height = this.props.maxSize.height;
 
-    var max_p = this.props.data.lengths.p;
-    var max_q = this.props.data.lengths.q;
+    const bounds_l = this.props.data.bounds_l;
+    const contour_size = (bounds_l[1] - bounds_l[0])/10;
 
-    var bounds_l = this.props.data.bounds_l;
-    var contour_size = (bounds_l[1] - bounds_l[0])/10;
+    const main_margin = {
+      l: 80,
+      r: 80,
+      t: 100,
+      b: 80
+    };
+    var main_width = main_margin.l + main_margin.r +
+        Math.min(max_width, max_width*(max_p/max_q));
+    var main_height = main_margin.t + main_margin.b +
+        Math.min(max_height, max_height*(max_q/max_p));
 
-    // heatmap
+    // data and shapes
+    const main_data = [];
+    const main_shapes = [];
+    const traversals_cs_data = [];
+
+    // heatmap and contours
     const heatmap_data = {
       x: this.props.data.heatmap[0][0],
       y: this.props.data.heatmap[1].map((ys, i) => {return ys[0]}),
@@ -54,24 +76,38 @@ class Results extends Component {
         end: bounds_l[1],
         size: contour_size
       },
-      line:{
+      line: {
         smoothing: 0
-      }
+      },
+      hoverinfo: "x+y+z"
     };
+    if (!this.state.settings.show_contours) {
+      heatmap_data.type = 'heatmap';
+    }
 
-    var traversals_data = [];
-    this.props.data.traversals.forEach((traversal) => {
-      var traversal_data = {
+    // traversal
+    const traversals_data = [];
+    this.props.data.traversals.forEach((traversal, i) => {
+      traversals_data.push({
         x: traversal.x,
         y: traversal.y,
-        mode: 'lines'
-      };
-      traversals_data.push(traversal_data);
+        mode: 'lines',
+        line: {
+          color: 'rgba(255, 0, 0, 1)',
+          width: 4,
+          dash: 'line'
+        },
+        hoverinfo: 'name+text',
+        name: "#"+i,
+        text: traversal.z.map(z => {return "ε = "+round(z)})
+      });
     });
 
-    var borders = [];
+    // cell borders
+    const borders = [];
+    // vertical
     this.props.data.borders[0].forEach((b) => {
-      var border_v = {
+      borders.push({
         type: 'line',
         x0: b,
         y0: 0,
@@ -81,11 +117,11 @@ class Results extends Component {
           color: 'rgba(255, 255, 255, 0.4)',
           width: 2
         }
-      };
-      borders.push(border_v);
+      });
     });
     this.props.data.borders[1].forEach((b) => {
-      var border_h = {
+      // horizontal
+      borders.push({
         type: 'line',
         x0: 0,
         y0: b,
@@ -95,47 +131,76 @@ class Results extends Component {
           color: 'rgba(255, 255, 255, 0.4)',
           width: 2
         }
-      };
-      borders.push(border_h);
+      });
     });
 
-    var l_lines = [];
+    // l-lines
+    const l_lines = [];
     this.props.data.l_lines.forEach((l) => {
       l_lines.push({
-        type: 'line',
-        x0: l[0][0],
-        y0: l[1][0],
-        x1: l[0][1],
-        y1: l[1][1],
+        x: l[0],
+        y: l[1],
+        mode: 'lines',
+        hoverinfo: 'skip',
         line: {
-          color: 'rgba(0, 0, 0, 0.4)',
-          width: 2
+          color: 'rgba(34, 167, 31, 1)',
+          width: 2,
+          dash: 'dots'
         }
-      })
+      });
     });
 
-    var heatmap_margin = {
-      l: 80,
-      r: 80,
-      t: 100,
-      b: 80
-    };
-    var heatmap_width = heatmap_margin.l + heatmap_margin.r + Math.min(this.props.maxSize.width,
-      this.props.maxSize.width*(max_p/max_q));
-    var heatmap_height = heatmap_margin.t + heatmap_margin.b + Math.min(this.props.maxSize.height,
-      this.props.maxSize.height*(max_q/max_p));
-    var heatmap_shapes = [];
+    // critical events
+    const critical_events = [];
+    this.props.data.critical_events.forEach((c) => {
+      critical_events.push({
+        x: c[0],
+        y: c[1],
+        mode: 'lines+markers',
+        marker: {
+          color: 'rgba(0, 0, 255, 1)',
+          size: 10
+        },
+        line: {
+          color: 'rgba(0, 0, 255, 1)',
+          width: 2,
+          dash: 'dash'
+        },
+        hoverinfo: 'text',
+        text: 'ε = ' + round(c[2])
+      });
+    });
+
+    // traversals cross section
+    this.props.data.traversals.forEach((traversal) => {
+      traversals_cs_data.push({
+        x: traversal.t,
+        y: traversal.z,
+        mode: 'lines'
+      });
+    });
+
+    // add data and shapes
+    main_data.push(heatmap_data);
     if (this.state.settings.show_l_lines) {
-      heatmap_shapes.push(...l_lines);
+      main_data.push(...l_lines);
     }
     if (this.state.settings.show_cell_borders) {
-      heatmap_shapes.push(...borders);
+      main_shapes.push(...borders);
     }
-    var heatmap_layout = {
+    if (this.state.settings.show_critical_events) {
+      main_data.push(...critical_events);
+    }
+    if (this.state.settings.show_traversals) {
+      main_data.push(...traversals_data);
+    }
+
+    // layouts
+    var main_layout = {
       title: 'Heatmap',
-      shapes: heatmap_shapes,
+      shapes: main_shapes,
       autosize: true,
-      margin: heatmap_margin,
+      margin: main_margin,
       xaxis: {
         nticks: 10,
         domain: [0, max_p],
@@ -146,21 +211,11 @@ class Results extends Component {
         domain: [0, max_q],
         title: "path Q"
       },
-      width: heatmap_width,
-      height: heatmap_height
+      width: main_width,
+      height: main_height,
+      hovermode: 'closest',
+      showlegend: false
     };
-
-    // traversals cross section
-    var traversals_cross_section_data = [];
-    this.props.data.traversals.forEach((traversal) => {
-      var traversal_cross_section_data = {
-        x: traversal.t,
-        y: traversal.z,
-        mode: 'lines'
-      };
-      traversals_cross_section_data.push(traversal_cross_section_data);
-    });
-    console.log("traversals_cross_section_data: ", traversals_cross_section_data)
 
     return (
       <div className="results">
@@ -173,6 +228,7 @@ class Results extends Component {
               checked={this.state.settings.show_l_lines}
               onChange={this.toggleSetting} />
           </label>
+          <br />
           <label className="show_contours">
             show contours
             <input
@@ -181,6 +237,7 @@ class Results extends Component {
               checked={this.state.settings.show_contours}
               onChange={this.toggleSetting} />
           </label>
+          <br />
           <label className="show_critical_events">
             show critical events
             <input
@@ -189,6 +246,7 @@ class Results extends Component {
               checked={this.state.settings.show_critical_events}
               onChange={this.toggleSetting} />
           </label>
+          <br />
           <label className="show_cell_borders">
             show cell borders
             <input
@@ -197,16 +255,25 @@ class Results extends Component {
               checked={this.state.settings.show_cell_borders}
               onChange={this.toggleSetting} />
           </label>
+          <br />
+          <label className="show_traversals">
+            show traversals
+            <input
+              name="show_traversals"
+              type="checkbox"
+              checked={this.state.settings.show_traversals}
+              onChange={this.toggleSetting} />
+          </label>
         </div>
         <Plot
-          className="heatmap"
-          data={ [heatmap_data, ...traversals_data] }
-          layout={ heatmap_layout }
+          className="main"
+          data={ [...main_data] }
+          layout={ main_layout }
         />
         <br />
         <Plot
-          className="traversal-cross-section"
-          data={ [...traversals_cross_section_data] }
+          className="traversal-cs"
+          data={ [...traversals_cs_data] }
           layout={ {} }
         />
       </div>

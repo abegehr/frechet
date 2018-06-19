@@ -30,7 +30,6 @@ class InputCoord extends Component {
     this.createChart = this.createChart.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.updateAxis = this.updateAxis.bind(this);
-    this.calculateRanges = this.calculateRanges.bind(this);
   }
 
   componentDidMount() {
@@ -51,7 +50,7 @@ class InputCoord extends Component {
     this.setState({innerWidth: innerWidth, innerHeight: innerHeight});
 
     // Range
-    const ranges = this.calculateRanges();
+    const ranges = this.props.inputRange;
     const xRange = ranges[0];
     const yRange = ranges[1];
     // Scale
@@ -112,53 +111,13 @@ class InputCoord extends Component {
       });
   }
 
-  calculateRanges() {
-    // data
-    const coords_p = this.props.data.p;
-    const coords_q = this.props.data.q;
-
-    var xMin = d3.min([d3.min(coords_p, function(d) { return d.x }),
-      d3.min(coords_q, function(d) { return d.x })]);
-    var xMax = d3.max([d3.max(coords_p, function(d) { return d.x }),
-      d3.max(coords_q, function(d) { return d.x })]);
-    var yMin = d3.min([d3.min(coords_p, function(d) { return d.y }),
-      d3.min(coords_q, function(d) { return d.y })]);
-    var yMax = d3.max([d3.max(coords_p, function(d) { return d.y }),
-      d3.max(coords_q, function(d) { return d.y })]);
-
-    var dx = Math.abs(xMax-xMin);
-    var dy = Math.abs(yMax-yMin);
-    if (dx > dy) {
-      const dxy = dx - dy;
-      yMin -= 0.5*dxy;
-      yMax += 0.5*dxy;
-      dy = dx;
-    } else if (dy > dx) {
-      const dyx = dy - dx;
-      xMin -= 0.5*dyx;
-      xMax += 0.5*dyx;
-      dx = dy;
-    }
-
-    const padding = 0.05;
-    const newXRange = {
-      min: d3.min([0, xMin-dx*padding]),
-      max: d3.max([10, xMax+dx*padding])
-    };
-    const newYRange = {
-      min: d3.min([0, yMin-dy*padding]),
-      max: d3.max([10, yMax+dy*padding])
-    };
-    return [newXRange, newYRange];
-  }
-
   updateAxis() {
 
     // scales
-    var xScale = this.state.xScale;
-    var yScale = this.state.yScale;
+    const xScale = this.state.xScale;
+    const yScale = this.state.yScale;
 
-    const newRanges = this.calculateRanges();
+    const newRanges = this.props.inputRange;
     const newXRange = newRanges[0];
     const newYRange = newRanges[1];
 
@@ -175,18 +134,18 @@ class InputCoord extends Component {
 
     //bind data
     const svg = d3.select(this.svg);
-    var g = svg.select("g");
+    const g = svg.select("g");
 
     // Axis
-    var xAxisG = g.select(".x.axis");
-    var yAxisG = g.select(".y.axis");
-    var xGridG = g.select(".x.grid");
-    var yGridG = g.select(".y.grid");
+    const xAxisG = g.select(".x.axis");
+    const yAxisG = g.select(".y.axis");
+    const xGridG = g.select(".x.grid");
+    const yGridG = g.select(".y.grid");
 
-    var xAxis = d3.axisTop(xScale);
-    var yAxis = d3.axisRight(yScale);
-    var xGrid = d3.axisTop(xScale).tickFormat("").tickSize(this.state.innerHeight);
-    var yGrid = d3.axisRight(yScale).tickFormat("").tickSize(this.state.innerWidth);
+    const xAxis = d3.axisTop(xScale);
+    const yAxis = d3.axisRight(yScale);
+    const xGrid = d3.axisTop(xScale).tickFormat("").tickSize(this.state.innerHeight);
+    const yGrid = d3.axisRight(yScale).tickFormat("").tickSize(this.state.innerWidth);
 
     xAxisG.call(xAxis);
     yAxisG.call(yAxis);
@@ -205,7 +164,7 @@ class InputCoord extends Component {
     // helper
     const xScale = this.state.xScale;
     const yScale = this.state.yScale;
-    var line = d3.line()
+    const line = d3.line()
       .x(function(d) { return xScale(d.x); })
       .y(function(d) { return yScale(d.y); });
 
@@ -214,35 +173,35 @@ class InputCoord extends Component {
     // d3 render START
     //Bind data
     const svg = d3.select(this.svg);
-    var g = svg.select("g");
-    var points_p = g.selectAll(".point.p").data(coords_p, function(d, i){ return i; });
-    var points_q = g.selectAll(".point.q").data(coords_q, function(d, i){ return i; });
-    var path_p = g.select(".path.p");
-    var path_q = g.select(".path.q");
+    const g = svg.select("g");
+    const points_p = g.selectAll(".point.p").data(coords_p, function(d, i){ return i; });
+    const points_q = g.selectAll(".point.q").data(coords_q, function(d, i){ return i; });
+    const path_p = g.select(".path.p");
+    const path_q = g.select(".path.q");
 
     path_p.attr("d", line(coords_p));
     path_q.attr("d", line(coords_q));
 
     //Enter
-    var points_p_enter = points_p.enter().append("path")
+    const points_p_enter = points_p.enter().append("path")
       .attr("class", "point p")
       .attr("d", "M-20 -20 L0 0 L-20 20");
-    var points_q_enter = points_q.enter().append("path")
+    const points_q_enter = points_q.enter().append("path")
       .attr("class", "point q")
       .attr("d", "M-20 -20 L0 0 L-20 20");
 
     //Update
-    var rotate_p = (d, i) => { return rotate_point(coords_p, d, i); };
-    var rotate_q = (d, i) => { return rotate_point(coords_q, d, i); };
+    const rotate_p = (d, i) => { return rotate_point(coords_p, d, i); };
+    const rotate_q = (d, i) => { return rotate_point(coords_q, d, i); };
     points_p.merge(points_p_enter)
       .attr("transform", function(d, i) {
-        var translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
+        let translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
         translate += " " + rotate_p(d, i)
         return translate
       });
     points_q.merge(points_q_enter)
       .attr("transform", function(d, i) {
-        var translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
+        let translate = "translate(" + xScale(d.x) + "," + yScale(d.y) + ")"
         translate += " " + rotate_q(d, i)
         return translate
       });

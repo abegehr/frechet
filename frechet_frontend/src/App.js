@@ -14,18 +14,14 @@ class App extends Component {
     this.state = {
       data: {
         p: [
-          {x: 1, y: 1},
-          {x: 4, y: 3},
-          {x: 5, y: 2},
-          {x: 6, y: 4},
-          {x: 2, y: 8},
+          {x: 0, y: 0},
+          {x: 6, y: 0},
+          {x: 0, y: 0},
         ],
         q: [
-          {x: 2, y: 1},
-          {x: 5, y: 1},
-          {x: 6, y: 2},
-          {x: 2, y: 6},
-          {x: 5, y: 7},
+          {x: 1, y: -1},
+          {x: 1, y: 5},
+          {x: 1, y: -1},
         ]
       },
       selectedPath: "p",
@@ -33,6 +29,46 @@ class App extends Component {
       result: {}
     };
 
+  }
+
+  calculateInputRange() {
+    // data
+    const coords_p = this.state.data.p;
+    const coords_q = this.state.data.q;
+
+    let xMin = Math.min(Math.min(...coords_p.map(p => {return p.x})),
+      Math.min(...coords_q.map(p => {return p.x})));
+    let xMax = Math.max(Math.max(...coords_p.map(q => {return q.x})),
+      Math.max(...coords_q.map(q => {return q.x})));
+    let yMin = Math.min(Math.min(...coords_p.map(p => {return p.y})),
+      Math.min(...coords_q.map(p => {return p.y})));
+    let yMax = Math.max(Math.max(...coords_p.map(q => {return q.y})),
+      Math.max(...coords_q.map(q => {return q.y})));
+
+    let dx = Math.abs(xMax-xMin);
+    let dy = Math.abs(yMax-yMin);
+    if (dx > dy) {
+      const dxy = dx - dy;
+      yMin -= 0.5*dxy;
+      yMax += 0.5*dxy;
+      dy = dx;
+    } else if (dy > dx) {
+      const dyx = dy - dx;
+      xMin -= 0.5*dyx;
+      xMax += 0.5*dyx;
+      dx = dy;
+    }
+
+    const padding = 0.05;
+    const xRange = {
+      min: Math.min(0, xMin-dx*padding),
+      max: Math.max(10, xMax+dx*padding)
+    };
+    const yRange = {
+      min: Math.min(0, yMin-dy*padding),
+      max: Math.max(10, yMax+dy*padding)
+    };
+    return [xRange, yRange];
   }
 
   dataChanged(newData) {
@@ -78,6 +114,8 @@ class App extends Component {
       );
     }
 
+    const inputRange = this.calculateInputRange();
+
     return (
       <div className="App">
         <h1>Lexicographic Fréchet Matchings</h1>
@@ -86,19 +124,22 @@ class App extends Component {
         <InputCoord data={this.state.data}
           dataChanged={this.dataChanged.bind(this)}
           size={{ width: 500, height: 500 }}
-          selectedPath={this.state.selectedPath}/>
+          selectedPath={this.state.selectedPath}
+          inputRange={inputRange} />
         <InputList id="p" label="Path P"
           points={this.state.data.p}
           pointsChanged={this.pathChanged("p")}
           selected={this.state.selectedPath === "p"}
           select={() => {this.selectPath("p")}}
-          maxHeight={400} />
+          maxHeight={400}
+          inputRange={inputRange} />
         <InputList id="q" label="Path Q"
           points={this.state.data.q}
           pointsChanged={this.pathChanged("q")}
           selected={this.state.selectedPath === "q"}
           select={() => {this.selectPath("q")}}
-          maxHeight={400} />
+          maxHeight={400}
+          inputRange={inputRange} />
         <br />
 
         {/* Action */}
