@@ -60,7 +60,7 @@ class InputList extends Component {
       const newPoint = this.randomPoint();
 
       let newPoints = this.props.points;
-      newPoints.splice(index, 0, newPoint);
+      newPoints.splice(index+1, 0, newPoint);
 
       this.props.pointsChanged(newPoints);
     };
