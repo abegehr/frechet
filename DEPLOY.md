@@ -2,6 +2,7 @@
 
 ## Frontend
 1. Navigate to frechet_frontend: ```cd ./frechet_frontend```
+2.  Install dependencies: ```yarn install```
 2. Use scripts to deploy to gh-pages: ```yarn run deploy``` or ```npm run deploy```
 
 ## Backend
