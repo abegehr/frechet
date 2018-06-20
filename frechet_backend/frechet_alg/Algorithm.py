@@ -1131,6 +1131,7 @@ class CellMatrix:
         if a == b:
             return [Traversal.nan()]
 
+        # done: just connect a and b vertical or horizontal
         if about_equal(a.x, b.x) or about_equal(a.y, b.y) or a.x > b.x or a.y > b.y:
             points = []
             if about_equal(a.x, b.x) or a.x > b.x:
@@ -1150,6 +1151,7 @@ class CellMatrix:
         critical_event = critical_events.critical(self, a_cm, b_cm)
         critical_epsilon = critical_event[0]
 
+        # critical event is lower than or equal to max_ab_epsilon or is traversable without critical event
         if max_ab_epsilon >= critical_epsilon or (critical_epsilon > max_ab_epsilon and self.decide_traversal(a_cm, b_cm, max_ab_epsilon)):
 
             a_cell = self.cells[cc_a[0]][cc_a[1]]
@@ -1455,7 +1457,9 @@ class CellMatrix:
 
                         traversals_and_slopes.append((slope_a + slope_b, traversal))
                         traversed = True
+
                 i_epsilon += 1
+
             if len(traversals) > 0:
                 return traversals
             traversals_and_slopes.sort(key=lambda tup: tup[0])
@@ -1464,7 +1468,7 @@ class CellMatrix:
             # To show all possible traversals: [tra[1] for tra in traversals_and_slopes]
             return [tra[1] for tra in traversals_and_slopes]
 
-        # critical event is higher
+        # critical event is higher than max_ab_epsilon
         critical_traversals = critical_event[1]
 
         traversals_and_slopes = []
@@ -1493,7 +1497,7 @@ class CellMatrix:
             traversals_and_slopes.append((slope_a + slope_b, traversal))
 
         traversals_and_slopes.sort(key=lambda tup: tup[0])
-        return [traversals_and_slopes[0][1]]  # [tra[1] for tra in traversals_and_slopes]
+        return [tra[1] for tra in traversals_and_slopes]
 
     def sample_l(self, n_l: int, n_p: int, heatmap_n: int = 100, traversals_n: int = 10, cross_sections_n: int = 100)\
             -> {}:

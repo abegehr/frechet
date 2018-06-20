@@ -93,7 +93,7 @@ def index():
     for critical_event in sample["critical-traversals"]:
         xs, ys = vectors_to_xy(critical_event.points)
         e = critical_event.epsilon
-        critical_events.append([xs, ys, e])
+        critical_events.append([[xs[0], xs[-1]], [ys[0], ys[-1]], e])
 
 
     return jsonify({
