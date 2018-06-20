@@ -59,11 +59,13 @@ function parsePoints(string) {
 function writeDataToURLParams(data) {
   let params = new URLSearchParams(window.location.search);
 
-  console.log("called write. p: ", data.p);
+  // generate param strings
   params.set('p', stringifyPoints(data.p));
   params.set('q', stringifyPoints(data.q));
 
-  window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+  // set window url
+  let new_url = decodeURI(`${window.location.pathname}?${params}`);
+  window.history.replaceState({}, '', new_url);
 }
 
 function stringifyPoints(points) {
@@ -71,7 +73,7 @@ function stringifyPoints(points) {
   points.forEach(point => {
     string += point.x + "_" + point.y + ")(";
   });
-  string.slice(0, -1);
+  string = string.slice(0, -1);
   return string;
 }
 
@@ -79,7 +81,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    // get data from url and write data to url
     let data = getDataFromURLParams();
+    writeDataToURLParams(data);
 
     this.state = {
       data: data,
