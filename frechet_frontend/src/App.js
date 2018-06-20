@@ -1,47 +1,79 @@
 import React, { Component } from 'react';
 import URLSearchParams from 'url-search-params';
 
-import InputCoord from './components/InputCoord'
-import InputList from './components/InputList'
-import Results from './components/Results'
+import InputCoord from './components/InputCoord';
+import InputList from './components/InputList';
+import Results from './components/Results';
 
 import './App.css';
 
-const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL
+const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL;
+
+const default_data = {
+  p: [
+    {x: 0, y: 0},
+    {x: 1, y: 0}
+  ],
+  q: [
+    {x: 0, y: 0},
+    {x: 1, y: 1}
+  ]
+};
 
 function getDataFromURLParams() {
-    let params = new URLSearchParams(document.location.search.substring(1));
+  let params = new URLSearchParams(window.location.search);
 
-    let data = {};
+  let data = default_data;
 
-    if (params.has("p")) {
-      let p = parsePoints(params.get("p"));
+  if (params.has("p")) {
+    let p = parsePoints(params.get("p"));
+    if (p.length >= 2) {
+      data.p = p;
     }
-    let qx = parseFloats(params.get("qx"));
-    let qy = parseFloats(params.get("qy"));
-
-    let p = [];
-
-
-    data = {
-      p: [
-        {x: 0, y: 0},
-        {x: 6, y: 0},
-        {x: 0, y: 0},
-      ],
-      q: [
-        {x: 1, y: -1},
-        {x: 1, y: 5},
-        {x: 1, y: -1},
-      ]
-    };
-
-    return  data
+  }
+  if (params.has("q")) {
+    let q = parsePoints(params.get("q"));
+    if (q.length >= 2) {
+      data.q = q;
+    }
   }
 
-  function parsePoints(string) {
-    return [parseFloat(x) for x in string.slice(1, -1).split(")(")];
-  }
+  return data;
+}
+
+function parsePoints(string) {
+  let points = [];
+  string.slice(1, -1).split(")(").forEach((str_point) => {
+    let coords = str_point.split("_");
+    if (coords.length === 2) {
+      let x = parseFloat(coords[0]);
+      let y = parseFloat(coords[1]);
+      if (!isNaN(x) && !isNaN(y)) {
+        points.push({x: x, y: y});
+      }
+    }
+  });
+  return points;
+}
+
+function writeDataToURLParams(data) {
+  let params = new URLSearchParams(window.location.search);
+
+  console.log("called write. p: ", data.p);
+  params.set('p', stringifyPoints(data.p));
+  params.set('q', stringifyPoints(data.q));
+
+  window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+}
+
+function stringifyPoints(points) {
+  let string = "(";
+  points.forEach(point => {
+    string += point.x + "_" + point.y + ")(";
+  });
+  string.slice(0, -1);
+  return string;
+}
 
 class App extends Component {
   constructor(props) {
@@ -98,14 +130,18 @@ class App extends Component {
   }
 
   dataChanged(newData) {
-    this.setState({data: newData});
+  this.setState({data: newData});
+  // write to url params
+  writeDataToURLParams(newData);
   }
 
   pathChanged(path) {
     return (points) => {
-      var newData = this.state.data;
+      // update data
+      let newData = this.state.data;
       newData[path] = points;
-      this.setState({data: newData});
+      // set state
+      this.dataChanged(newData);
     }
   }
 
@@ -170,6 +206,8 @@ class App extends Component {
 
         {/* Action */}
         <button onClick={this.go.bind(this)}>Go!</button>
+        <br />
+        <br />
         <br />
 
         {/* Result */}
