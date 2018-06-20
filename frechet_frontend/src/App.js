@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import URLSearchParams from 'url-search-params';
 
 import InputCoord from './components/InputCoord'
 import InputList from './components/InputList'
@@ -8,27 +9,52 @@ import './App.css';
 
 const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL
 
+function getDataFromURLParams() {
+    let params = new URLSearchParams(document.location.search.substring(1));
+
+    let data = {};
+
+    if (params.has("p")) {
+      let p = parsePoints(params.get("p"));
+    }
+    let qx = parseFloats(params.get("qx"));
+    let qy = parseFloats(params.get("qy"));
+
+    let p = [];
+
+
+    data = {
+      p: [
+        {x: 0, y: 0},
+        {x: 6, y: 0},
+        {x: 0, y: 0},
+      ],
+      q: [
+        {x: 1, y: -1},
+        {x: 1, y: 5},
+        {x: 1, y: -1},
+      ]
+    };
+
+    return  data
+  }
+
+  function parsePoints(string) {
+    return [parseFloat(x) for x in string.slice(1, -1).split(")(")];
+  }
+
 class App extends Component {
   constructor(props) {
     super(props);
+
+    let data = getDataFromURLParams();
+
     this.state = {
-      data: {
-        p: [
-          {x: 0, y: 0},
-          {x: 6, y: 0},
-          {x: 0, y: 0},
-        ],
-        q: [
-          {x: 1, y: -1},
-          {x: 1, y: 5},
-          {x: 1, y: -1},
-        ]
-      },
+      data: data,
       selectedPath: "p",
       showResults: false,
       result: {}
     };
-
   }
 
   calculateInputRange() {
