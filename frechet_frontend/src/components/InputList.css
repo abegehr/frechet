@@ -1,7 +1,21 @@
 .inputlist {
-  border: 1px solid;
+  padding: 0.2em;
+
+  border: 8px solid rgb(148, 148, 148);
 }
 
 .inputlist.selected {
-  background-color: yellow;
+  border: 8px solid rgb(179, 61, 61);
+}
+
+.inputPoint {
+ margin: 0.2em;
+}
+
+.iconButton {
+}
+
+.iconButton:hover {
+  color: white;
+  fill: currentColor;
 }

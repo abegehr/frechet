@@ -59,10 +59,9 @@ class Results extends Component {
     var main_height = main_margin.t + main_margin.b +
         Math.min(max_height, max_height*(max_q/max_p));
 
-    // data and shapes
+    // main
     const main_data = [];
     const main_shapes = [];
-    const traversals_cs_data = [];
 
     // heatmap and contours
     const heatmap_data = {
@@ -172,6 +171,7 @@ class Results extends Component {
     });
 
     // traversals cross section
+    const traversals_cs_data = [];
     this.props.data.traversals.forEach((traversal) => {
       traversals_cs_data.push({
         x: traversal.t,
@@ -179,6 +179,16 @@ class Results extends Component {
         mode: 'lines'
       });
     });
+
+    // main 3d
+    const main3d_data = []
+    const surface_data = {
+      x: this.props.data.heatmap[0][0],
+      y: this.props.data.heatmap[1].map((ys, i) => {return ys[0]}),
+      z: this.props.data.heatmap[2],
+      type: 'surface'
+    };
+    main3d_data.push(surface_data);
 
     // add data and shapes
     main_data.push(heatmap_data);
@@ -196,7 +206,7 @@ class Results extends Component {
     }
 
     // layouts
-    var main_layout = {
+    const main_layout = {
       title: 'Heatmap',
       shapes: main_shapes,
       autosize: true,
@@ -215,6 +225,14 @@ class Results extends Component {
       height: main_height,
       hovermode: 'closest',
       showlegend: false
+    };
+    const traversals_cs_layout = {
+      title: 'Traversal Cross Sections',
+      autosize: true
+    };
+    const main3d_layout = {
+      title: '3D Heightmap',
+      autosize: true
     };
 
     return (
@@ -272,9 +290,14 @@ class Results extends Component {
         />
         <br />
         <Plot
+          className="main3d"
+          data={ [...main3d_data] }
+          layout={ {main3d_layout} }
+        />
+        <Plot
           className="traversal-cs"
           data={ [...traversals_cs_data] }
-          layout={ {} }
+          layout={ {traversals_cs_layout} }
         />
       </div>
     );

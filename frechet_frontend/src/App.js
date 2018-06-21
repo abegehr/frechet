@@ -184,42 +184,51 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>Lexicographic Fréchet Matchings</h1>
+
+        <div className="header">
+          <h1>Lexicographic Fréchet Matchings</h1>
+        </div>
 
         {/* Input */}
-        <InputCoord data={this.state.data}
-          dataChanged={this.dataChanged.bind(this)}
-          size={{ width: 500, height: 500 }}
-          selectedPath={this.state.selectedPath}
-          inputRange={inputRange} />
-        <InputList id="p" label="Path P"
-          points={this.state.data.p}
-          pointsChanged={this.pathChanged("p")}
-          selected={this.state.selectedPath === "p"}
-          select={() => {this.selectPath("p")}}
-          maxHeight={400}
-          inputRange={inputRange} />
-        <InputList id="q" label="Path Q"
-          points={this.state.data.q}
-          pointsChanged={this.pathChanged("q")}
-          selected={this.state.selectedPath === "q"}
-          select={() => {this.selectPath("q")}}
-          maxHeight={400}
-          inputRange={inputRange} />
-        <br />
-
-        {/* Action */}
-        <button onClick={this.go.bind(this)}>Go!</button>
-        <br />
-        <br />
-        <br />
+        <div className="input">
+          <div className="input_coord">
+            <InputCoord data={this.state.data}
+              dataChanged={this.dataChanged.bind(this)}
+              size={{ width: 500, height: 500 }}
+              selectedPath={this.state.selectedPath}
+              inputRange={inputRange} />
+          </div>
+          <div className="input_lists">
+            <div className="input_list p">
+              <InputList id="p" label="Path P"
+                style={{backgroundColor: "DarkSlateBlue"}}
+                points={this.state.data.p}
+                pointsChanged={this.pathChanged("p")}
+                selected={this.state.selectedPath === "p"}
+                select={() => {this.selectPath("p")}}
+                inputRange={inputRange} />
+            </div>
+            <div className="input_list q">
+              <InputList id="q" label="Path Q"
+                style={{backgroundColor: "Green"}}
+                points={this.state.data.q}
+                pointsChanged={this.pathChanged("q")}
+                selected={this.state.selectedPath === "q"}
+                select={() => {this.selectPath("q")}}
+                inputRange={inputRange} />
+              <br />
+            </div>
+          </div>
+        </div>
+        <div className="go_button"
+          onClick={this.go.bind(this)}>
+          Run!
+        </div>
 
         {/* Result */}
-        {results}
-
-        <br />
-        <br />
-        <br />
+        <div className="results">
+          {results}
+        </div>
 
       </div>
     );

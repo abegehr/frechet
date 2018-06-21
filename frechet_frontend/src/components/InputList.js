@@ -4,8 +4,13 @@ import './InputList.css';
 import ReactList from 'react-list';
 import NumericInput from 'react-numeric-input';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faMinus from '@fortawesome/fontawesome-free-solid/faMinus'
-import faPlus from '@fortawesome/fontawesome-free-solid/faPlus'
+import removeIcon from '@fortawesome/fontawesome-free-solid/faMinusSquare'
+import addIcon from '@fortawesome/fontawesome-free-solid/faPlusSquare'
+
+console.log("NumericInput.style: ", NumericInput.style);
+//NumericInput.style.wrap.minWidth = 6+"em";
+//NumericInput.style.wrap.maxWidth = 18+"em";
+NumericInput.style.input.width = 8+"em";
 
 class InputList extends Component {
 
@@ -24,15 +29,20 @@ class InputList extends Component {
     const point = this.props.points[index];
 
     return (
-      <div key={key}>
-        {index}: (
+      <div className="inputPoint" key={key}>
+        <span style={{textTransform: "uppercase"}}>{this.props.id}</span>
+        <sub>{index}</sub>(
         <NumericInput step={step} precision={percision} value={point.x} snap
-          onChange={this.onValueChange(index, "x")}/> |
+          onChange={this.onValueChange(index, "x")}/>
         <NumericInput step={step} precision={percision} value={point.y} snap
           onChange={this.onValueChange(index, "y")}/>
         )
-        <FontAwesomeIcon icon={faMinus} onClick={this.onRemoveClick(index)} />
-        <FontAwesomeIcon icon={faPlus} onClick={this.onAddClick(index)} />
+        <i className="iconButton add" onClick={this.onRemoveClick(index)}>
+          <FontAwesomeIcon icon={removeIcon} />
+        </i>
+        <i className="iconButton remove" onClick={this.onAddClick(index)}>
+          <FontAwesomeIcon icon={addIcon} />
+        </i>
       </div>
     );
   }
@@ -78,9 +88,9 @@ class InputList extends Component {
     }
 
     return (
-      <div className={classes}>
-        <p onClick={this.onSelect.bind(this)}>{this.props.label}</p>
-        <div style={{overflow: 'auto', maxHeight: this.props.maxHeight}}>
+      <div className={classes} onClick={this.onSelect.bind(this)}>
+        <p>{this.props.label}</p>
+        <div style={{overflow: 'auto'}}>
           <ReactList
             itemRenderer={this.renderPoint.bind(this)}
             length={this.props.points.length}
