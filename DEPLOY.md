@@ -7,5 +7,5 @@
 ## Backend
 1. Commit frechet_server folder
 2. Navigate to root
-3. Push subtree to heroku master: ```git subtree push --prefix frechet_server heroku master```
-4. If you need to force: ```git push --force heroku `git subtree split --prefix frechet_server HEAD`:master```
+3. Push subtree to heroku master: ```git subtree push --prefix frechet_backend heroku master```
+4. If you need to force: ```git push --force heroku `git subtree split --prefix frechet_backend HEAD`:master```
