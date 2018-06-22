@@ -215,7 +215,10 @@ class Results extends Component {
           color: 'rgba(255, 0, 0, 1)',
           width: 5,
           dash: 'line'
-        }
+        },
+        hoverinfo: 'name+text',
+        name: "#"+i,
+        text: traversal.z.map(z => {return "ε = "+round(z)})
       });
       // epsilon points
       const epsilon_points = traversal.epsilon_points;
@@ -266,11 +269,13 @@ class Results extends Component {
 
     // traversals cross section
     const traversals_cs_data = [];
-    this.props.data.traversals.forEach((traversal) => {
+    this.props.data.traversals.forEach((traversal, i) => {
       traversals_cs_data.push({
         x: traversal.t,
         y: traversal.z,
-        mode: 'lines'
+        mode: 'lines',
+        hoverinfo: 'name+y',
+        name: "#"+i
       });
     });
 
