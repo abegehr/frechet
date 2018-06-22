@@ -108,7 +108,7 @@ class Results extends Component {
       traversals_data.push({
         x: epsilon_points[0],
         y: epsilon_points[1],
-        mode: 'lines+markers',
+        mode: 'markers',
         marker: {
           color: 'rgba(181, 0, 0, 1)',
           size: 10,
@@ -190,16 +190,6 @@ class Results extends Component {
       });
     });
 
-    // traversals cross section
-    const traversals_cs_data = [];
-    this.props.data.traversals.forEach((traversal) => {
-      traversals_cs_data.push({
-        x: traversal.t,
-        y: traversal.z,
-        mode: 'lines'
-      });
-    });
-
     // main 3d
     const main3d_data = []
     const surface_data = {
@@ -209,6 +199,76 @@ class Results extends Component {
       type: 'surface'
     };
     main3d_data.push(surface_data);
+
+    // traversal 3d
+    const traversals3d_data = [];
+    this.props.data.traversals.forEach((traversal, i) => {
+      // traversals
+      traversals3d_data.push({
+        type: 'scatter3d',
+        x: traversal.x,
+        y: traversal.y,
+        z: traversal.z,
+        mode: 'lines',
+        line: {
+          color: 'rgba(255, 0, 0, 1)',
+          width: 5,
+          dash: 'line'
+        }
+      });
+      // epsilon points
+      const epsilon_points = traversal.epsilon_points;
+      traversals3d_data.push({
+        type: 'scatter3d',
+        x: epsilon_points[0],
+        y: epsilon_points[1],
+        z: epsilon_points[2],
+        mode: 'markers',
+        marker: {
+          color: 'rgba(181, 0, 0, 1)',
+          size: 6,
+          line: {
+            color: 'rgb(232, 214, 90)',
+            width: 1
+          }
+        },
+        hoverinfo: 'text',
+        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2]
+      });
+    });
+
+    // critical events 3d
+    const critical_events_3d = [];
+    this.props.data.critical_events.forEach((c) => {
+      critical_events_3d.push({
+        type: 'scatter3d',
+        x: c[0],
+        y: c[1],
+        z: [c[2], c[2]],
+        mode: 'lines+markers',
+        marker: {
+          color: 'rgba(0, 0, 255, 1)',
+          size: 4
+        },
+        line: {
+          color: 'rgba(0, 0, 255, 1)',
+          width: 2,
+          dash: 'dash'
+        },
+        //hoverinfo: 'text',
+        //text: 'ε = ' + c[2]
+      });
+    });
+
+    // traversals cross section
+    const traversals_cs_data = [];
+    this.props.data.traversals.forEach((traversal) => {
+      traversals_cs_data.push({
+        x: traversal.t,
+        y: traversal.z,
+        mode: 'lines'
+      });
+    });
 
     // add data and shapes
     main_data.push(heatmap_data);
@@ -220,9 +280,11 @@ class Results extends Component {
     }
     if (this.state.settings.show_critical_events) {
       main_data.push(...critical_events);
+      main3d_data.push(...critical_events_3d);
     }
     if (this.state.settings.show_traversals) {
       main_data.push(...traversals_data);
+      main3d_data.push(...traversals3d_data);
     }
 
     // layouts
