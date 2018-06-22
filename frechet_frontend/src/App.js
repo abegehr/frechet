@@ -11,12 +11,14 @@ const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL;
 
 const default_data = {
   p: [
-    {x: 0, y: 0},
-    {x: 1, y: 0}
+    {x: 2, y: 1},
+    {x: 2, y: 6},
+    {x: 8, y: 6}
   ],
   q: [
-    {x: 0, y: 0},
-    {x: 1, y: 1}
+    {x: 2.5, y: 1},
+    {x: 2.5, y: 9},
+    {x: 8, y: 9}
   ]
 };
 
