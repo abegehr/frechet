@@ -117,8 +117,9 @@ class Results extends Component {
             width: 1
           }
         },
-        hoverinfo: 'text',
-        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2]
+        hoverinfo: 'name+text',
+        name: "#"+i,
+        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2][0]
       });
     });
 
@@ -232,8 +233,11 @@ class Results extends Component {
             width: 1
           }
         },
-        hoverinfo: 'text',
-        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2]
+        hoverinfo: 'name+text',
+        name: "#"+i,
+        text: epsilon_points[2].map((eps) => {
+          return 'Lexicographic Fréchet Distance: ' + eps;
+        })
       });
     });
 
@@ -255,8 +259,8 @@ class Results extends Component {
           width: 2,
           dash: 'dash'
         },
-        //hoverinfo: 'text',
-        //text: 'ε = ' + c[2]
+        hoverinfo: 'text',
+        text: 'ε = ' + c[2]
       });
     });
 
@@ -315,7 +319,13 @@ class Results extends Component {
     };
     const main3d_layout = {
       autosize: true,
-      scene:{
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 0
+      },
+      scene: {
         aspectmode: "manual",
         aspectratio: {
           x: 1, y: max_q/max_p, z: delta_epsilon/max_p,
@@ -337,12 +347,13 @@ class Results extends Component {
         },
         camera: {
           center: {x: 0, y: 0, z: 0},
-          eye: {x: -0.5, y: -1.5, z: 0.1},
+          eye: {x: -0.5, y: -2, z: 0.5},
           up: {x: 0, y: 0, z: 1}
         }
       },
       width: width,
-      height: (2/3)*width
+      height: (2/3)*width,
+      showlegend: false
     };
     const traversals_cs_layout = {
       title: 'Traversal Cross Section',
