@@ -88,7 +88,8 @@ class InputList extends Component {
     }
 
     return (
-      <div className={classes} onClick={this.onSelect.bind(this)}>
+      <div className={classes} onClick={this.onSelect.bind(this)}
+        style={{backgroundColor: this.props.style.backgroundColor}}>
         <p>{this.props.label}</p>
         <div style={{overflow: 'auto'}}>
           <ReactList

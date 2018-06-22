@@ -1,7 +1,11 @@
 .inputlist {
+  height: 100%;
   padding: 0.2em;
+  padding-bottom: 1.5em;
 
   border: 8px solid rgb(148, 148, 148);
+
+  color: white;
 }
 
 .inputlist.selected {

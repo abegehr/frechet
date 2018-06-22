@@ -89,11 +89,32 @@ class App extends Component {
       data: data,
       selectedPath: "p",
       showResults: false,
-      result: {}
+      result: {},
+      width: 600
     };
   }
 
-  calculateInputRange() {
+  componentDidMount = () => {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    console.log("window.innerWidth: ", window.innerWidth);
+    let width = window.innerWidth;
+
+    if (window.innerWidth > 600) {
+      width = 600;
+    }
+
+    this.setState({width: width});
+  }
+
+  calculateInputRange = () => {
     // data
     const coords_p = this.state.data.p;
     const coords_q = this.state.data.q;
@@ -133,13 +154,13 @@ class App extends Component {
     return [xRange, yRange];
   }
 
-  dataChanged(newData) {
+  dataChanged = (newData) => {
   this.setState({data: newData});
   // write to url params
   writeDataToURLParams(newData);
   }
 
-  pathChanged(path) {
+  pathChanged = (path) => {
     return (points) => {
       // update data
       let newData = this.state.data;
@@ -149,11 +170,11 @@ class App extends Component {
     }
   }
 
-  selectPath(path) {
+  selectPath = (path) => {
     this.setState({selectedPath: path});
   }
 
-  go() {
+  go = () => {
     console.log("Go! ", this.state.data);
 
     fetch(frechet_server_url, {
@@ -172,7 +193,7 @@ class App extends Component {
   }
 
   render() {
-    var results;
+    let results;
     if (this.state.showResults) {
       results = (
         <Results data={this.state.result}
@@ -182,19 +203,22 @@ class App extends Component {
 
     const inputRange = this.calculateInputRange();
 
+    let halfWidth = 0.5*this.state.width;
+    console.log("halfWidth: ", halfWidth);
+
     return (
       <div className="App">
 
         <div className="header">
-          <h1>Lexicographic Fréchet Matchings</h1>
+          <span className="heading">Lexicographic Fréchet Matchings</span>
         </div>
 
         {/* Input */}
         <div className="input">
           <div className="input_coord">
             <InputCoord data={this.state.data}
-              dataChanged={this.dataChanged.bind(this)}
-              size={{ width: 500, height: 500 }}
+              dataChanged={this.dataChanged}
+              size={{ width: halfWidth, height: halfWidth }}
               selectedPath={this.state.selectedPath}
               inputRange={inputRange} />
           </div>
@@ -221,7 +245,7 @@ class App extends Component {
           </div>
         </div>
         <div className="go_button"
-          onClick={this.go.bind(this)}>
+          onClick={this.go}>
           Run!
         </div>
 
