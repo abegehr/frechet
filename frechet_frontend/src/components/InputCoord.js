@@ -91,9 +91,11 @@ class InputCoord extends Component {
 
     // Paths
     g.append("path")
-      .attr("class", "path p");
+      .attr("class", "path p")
+      .style('stroke', this.props.pathsColor.p);
     g.append("path")
-      .attr("class", "path q");
+      .attr("class", "path q")
+      .style('stroke', this.props.pathsColor.q);
 
     // add points on click
     svg.on("click", () => {
@@ -185,10 +187,12 @@ class InputCoord extends Component {
     //Enter
     const points_p_enter = points_p.enter().append("path")
       .attr("class", "point p")
-      .attr("d", "M-20 -20 L0 0 L-20 20");
+      .attr("d", "M-10 -10 L0 0 L-10 10")
+      .style('stroke', this.props.pathsColor.p);
     const points_q_enter = points_q.enter().append("path")
       .attr("class", "point q")
-      .attr("d", "M-20 -20 L0 0 L-20 20");
+      .attr("d", "M-10 -10 L0 0 L-10 10")
+      .style('stroke', this.props.pathsColor.q);
 
     //Update
     const rotate_p = (d, i) => { return rotate_point(coords_p, d, i); };

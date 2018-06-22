@@ -7,7 +7,6 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import removeIcon from '@fortawesome/fontawesome-free-solid/faMinusSquare'
 import addIcon from '@fortawesome/fontawesome-free-solid/faPlusSquare'
 
-console.log("NumericInput.style: ", NumericInput.style);
 //NumericInput.style.wrap.minWidth = 6+"em";
 //NumericInput.style.wrap.maxWidth = 18+"em";
 NumericInput.style.input.width = 8+"em";
@@ -29,20 +28,22 @@ class InputList extends Component {
     const point = this.props.points[index];
 
     return (
-      <div className="inputPoint" key={key}>
-        <span style={{textTransform: "uppercase"}}>{this.props.id}</span>
-        <sub>{index}</sub>(
-        <NumericInput step={step} precision={percision} value={point.x} snap
-          onChange={this.onValueChange(index, "x")}/>
-        <NumericInput step={step} precision={percision} value={point.y} snap
-          onChange={this.onValueChange(index, "y")}/>
-        )
-        <i className="iconButton add" onClick={this.onRemoveClick(index)}>
-          <FontAwesomeIcon icon={removeIcon} />
-        </i>
-        <i className="iconButton remove" onClick={this.onAddClick(index)}>
-          <FontAwesomeIcon icon={addIcon} />
-        </i>
+      <div key={key}>
+        <div className="inputPoint">
+          <span style={{textTransform: "uppercase"}}>{this.props.id}</span>
+          <sub>{index}</sub>(
+          <NumericInput step={step} precision={percision} value={point.x} snap
+            onChange={this.onValueChange(index, "x")}/>
+          <NumericInput step={step} precision={percision} value={point.y} snap
+            onChange={this.onValueChange(index, "y")}/>
+          )
+          <i className="iconButton add" onClick={this.onRemoveClick(index)}>
+            <FontAwesomeIcon icon={removeIcon} />
+          </i>
+          <i className="iconButton remove" onClick={this.onAddClick(index)}>
+            <FontAwesomeIcon icon={addIcon} />
+          </i>
+        </div>
       </div>
     );
   }
@@ -89,10 +90,11 @@ class InputList extends Component {
 
     return (
       <div className={classes} onClick={this.onSelect.bind(this)}
-        style={{backgroundColor: this.props.style.backgroundColor}}>
+        style={this.props.style}>
         <p>{this.props.label}</p>
-        <div style={{overflow: 'auto'}}>
+        <div className="list" style={{overflow: 'auto'}}>
           <ReactList
+            style={{'height': this.props.style.height}}
             itemRenderer={this.renderPoint.bind(this)}
             length={this.props.points.length}
             type='uniform'

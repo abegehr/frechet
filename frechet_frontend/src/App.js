@@ -89,29 +89,8 @@ class App extends Component {
       data: data,
       selectedPath: "p",
       showResults: false,
-      result: {},
-      width: 600
+      result: {}
     };
-  }
-
-  componentDidMount = () => {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
-  }
-
-  componentWillUnmount = () => {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
-
-  updateDimensions = () => {
-    console.log("window.innerWidth: ", window.innerWidth);
-    let width = window.innerWidth;
-
-    if (window.innerWidth > 600) {
-      width = 600;
-    }
-
-    this.setState({width: width});
   }
 
   calculateInputRange = () => {
@@ -152,13 +131,13 @@ class App extends Component {
       max: Math.max(10, yMax+dy*padding)
     };
     return [xRange, yRange];
-  }
+  };
 
   dataChanged = (newData) => {
-  this.setState({data: newData});
-  // write to url params
-  writeDataToURLParams(newData);
-  }
+    this.setState({data: newData});
+    // write to url params
+    writeDataToURLParams(newData);
+  };
 
   pathChanged = (path) => {
     return (points) => {
@@ -168,11 +147,11 @@ class App extends Component {
       // set state
       this.dataChanged(newData);
     }
-  }
+  };
 
   selectPath = (path) => {
     this.setState({selectedPath: path});
-  }
+  };
 
   go = () => {
     console.log("Go! ", this.state.data);
@@ -190,24 +169,39 @@ class App extends Component {
       console.log("result: ", result);
       this.setState({showResults: true, result: result});
     });
-  }
+  };
+
+  resetInput = () => {
+    // reload page without parameters (to allow browser back)
+    window.location = window.location.pathname;
+  };
+
+  resetResults = () => {
+    // hide results
+    this.setState({showResults: false});
+  };
 
   render() {
     let results;
     if (this.state.showResults) {
       results = (
-        <Results data={this.state.result}
-          maxSize={{width: 1400, height: 1000}} />
+        <div className="results">
+          <Results data={this.state.result}
+            maxSize={{width: 1400, height: 1000}} />
+          <div className="button reset" onClick={this.resetResults}>
+            Clear Results
+          </div>
+        </div>
       );
     }
 
     const inputRange = this.calculateInputRange();
 
-    let halfWidth = 0.5*this.state.width;
-    console.log("halfWidth: ", halfWidth);
+    const width = this.props.width;
 
     return (
-      <div className="App">
+      <div className="App"
+        style={{width: width}}>
 
         <div className="header">
           <span className="heading">Lexicographic Fréchet Matchings</span>
@@ -217,42 +211,51 @@ class App extends Component {
         <div className="input">
           <div className="input_coord">
             <InputCoord data={this.state.data}
+              pathsColor={{p: "DarkSlateBlue", q: "Green"}}
               dataChanged={this.dataChanged}
-              size={{ width: halfWidth, height: halfWidth }}
+              size={{ width: (2/3)*width, height: (2/3)*width }}
               selectedPath={this.state.selectedPath}
               inputRange={inputRange} />
           </div>
-          <div className="input_lists">
-            <div className="input_list p">
-              <InputList id="p" label="Path P"
-                style={{backgroundColor: "DarkSlateBlue"}}
-                points={this.state.data.p}
-                pointsChanged={this.pathChanged("p")}
-                selected={this.state.selectedPath === "p"}
-                select={() => {this.selectPath("p")}}
-                inputRange={inputRange} />
-            </div>
-            <div className="input_list q">
-              <InputList id="q" label="Path Q"
-                style={{backgroundColor: "Green"}}
-                points={this.state.data.q}
-                pointsChanged={this.pathChanged("q")}
-                selected={this.state.selectedPath === "q"}
-                select={() => {this.selectPath("q")}}
-                inputRange={inputRange} />
-              <br />
-            </div>
+          <div className="input_lists"
+            style={{width: (1/3)*width, height: (2/3)*width}}>
+            <InputList id="p" label="Path P"
+              style={{
+                backgroundColor: "DarkSlateBlue",
+                width: (1/3)*width,
+                height: (1/3)*width
+              }}
+              points={this.state.data.p}
+              pointsChanged={this.pathChanged("p")}
+              selected={this.state.selectedPath === "p"}
+              select={() => {this.selectPath("p")}}
+              inputRange={inputRange} />
+            <InputList id="q" label="Path Q"
+              style={{
+                backgroundColor: "Green",
+                width: (1/3)*width,
+                height: (1/3)*width
+              }}
+              points={this.state.data.q}
+              pointsChanged={this.pathChanged("q")}
+              selected={this.state.selectedPath === "q"}
+              select={() => {this.selectPath("q")}}
+              inputRange={inputRange} />
           </div>
         </div>
-        <div className="go_button"
-          onClick={this.go}>
-          Run!
+        <div className="buttons">
+          <div className="button clear" onClick={this.resetInput}>
+            Clear
+          </div>
+          <div className="button go" onClick={this.go}>
+            Run!
+          </div>
         </div>
 
         {/* Result */}
-        <div className="results">
-          {results}
-        </div>
+        {results}
+
+        <br />
 
       </div>
     );

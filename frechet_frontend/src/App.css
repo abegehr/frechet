@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 0 auto;
 }
 
 .result_log {
@@ -7,57 +8,63 @@
 }
 
 .header {
+  display: table;
+  overflow: hidden;
   width: 100%;
   height: 4em;
 }
 
 .header .heading {
+  display: table-cell;
+  vertical-align: middle;
   font-size: 2.4em;
   font-weight: bold;
 }
 
 .input {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
 }
 
 .input_coord {
-  flex-grow: 1;
-  min-width: 30em;
-  min-height: 30em;
 }
 
 .input_lists {
-  flex-grow: 1;
-  display: inline-flex;
-  flex-wrap: wrap;
 }
 
-.input_list.p {
-  flex-grow: 1;
-  min-width: 15em;
-  min-height: 30em;
-}
-
-.input_list.q {
-  flex-grow: 1;
-  min-width: 15em;
-  min-height: 30em;
-}
-
-.go_button {
+.buttons {
+  display: flex;
   width: 100%;
-  cursor: pointer;
-  background-color: rgb(136, 207, 125);
+}
+
+.button {
   font-size: 2.4em;
   color: white;
-  padding: 0.2em;
   font-weight: bold;
+  padding: 0.2em 0;
+  cursor: pointer;
 }
 
-.go_button:hover {
+.button.clear {
+  flex-grow: 1;
+  background-color: rgb(227, 99, 99);
+}
+.button.clear:hover {
+  background-color: rgb(176, 84, 84);
+}
+.button.go {
+  flex-grow: 4;
+  background-color: rgb(136, 207, 125);
+}
+.button.go:hover {
   background-color: rgb(114, 190, 103);
+}
+.button.reset {
+  background-color: rgb(227, 99, 99);
+}
+.button.reset:hover {
+  background-color: rgb(176, 84, 84);
 }
 
 .results {

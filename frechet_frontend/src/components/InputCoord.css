@@ -28,13 +28,5 @@
 
 .path, .point {
   fill: none;
-  stroke-width: 5px;
-}
-
-.path.p, .point.p {
-  stroke: DarkSlateBlue;
-}
-
-.path.q, .point.q {
-  stroke: Green;
+  stroke-width: 3px;
 }
