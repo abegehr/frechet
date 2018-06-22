@@ -9,7 +9,8 @@ from frechet_alg.Geometry import Vector
 app = Flask(__name__)
 CORS(app)
 
-def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):  # converts array of vectors to x- & y-coordinate arrays
+# converts array of vectors to x- & y-coordinate arrays
+def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):
     x = []
     y = []
 
@@ -22,7 +23,8 @@ def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):  # converts array of
 
     return x, y
 
-def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:  # converts x- & y-coordinate arrays to arrays of vectors
+# converts x- & y-coordinate arrays to arrays of vectors
+def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:
     vectors = []
 
     for i in range(min(len(xs), len(ys))):
@@ -34,6 +36,10 @@ def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:  # converts x- & y-coor
             print("Error: either is not a valid float: x:" + str(x) + " y:" + str(y))
 
     return vectors
+
+def remove_consecutive_equals(vectors):
+    return [v for i, v in enumerate(vectors) if i == 0 or v != vectors[i-1]]
+
 
 @app.route("/test")
 def test():
@@ -49,6 +55,10 @@ def index():
     print("=path_q= ", path_q)
     vec_p = xy_to_vectors([p['x'] for p in path_p], [p['y'] for p in path_p])
     vec_q = xy_to_vectors([q['x'] for q in path_q], [q['y'] for q in path_q])
+
+    # dispose consequitive equal points
+    vec_p = remove_consecutive_equals(vec_p)
+    vec_q = remove_consecutive_equals(vec_q)
 
     # calculations
     cell_matrix = CellMatrix(vec_p, vec_q, traverse = 1)
