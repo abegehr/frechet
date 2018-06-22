@@ -1,1 +1,1 @@
-web: gunicorn frechet_server:app
+web: gunicorn frechet_backend:app
