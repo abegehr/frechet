@@ -1,1 +1,17 @@
+.plot {
+  border: 
+}
 
+.settings {
+  display: flex;
+  width: 100%;
+  background-color: rgb(101, 101, 101);
+  padding: 0.5em 0;
+}
+
+.setting {
+  flex-grow: 1;
+  font-size: 1em;
+  font-weight: normal;
+  color: white;
+}

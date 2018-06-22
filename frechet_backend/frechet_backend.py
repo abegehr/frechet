@@ -73,6 +73,7 @@ def index():
     traversals = []
     for traversal in sample['traversals']:
         epsilon = traversal['traversal-3d-l'][2]
+        epsilon_points = traversal['traversal-3d-l']
         xs = traversal['traversal-3d'][0]
         ys = traversal['traversal-3d'][1]
         zs = traversal['traversal-3d'][2]
@@ -82,7 +83,15 @@ def index():
             dy = ys[i] - ys[i-1]
             t = sqrt(dx**2 + dy**2)
             ts.append(ts[i-1] + t)
-        traversal_dict = {'x': xs, 'y': ys, 'z': zs, 't': ts, 'epsilon': epsilon, 'length': ts[-1]}
+        traversal_dict = {
+            'x': xs,
+            'y': ys,
+            'z': zs,
+            't': ts,
+            'epsilon': epsilon,
+            'length': ts[-1],
+            'epsilon_points': epsilon_points
+        }
         traversals.append(traversal_dict)
 
     # cell borders

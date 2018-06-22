@@ -89,6 +89,7 @@ class Results extends Component {
     // traversal
     const traversals_data = [];
     this.props.data.traversals.forEach((traversal, i) => {
+      // traversals
       traversals_data.push({
         x: traversal.x,
         y: traversal.y,
@@ -101,6 +102,23 @@ class Results extends Component {
         hoverinfo: 'name+text',
         name: "#"+i,
         text: traversal.z.map(z => {return "ε = "+round(z)})
+      });
+      // epsilon points
+      const epsilon_points = traversal.epsilon_points;
+      traversals_data.push({
+        x: epsilon_points[0],
+        y: epsilon_points[1],
+        mode: 'lines+markers',
+        marker: {
+          color: 'rgba(181, 0, 0, 1)',
+          size: 10,
+          line: {
+            color: 'rgb(232, 214, 90)',
+            width: 1
+          }
+        },
+        hoverinfo: 'text',
+        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2]
       });
     });
 
@@ -289,64 +307,55 @@ class Results extends Component {
     return (
       <div className="results">
         <div className="settings">
-          <label className="show_l_lines">
-            show l-lines
+          <label className="setting show_l_lines">
             <input
               name="show_l_lines"
               type="checkbox"
               checked={this.state.settings.show_l_lines}
-              onChange={this.toggleSetting} />
+              onChange={this.toggleSetting} /> show l-lines
           </label>
-          <br />
-          <label className="show_contours">
-            show contours
+          <label className="setting show_contours">
             <input
               name="show_contours"
               type="checkbox"
               checked={this.state.settings.show_contours}
-              onChange={this.toggleSetting} />
+              onChange={this.toggleSetting} /> show contours
           </label>
-          <br />
-          <label className="show_critical_events">
-            show critical events
+          <label className="setting show_critical_events">
             <input
               name="show_critical_events"
               type="checkbox"
               checked={this.state.settings.show_critical_events}
-              onChange={this.toggleSetting} />
+              onChange={this.toggleSetting} /> show critical events
           </label>
-          <br />
-          <label className="show_cell_borders">
-            show cell borders
+          <label className="setting show_cell_borders">
             <input
               name="show_cell_borders"
               type="checkbox"
               checked={this.state.settings.show_cell_borders}
-              onChange={this.toggleSetting} />
+              onChange={this.toggleSetting} /> show cell borders
           </label>
-          <br />
-          <label className="show_traversals">
-            show traversals
+          <label className="setting show_traversals">
             <input
               name="show_traversals"
               type="checkbox"
               checked={this.state.settings.show_traversals}
-              onChange={this.toggleSetting} />
+              onChange={this.toggleSetting} /> show traversals
           </label>
         </div>
         <Plot
-          className="main"
+          className="plot main"
           data={ [...main_data] }
           layout={ main_layout }
         />
         <br />
         <Plot
-          className="main3d"
+          className="plot main3d"
           data={ [...main3d_data] }
           layout={ main3d_layout }
         />
         <Plot
-          className="traversal-cs"
+          className="plot traversal-cs"
           data={ [...traversals_cs_data] }
           layout={ traversals_cs_layout }
         />

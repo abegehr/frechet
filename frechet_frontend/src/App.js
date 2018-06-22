@@ -156,7 +156,7 @@ class App extends Component {
   };
 
   go = () => {
-    console.log("Go! ", this.state.data);
+    console.log("Run with data:", this.state.data);
 
     fetch(frechet_server_url, {
       method: 'POST',
@@ -168,8 +168,15 @@ class App extends Component {
     }).then((response) => {
       return response.json();
     }).then((result) => {
-      console.log("result: ", result);
+      console.log("Results: ", result);
       this.setState({showResults: true, result: result});
+
+      // scroll to results
+      window.scrollTo({
+        top: 1000,
+        left: 0,
+        behavior: 'smooth'
+      });
     });
   };
 
