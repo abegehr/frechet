@@ -22,7 +22,7 @@ class Results extends Component {
     this.toggleSetting = this.toggleSetting.bind(this);
   }
 
-  toggleSetting(event) {
+  toggleSetting = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -39,25 +39,27 @@ class Results extends Component {
   }
 
   render() {
-    // settings
+    // constants and settings
     const max_p = this.props.data.lengths.p;
     const max_q = this.props.data.lengths.q;
-    const max_width = this.props.maxSize.width;
-    const max_height = this.props.maxSize.height;
-
     const bounds_l = this.props.data.bounds_l;
-    const contour_size = (bounds_l[1] - bounds_l[0])/10;
+    const delta_epsilon = bounds_l[1] - bounds_l[0];
+    const contour_lines = 10;
+    const contour_size = delta_epsilon/contour_lines;
 
-    const main_margin = {
-      l: 80,
-      r: 80,
-      t: 100,
-      b: 80
-    };
-    var main_width = main_margin.l + main_margin.r +
+    /*
+    // scale plot to fit data
+    const main_margin_ver = main_margin.b + main_margin.t;
+    const main_margin_hor = main_margin.l + main_margin.r;
+    const max_width = this.props.maxSize.width - main_margin_hor;
+    const max_height = this.props.maxSize.height - main_margin_ver;
+
+    let main_width = main_margin_ver +
         Math.min(max_width, max_width*(max_p/max_q));
-    var main_height = main_margin.t + main_margin.b +
+    let main_height = main_margin_hor +
         Math.min(max_height, max_height*(max_q/max_p));
+    */
+
 
     // main
     const main_data = [];
@@ -206,33 +208,82 @@ class Results extends Component {
     }
 
     // layouts
+    const width = this.props.width;
     const main_layout = {
-      title: 'Heatmap',
       shapes: main_shapes,
       autosize: true,
-      margin: main_margin,
+      margin: {
+        l: 40,
+        r: 0,
+        t: 20,
+        b: 40
+      },
       xaxis: {
         nticks: 10,
         domain: [0, max_p],
-        title: "path P"
+        title: "Path P"
       },
       yaxis: {
         scaleanchor: "x",
         domain: [0, max_q],
-        title: "path Q"
+        title: "Path Q"
       },
-      width: main_width,
-      height: main_height,
+      width: width,
+      height: (2/3)*width,
       hovermode: 'closest',
       showlegend: false
     };
-    const traversals_cs_layout = {
-      title: 'Traversal Cross Sections',
-      autosize: true
-    };
     const main3d_layout = {
-      title: '3D Heightmap',
-      autosize: true
+      autosize: true,
+      scene:{
+        aspectmode: "manual",
+        aspectratio: {
+          x: 1, y: max_q/max_p, z: delta_epsilon/max_p,
+        },
+        xaxis: {
+          nticks: 10,
+          range: [0, max_p],
+          title: "Path P"
+        },
+        yaxis: {
+          nticks: 10,
+          range: [0, max_q],
+          title: "Path Q"
+        },
+        zaxis: {
+          nticks: 10,
+          range: [bounds_l[0], bounds_l[1]],
+          title: "ε"
+        },
+        camera: {
+          center: {x: 0, y: 0, z: 0},
+          eye: {x: 0.1, y: 0.1, z: 1.5},
+          up: {x: 0, y: 1, z: 0}
+        }
+      },
+      width: width,
+      height: (2/3)*width
+    };
+    const traversals_cs_layout = {
+      title: 'Traversal Cross Section',
+      autosize: true,
+      margin: {
+        l: 40,
+        r: 0,
+        t: 40,
+        b: 40
+      },
+      xaxis: {
+        nticks: 10,
+        title: "time"
+      },
+      yaxis: {
+        domain: bounds_l,
+        title: "ε"
+      },
+      width: width,
+      height: (1/3)*width,
+      showlegend: true
     };
 
     return (
@@ -292,12 +343,12 @@ class Results extends Component {
         <Plot
           className="main3d"
           data={ [...main3d_data] }
-          layout={ {main3d_layout} }
+          layout={ main3d_layout }
         />
         <Plot
           className="traversal-cs"
           data={ [...traversals_cs_data] }
-          layout={ {traversals_cs_layout} }
+          layout={ traversals_cs_layout }
         />
       </div>
     );

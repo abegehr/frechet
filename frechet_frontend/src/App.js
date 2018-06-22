@@ -184,12 +184,16 @@ class App extends Component {
   };
 
   render() {
+    const width = this.props.width;
+    const inputRange = this.calculateInputRange();
+
     let results;
     if (this.state.showResults) {
       results = (
         <div className="results">
           <Results data={this.state.result}
-            maxSize={{width: 1400, height: 1000}} />
+            width={width} />
+          <br />
           <div className="button reset" onClick={this.resetResults}>
             Clear Results
           </div>
@@ -197,9 +201,6 @@ class App extends Component {
       );
     }
 
-    const inputRange = this.calculateInputRange();
-
-    const width = this.props.width;
 
     return (
       <div className="App"

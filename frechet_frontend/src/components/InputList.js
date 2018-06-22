@@ -8,7 +8,7 @@ import addIcon from '@fortawesome/fontawesome-free-solid/faPlusSquare'
 
 //NumericInput.style.wrap.minWidth = 6+"em";
 //NumericInput.style.wrap.maxWidth = 18+"em";
-NumericInput.style.input.width = 8+"em";
+NumericInput.style.input.width = 7+"em";
 
 class InputList extends Component {
 
