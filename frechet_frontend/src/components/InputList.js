@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './InputList.css';
 
-import ReactList from 'react-list';
 import NumericInput from 'react-numeric-input';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import removeIcon from '@fortawesome/fontawesome-free-solid/faMinusSquare'
@@ -13,7 +12,7 @@ NumericInput.style.input.width = 8+"em";
 
 class InputList extends Component {
 
-  randomPoint() {
+  randomPoint = () => {
     const [xRange, yRange] = this.props.inputRange;
 
     const x = xRange.min + Math.random()*(xRange.max - xRange.min);
@@ -22,33 +21,37 @@ class InputList extends Component {
     return {x: x, y: y};
   }
 
-  renderPoint(index, key) {
+  renderPoints = () => {
     const step = 0.5;
     const percision = 2;
-    const point = this.props.points[index];
 
-    return (
-      <div key={key}>
-        <div className="inputPoint">
-          <span style={{textTransform: "uppercase"}}>{this.props.id}</span>
-          <sub>{index}</sub>(
-          <NumericInput step={step} precision={percision} value={point.x} snap
-            onChange={this.onValueChange(index, "x")}/>
-          <NumericInput step={step} precision={percision} value={point.y} snap
-            onChange={this.onValueChange(index, "y")}/>
-          )
-          <i className="iconButton add" onClick={this.onRemoveClick(index)}>
-            <FontAwesomeIcon icon={removeIcon} />
-          </i>
-          <i className="iconButton remove" onClick={this.onAddClick(index)}>
-            <FontAwesomeIcon icon={addIcon} />
-          </i>
+    return this.props.points.map((point, index) => {
+      return (
+        <div key={index}>
+          <div className="inputPoint">
+            <span style={{textTransform: "uppercase"}}>
+              {this.props.id}<sub>{index}</sub> </span>
+            (
+            <NumericInput step={step} precision={percision} value={point.x} snap
+              onChange={this.onValueChange(index, "x")}/>
+            <NumericInput step={step} precision={percision} value={point.y} snap
+              onChange={this.onValueChange(index, "y")}/>
+            )
+            <span> </span>
+            <i className="iconButton add" onClick={this.onRemoveClick(index)}>
+              <FontAwesomeIcon icon={removeIcon} />
+            </i>
+            <span> </span>
+            <i className="iconButton remove" onClick={this.onAddClick(index)}>
+              <FontAwesomeIcon icon={addIcon} />
+            </i>
+          </div>
         </div>
-      </div>
-    );
+      );
+    });
   }
 
-  onValueChange(index, coord) {
+  onValueChange = (index, coord) => {
     return (valueAsNumber, valueAsString, input) => {
       var newPoints = this.props.points;
       newPoints[index][coord] = valueAsNumber;
@@ -56,7 +59,7 @@ class InputList extends Component {
     };
   }
 
-  onRemoveClick(index) {
+  onRemoveClick = (index) => {
     return () => {
       var newPoints = this.props.points;
       if (newPoints.length > 2) {
@@ -66,7 +69,7 @@ class InputList extends Component {
     };
   }
 
-  onAddClick(index) {
+  onAddClick = (index) => {
     return () => {
       const newPoint = this.randomPoint();
 
@@ -77,28 +80,25 @@ class InputList extends Component {
     };
   }
 
-  onSelect() {
+  onSelect = () => {
     this.props.select();
   }
 
   render() {
-    var classes = "inputlist";
+    let classes = "container";
     classes += " "+this.props.id;
     if (this.props.selected) {
       classes += " selected";
     }
 
     return (
-      <div className={classes} onClick={this.onSelect.bind(this)}
+      <div className={classes} onClick={this.onSelect}
         style={this.props.style}>
-        <p>{this.props.label}</p>
-        <div className="list" style={{overflow: 'auto'}}>
-          <ReactList
-            style={{'height': this.props.style.height}}
-            itemRenderer={this.renderPoint.bind(this)}
-            length={this.props.points.length}
-            type='uniform'
-            />
+        <div className="label">{this.props.label}</div>
+        <div className="scroll-hull">
+          <div className="scroll">
+            {this.renderPoints()}
+          </div>
         </div>
       </div>
     );

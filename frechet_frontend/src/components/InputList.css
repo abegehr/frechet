@@ -1,21 +1,38 @@
-.inputlist {
+.container {
+  display: table;
   box-sizing: border-box;
   border: 8px solid rgb(148, 148, 148);
   color: white;
 }
 
-.inputlist.selected {
-  border: 8px solid rgb(179, 61, 61);
+.container.selected {
+  border: 8px solid rgb(224, 49, 76);
+}
+
+.label {
+  display: table-cell;
+  vertical-align: middle;
+  height: 2.6em;
+}
+
+.scroll-hull {
+  display: table-row;
+  height: 100%;
+}
+
+.scroll {
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .inputPoint {
- margin: 0.2em;
+ margin-bottom: 0.4em;
 }
 
 .iconButton {
 }
 
 .iconButton:hover {
-  color: white;
+  color: rgb(224, 49, 76);
   fill: currentColor;
 }
