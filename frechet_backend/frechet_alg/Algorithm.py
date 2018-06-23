@@ -1118,8 +1118,12 @@ class CellMatrix:
 
     def traverse_recursive(self, a_cm: CM_Point, critical_events: CriticalEvents, b_cm: CM_Point) -> [Traversal]:
 
+        print("===========================================================")
+
         a = a_cm[0]
         b = b_cm[0]
+
+        print("===0===traverse_recursive=== a:", a, " b:", b)
 
         cc_a = a_cm[1]
         cc_b = b_cm[1]
@@ -1149,10 +1153,13 @@ class CellMatrix:
             return [self.traversal_from_points(points)]
 
         critical_event = critical_events.critical(self, a_cm, b_cm)
+        print("===1===critical_event=== ", critical_event)
         critical_epsilon = critical_event[0]
 
         # critical event is lower than or equal to max_ab_epsilon or is traversable without critical event
         if max_ab_epsilon >= critical_epsilon or (critical_epsilon > max_ab_epsilon and self.decide_traversal(a_cm, b_cm, max_ab_epsilon)):
+
+            print("=== lower-equal ===")
 
             a_cell = self.cells[cc_a[0]][cc_a[1]]
             b_cell = self.cells[cc_b[0]][cc_b[1]]
@@ -1254,6 +1261,7 @@ class CellMatrix:
             # old type
             bound_epsilon = Bounds1D(max(a2_epsilon, b2_epsilon), max(a_epsilon, b_epsilon))
             old_type_critical_events = critical_events.in_epsilon_bound(bound_epsilon)
+            print("===2===old_type_critical_events=== ", old_type_critical_events)
             # new type
             # on a_a2
             new_type_critical_events_a = CriticalEvents()
@@ -1388,6 +1396,7 @@ class CellMatrix:
 
             possible_critical_events = old_type_critical_events + new_type_critical_events_a +\
                                        new_type_critical_events_b
+            print("===3===possible_critical_events=== ", possible_critical_events)
             possible_critical_epsilons = possible_critical_events.epsilons()
             i_epsilon = 0
             traversals_and_slopes = []
@@ -1469,7 +1478,9 @@ class CellMatrix:
             return [tra[1] for tra in traversals_and_slopes]
 
         # critical event is higher than max_ab_epsilon
+        print("=== higher ===")
         critical_traversals = critical_event[1]
+        print("===4===critical_traversals=== ", critical_traversals)
 
         traversals_and_slopes = []
         for i in range(len(critical_traversals)):
