@@ -29,13 +29,13 @@ function getDataFromURLParams() {
 
   if (params.has("p")) {
     let p = parsePoints(params.get("p"));
-    if (p.length >= 2) {
+    if (p.length >= 1) {
       data.p = p;
     }
   }
   if (params.has("q")) {
     let q = parsePoints(params.get("q"));
-    if (q.length >= 2) {
+    if (q.length >= 1) {
       data.q = q;
     }
   }
@@ -78,6 +78,7 @@ function stringifyPoints(points) {
   string = string.slice(0, -1);
   return string;
 }
+
 
 class App extends Component {
   constructor(props) {
@@ -158,6 +159,11 @@ class App extends Component {
   go = () => {
     console.log("Run with data:", this.state.data);
 
+    if (this.state.data.p.length < 2 || this.state.data.p.length < 2) {
+      this.setState({showResults: false});
+      alert("Please input at least two points per path.");
+    }
+
     fetch(frechet_server_url, {
       method: 'POST',
       headers: {
@@ -166,10 +172,13 @@ class App extends Component {
       },
       body: JSON.stringify(this.state.data)
     }).then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
       return response.json();
     }).then((result) => {
       console.log("Results: ", result);
-      this.setState({showResults: true, result: result});
+      this.setState({error: "", showResults: true, result: result});
 
       // scroll to results
       window.scrollTo({
@@ -177,6 +186,12 @@ class App extends Component {
         left: 0,
         behavior: 'smooth'
       });
+    }).catch((error) => {
+      console.log("An error occured: "+error+"\nPlease send a quick email to a.begehr@fu-berlin.de");
+      const send_email = window.confirm("An error occured.\n"+error+"\nPlease send a quick email to a.begehr@fu-berlin.de");
+      if (send_email) {
+        window.location.href = "mailto:a.begehr@fu-berlin.de?subject=FréchetWebappError&body="+encodeURI(error);
+      }
     });
   };
 
@@ -207,7 +222,6 @@ class App extends Component {
         </div>
       );
     }
-
 
     return (
       <div className="App"

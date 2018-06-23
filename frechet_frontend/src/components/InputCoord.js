@@ -9,18 +9,22 @@ function precisionRound(number, precision) {
 }
 
 function rotate_point(points, d, i) {
-  var prev;
+  if (points.length <= 1) {
+    return "";
+  }
+
+  let prev;
   if (i > 0) {
     prev = points[i-1];
   } else {
     prev = d;
     d = points[1];
   }
-  var dx = d.x - prev.x;
-  var dy = d.y - prev.y;
+  const dx = d.x - prev.x;
+  const dy = d.y - prev.y;
 
-  var rad = Math.atan2(dy,dx);
-  var deg = -rad * 180 / Math.PI;
+  const rad = Math.atan2(dy,dx);
+  const deg = -rad * 180 / Math.PI;
   return "rotate(" + deg + ")";
 }
 

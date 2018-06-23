@@ -62,7 +62,7 @@ class InputList extends Component {
   onRemoveClick = (index) => {
     return () => {
       var newPoints = this.props.points;
-      if (newPoints.length > 2) {
+      if (newPoints.length > 1) { // keep at least one points
         newPoints.splice(index, 1);
         this.props.pointsChanged(newPoints);
       }
