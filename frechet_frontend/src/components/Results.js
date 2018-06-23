@@ -460,9 +460,10 @@ class Results extends Component {
               name="show_freespace"
               type="checkbox"
               checked={this.state.settings.show_freespace}
-              onChange={this.toggleSetting} /> show freespace:
+              onChange={this.toggleSetting} />
+            show freespace: {this.state.freespace_epsilon}
           </label>
-          <div className="slider" style={{flexGrow: 6}}>
+          <div className="slider" style={{flexGrow: 6, marginRight: 20}}>
             <Slider
               min={bounds_l[0]} max={bounds_l[1]}
               step={slider_step}
@@ -475,22 +476,23 @@ class Results extends Component {
           </div>
         </div>
 
-        <Plot
-          className="plot main"
-          data={ [...main_data] }
-          layout={ main_layout }
-        />
-        <br />
-        <Plot
-          className="plot main3d"
-          data={ [...main3d_data] }
-          layout={ main3d_layout }
-        />
-        <Plot
-          className="plot traversal-cs"
-          data={ [...traversals_cs_data] }
-          layout={ traversals_cs_layout }
-        />
+        <div className="plots">
+          <Plot
+            className="plot main"
+            data={ [...main_data] }
+            layout={ main_layout }
+          />
+          <Plot
+            className="plot main3d"
+            data={ [...main3d_data] }
+            layout={ main3d_layout }
+          />
+          <Plot
+            className="plot traversal-cs"
+            data={ [...traversals_cs_data] }
+            layout={ traversals_cs_layout }
+          />
+        </div>
       </div>
     );
   }

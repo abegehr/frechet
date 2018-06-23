@@ -11,14 +11,10 @@ const frechet_server_url = process.env.REACT_APP_FRECHET_SERVER_URL;
 
 const default_data = {
   p: [
-    {x: 2, y: 1},
-    {x: 2, y: 6},
-    {x: 8, y: 6}
+    {x: 3, y: 4}
   ],
   q: [
-    {x: 2.5, y: 1},
-    {x: 2.5, y: 9},
-    {x: 8, y: 9}
+    {x: 3, y: 6}
   ]
 };
 
@@ -233,14 +229,12 @@ class App extends Component {
 
         {/* Input */}
         <div className="input">
-          <div className="input_coord">
-            <InputCoord data={this.state.data}
-              pathsColor={{p: "DarkSlateBlue", q: "Green"}}
-              dataChanged={this.dataChanged}
-              size={{ width: (2/3)*width, height: (2/3)*width }}
-              selectedPath={this.state.selectedPath}
-              inputRange={inputRange} />
-          </div>
+          <InputCoord data={this.state.data}
+            pathsColor={{p: "DarkSlateBlue", q: "Green"}}
+            dataChanged={this.dataChanged}
+            size={{ width: (2/3)*width, height: (2/3)*width }}
+            selectedPath={this.state.selectedPath}
+            inputRange={inputRange} />
           <div className="input_lists"
             style={{width: (1/3)*width, height: (2/3)*width}}>
             <InputList id="p" label="Path P"

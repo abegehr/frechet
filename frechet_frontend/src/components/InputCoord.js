@@ -48,7 +48,7 @@ class InputCoord extends Component {
     // settings
     var outerWidth = this.props.size.width;
     var outerHeight = this.props.size.height;
-    const margin = { left: 5, top: 5, right: 5, bottom: 5 };
+    const margin = { left: 10, top: 10, right: 10, bottom: 10 };
     var innerWidth  = outerWidth  - margin.left - margin.right;
     var innerHeight = outerHeight - margin.top  - margin.bottom;
     this.setState({innerWidth: innerWidth, innerHeight: innerHeight});
@@ -222,7 +222,7 @@ class InputCoord extends Component {
 
   render() {
     return (
-      <svg ref={svg => this.svg = svg}
+      <svg className="svg" ref={svg => this.svg = svg}
         width={this.props.size.width} height={this.props.size.height}>
       </svg>
     );

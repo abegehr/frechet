@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Poiret+One');
 
+.svg {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
 .chart-line {
   fill: none;
   stroke: black;

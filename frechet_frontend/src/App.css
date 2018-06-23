@@ -1,6 +1,8 @@
 .App {
   text-align: center;
   margin: 0 auto;
+  padding: 0 1em;
+  background-color: rgb(222, 222, 222);
 }
 
 .result_log {
@@ -25,12 +27,6 @@
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
-}
-
-.input_coord {
-}
-
-.input_lists {
 }
 
 .buttons {
