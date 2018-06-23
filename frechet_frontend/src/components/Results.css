@@ -2,16 +2,33 @@
   border: 1px solid black;
 }
 
-.settings {
+.bar {
   display: flex;
   width: 100%;
-  background-color: rgb(101, 101, 101);
   padding: 0.5em 0;
 }
 
-.setting {
+.bar .item {
   flex-grow: 1;
   font-size: 1em;
   font-weight: normal;
+}
+
+.settings {
+  background-color: rgb(101, 101, 101);
+}
+
+.setting {
   color: white;
+}
+
+.freespace-setting {
+  border-top: 1px solid black;
+  padding-bottom: 1em;
+  background-color: rgb(101, 101, 101);
+  color: white;
+}
+
+.freespace-setting .slider {
+
 }

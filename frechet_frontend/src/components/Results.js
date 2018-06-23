@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import './Results.css';
 import Plot from 'react-plotly.js';
+import Slider from 'rc-slider';
+
+import './Results.css';
+import 'rc-slider/assets/index.css';
+
+function roundTo(num, size) {
+  return Math.round(num*size)/size;
+}
 
 function round(num) {
-  return Math.round(num*100)/100;
+  return roundTo(num, 100);
 }
 
 class Results extends Component {
@@ -15,8 +22,10 @@ class Results extends Component {
         show_contours: true,
         show_critical_events: true,
         show_cell_borders: true,
-        show_traversals: true
-      }
+        show_traversals: true,
+        show_freespace: false
+      },
+      freespace_epsilon: this.props.data.traversals[0].epsilon[0]
     };
 
     this.toggleSetting = this.toggleSetting.bind(this);
@@ -38,6 +47,11 @@ class Results extends Component {
     });
   }
 
+  showFreespace = (epsilon) => {
+    console.log("Show freespace for: ", epsilon);
+    this.setState({freespace_epsilon: epsilon});
+  }
+
   render() {
     // constants and settings
     const max_p = this.props.data.lengths.p;
@@ -46,6 +60,15 @@ class Results extends Component {
     const delta_epsilon = bounds_l[1] - bounds_l[0];
     const contour_lines = 10;
     const contour_size = delta_epsilon/contour_lines;
+    // slider
+    const frechet_epsilon = this.props.data.traversals[0].epsilon[0];
+    const slider_ticks = 1000;
+    const slider_step = delta_epsilon/slider_ticks;
+    const slider_marks = {};
+    slider_marks[frechet_epsilon] = {
+      label: "ε = "+frechet_epsilon,
+      style: {color: 'white'}
+    };
 
     /*
     // scale plot to fit data
@@ -72,18 +95,27 @@ class Results extends Component {
       z: this.props.data.heatmap[2],
       type: 'contour',
       autocontour: false,
-      contours: {
-        start: bounds_l[0],
-        end: bounds_l[1],
-        size: contour_size
-      },
       line: {
         smoothing: 0
       },
       hoverinfo: "x+y+z"
     };
-    if (!this.state.settings.show_contours) {
-      heatmap_data.type = 'heatmap';
+    if (this.state.settings.show_freespace) {
+      const epsilon = this.state.freespace_epsilon;
+      heatmap_data.contours = {
+        start: epsilon,
+        end: epsilon,
+        size: 0
+      };
+    } else {
+      if (!this.state.settings.show_contours) {
+        heatmap_data.type = 'heatmap';
+      }
+      heatmap_data.contours = {
+        start: bounds_l[0],
+        end: bounds_l[1],
+        size: contour_size
+      };
     }
 
     // traversal
@@ -384,36 +416,36 @@ class Results extends Component {
 
     return (
       <div className="results">
-        <div className="settings">
-          <label className="setting show_l_lines">
+        <div className="bar settings">
+          <label className="item setting show_l_lines">
             <input
               name="show_l_lines"
               type="checkbox"
               checked={this.state.settings.show_l_lines}
               onChange={this.toggleSetting} /> show l-lines
           </label>
-          <label className="setting show_contours">
+          <label className="item setting show_contours">
             <input
               name="show_contours"
               type="checkbox"
               checked={this.state.settings.show_contours}
               onChange={this.toggleSetting} /> show contours
           </label>
-          <label className="setting show_critical_events">
+          <label className="item setting show_critical_events">
             <input
               name="show_critical_events"
               type="checkbox"
               checked={this.state.settings.show_critical_events}
               onChange={this.toggleSetting} /> show critical events
           </label>
-          <label className="setting show_cell_borders">
+          <label className="item setting show_cell_borders">
             <input
               name="show_cell_borders"
               type="checkbox"
               checked={this.state.settings.show_cell_borders}
               onChange={this.toggleSetting} /> show cell borders
           </label>
-          <label className="setting show_traversals">
+          <label className="item setting show_traversals">
             <input
               name="show_traversals"
               type="checkbox"
@@ -421,6 +453,28 @@ class Results extends Component {
               onChange={this.toggleSetting} /> show traversals
           </label>
         </div>
+
+        <div className="bar freespace-setting">
+          <label className="show_freespace" style={{flexGrow: 1}}>
+            <input
+              name="show_freespace"
+              type="checkbox"
+              checked={this.state.settings.show_freespace}
+              onChange={this.toggleSetting} /> show freespace:
+          </label>
+          <div className="slider" style={{flexGrow: 6}}>
+            <Slider
+              min={bounds_l[0]} max={bounds_l[1]}
+              step={slider_step}
+              marks={slider_marks}
+              defaultValue={frechet_epsilon}
+              included={true}
+              disabled={!this.state.settings.show_freespace}
+              onAfterChange={this.showFreespace}
+              />
+          </div>
+        </div>
+
         <Plot
           className="plot main"
           data={ [...main_data] }
