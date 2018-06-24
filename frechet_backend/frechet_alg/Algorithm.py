@@ -1107,7 +1107,7 @@ class CellMatrix:
         # init graph nodes
         graph = {}
         for i in range(len(traversals)):
-            graph[i] = []
+            graph[i] = set([])
 
         # generate reachable border freespace for given epsilon
         (reachable_hor, reachable_ver) = self.generate_reachable_freespace(a_cm, b_cm, epsilon)
@@ -1144,7 +1144,7 @@ class CellMatrix:
                             # if out_traversal is reachable from in_traversal,
                             if (in_traversal.b < out_traversal.a):
                                 # connect graph
-                                graph[ce_reach].append(trav_i) # TODO: include slopes
+                                graph[ce_reach].add(trav_i) # TODO: include slopes
 
                 # update cell_ces_reach for neighbors
                 if (not reachable_top.is_nan() and not reachable_top.is_point()):

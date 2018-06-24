@@ -563,6 +563,14 @@ class Hyperbola:
             return 0
         return (self.a * (x - self.s.x)) / self.fx(x)
 
+    def f2ax(self, x: float) -> float: # first derivative of f squared: (f^2)'
+        return 2*self.a * (x-self.s.x)**2
+
+    def f2aax(self, x: float) -> float: # second derivative of f squared: (f^2)''
+        return 2*self.a
+
+    # third derivative of f squared: (f^2)''' = 0
+
     def orientation(self, x: float) -> float:
         # for set x: returns negative if falling, 0 if constant, positive if rising
         if about_equal(x, self.s.x):
