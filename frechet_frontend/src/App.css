@@ -21,6 +21,11 @@
   vertical-align: middle;
   font-size: 2.4em;
   font-weight: bold;
+  color: black;
+}
+
+.header .heading:hover {
+  color: rgb(79, 79, 79);
 }
 
 .input {

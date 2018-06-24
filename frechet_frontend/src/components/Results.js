@@ -69,6 +69,7 @@ class Results extends Component {
       label: "ε = "+frechet_epsilon,
       style: {color: 'white'}
     };
+    const frechet_round = (eps) => {return roundTo(eps, 1e6)};
 
     /*
     // scale plot to fit data
@@ -133,7 +134,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text',
         name: "#"+i,
-        text: traversal.z.map(z => {return "ε = "+round(z)})
+        text: traversal.z.map(z => {return "ε ≈ "+round(z)})
       });
       // epsilon points
       const epsilon_points = traversal.epsilon_points;
@@ -151,7 +152,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text',
         name: "#"+i,
-        text: 'Fréchet Distance: ' + epsilon_points[2][0]
+        text: 'Fréchet Distance: ' + frechet_round(epsilon_points[2][0])
       });
     });
 
@@ -219,7 +220,7 @@ class Results extends Component {
           dash: 'dash'
         },
         hoverinfo: 'text',
-        text: 'ε = ' + round(c[2])
+        text: 'ε ≈ ' + round(c[2])
       });
     });
 
@@ -250,7 +251,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text',
         name: "#"+i,
-        text: traversal.z.map(z => {return "ε = "+round(z)})
+        text: traversal.z.map(z => {return "ε ≈ "+round(z)})
       });
       // epsilon points
       const epsilon_points = traversal.epsilon_points;
@@ -271,7 +272,7 @@ class Results extends Component {
         hoverinfo: 'name+text',
         name: "#"+i,
         text: epsilon_points[2].map((eps) => {
-          return 'Fréchet Distance: ' + eps;
+          return 'Fréchet Distance: ' + frechet_round(eps);
         })
       });
     });
@@ -295,7 +296,7 @@ class Results extends Component {
           dash: 'dash'
         },
         hoverinfo: 'text',
-        text: 'ε = ' + c[2]
+        text: ['ε ≈ ' + round(c[2]), 'ε ≈ ' + round(c[2])]
       });
     });
 
