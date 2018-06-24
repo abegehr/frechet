@@ -934,17 +934,20 @@ class CellMatrix:
         decision2 = self.decide_traversal(a2_cm, b2_cm, epsilon)
         return decision1 and decision2
 
-    def decide_traversal(self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> bool:
+    def generate_reachable_freespace(self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> ([[Bounds1D]], [[Bounds1D]]):
+        """
+            Returns two matrices: reachable_hor and reachable_ver
+            For all cells (i_p|i_q), the matrices describe the reachable space
+            (given epsilon) for the bottom and left border.
+        """
+
         a = a_cm[0]
         cell_a = a_cm[1]
         b = b_cm[0]
         cell_b = b_cm[1]
 
-        if a == b:
-            return True
-
-        if not a < b:
-            return False
+        if (a == b or not a < b):
+            return ([], [])
 
         cells = self.cells.copy()
         cells.append(cells[-1])
@@ -986,6 +989,8 @@ class CellMatrix:
 
         start_cell = cells[start_i_p][start_i_q]
 
+        # build up reachable freespace on borders for given epsilon
+        # bottom row
         if d_p > 0:
             reachable_bottom = bounds_hor[0].cut(start_cell.free_bounds_horizontal(offsets_ver[0], epsilon))
             if offsets_hor[0] in reachable_bottom:
@@ -995,9 +1000,9 @@ class CellMatrix:
                 reachable_bottom = bounds_hor[i_p].cut(cell.free_bounds_horizontal(offsets_ver[0], epsilon))
                 if reachable_bottom.start in reachable_hor[i_p - 1][0]:
                     reachable_hor[i_p][0] = reachable_bottom
-            if d_q == 0:
-                return b.x in reachable_hor[d_p - 1][0]
-
+            #if d_q == 0:
+            #    return b.x in reachable_hor[d_p - 1][0]
+        # left row
         if d_q > 0:
             reachable_left = bounds_ver[0].cut(start_cell.free_bounds_vertical(offsets_hor[0], epsilon))
             if offsets_ver[0] in reachable_left:
@@ -1007,9 +1012,9 @@ class CellMatrix:
                 reachable_left = bounds_ver[i_q].cut(cell.free_bounds_vertical(offsets_hor[0], epsilon))
                 if reachable_left.start in reachable_ver[0][i_q - 1]:
                     reachable_ver[0][i_q] = reachable_left
-            if d_p == 0:
-                return b.y in reachable_ver[0][d_q - 1]
-
+            #if d_p == 0:
+            #    return b.y in reachable_ver[0][d_q - 1]
+        # all other rows
         for i_p in range(d_p):
             for i_q in range(d_q):
                 cell = cells[start_i_p + i_p][start_i_q + i_q]
@@ -1050,7 +1055,112 @@ class CellMatrix:
             print("bounds_ver: " + str([str(bound) for bound in bounds_ver]))
             print("==============")'''
 
-        return (b.x in reachable_hor[d_p - 1][d_q]) or (b.y in reachable_ver[d_p][d_q - 1])
+        return (reachable_hor, reachable_ver)
+
+    def decide_traversal(self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> bool:
+        a = a_cm[0]
+        cell_a = a_cm[1]
+        b = b_cm[0]
+        cell_b = b_cm[1]
+
+        if a == b:
+            return True
+        if not a < b:
+            return False
+
+        (reachable_hor, reachable_ver) = self.generate_reachable_freespace(a_cm, b_cm, epsilon)
+
+        if len(reachable_hor) == 0:
+            return (b.y in reachable_ver[-1][-1])
+        if len(reachable_ver[0]) == 0:
+            return (b.x in reachable_hor[-1][-1])
+
+        return (b.x in reachable_hor[-1][-1]) or (b.y in reachable_ver[-1][-1])
+
+    def generate_traversal_graph(self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal], epsilon: float) -> []:
+        """
+            Generates a graph that represents paths through critical events at height epsilon.
+            Every node is eighter start- (a) or endpoint (b) or a critical event.
+            Every edge has a outgoing and incoming slope.
+
+            graph = {
+                'a': [(traversal_i, hyperbola, stelle)],
+                traversal_i: [(traversal_i, hyperbola, stelle)],
+                ...
+                traversal_i: [('b', hyperbola, stelle)]
+            }
+        """
+        # points
+        a = a_cm[0]
+        cell_a = a_cm[1]
+        b = b_cm[0]
+        cell_b = b_cm[1]
+
+        # add start and end to traversals
+        a_cm_pre = (a, (cell_a[0]-1, cell_a[1]-1))
+        start_traversal = Traversal(self, a_cm_pre, a_cm, [a_cm[0]], epsilon, [epsilon])
+        b_cm_post = (b, (cell_b[0]+1, cell_b[1]+1))
+        end_traversal = Traversal(self, b_cm, b_cm_post, [b_cm[0]], epsilon, [epsilon])
+        traversals.insert(0, start_traversal)
+        traversals.append(end_traversal)
+
+        # init graph nodes
+        graph = {}
+        for i in range(len(traversals)):
+            graph[i] = []
+
+        # generate reachable border freespace for given epsilon
+        (reachable_hor, reachable_ver) = self.generate_reachable_freespace(a_cm, b_cm, epsilon)
+
+        # cells vertical and horizontal between start and end
+        d_p = len(reachable_hor)
+        d_q = len(reachable_ver[0])
+
+        # which critical events can directly (w/o other ce) reach cell
+        cell_ces_reach = [[[] for i_p in range(d_p+1)] for i_q in range(d_q+1)]
+        #cell_ces_reach[0][0].append('start') # doing over traversals
+        for i, traversal in enumerate(traversals):
+            (i_p, i_q) = traversal.cell_b
+            cell_ces_reach[i_p][i_q].append(i)
+        print("cell_ces_reach (pre): ", cell_ces_reach) #debug
+
+        for i_p in range(d_p):
+            for i_q in range(d_q):
+
+                # border reachability
+                reachable_top = reachable_hor[i_p][i_q+1]
+                reachable_right = reachable_ver[i_p+1][i_q]
+
+                # critical events that directly reach this cell
+                ces_reach = cell_ces_reach[i_p][i_q]
+
+                # find traversals on top and left border
+                for trav_i, out_traversal in enumerate(traversals):
+                    trav_cell_a = out_traversal.cell_a
+                    if (i_p == trav_cell_a[0] and i_q == trav_cell_a[1]):
+                        # traversal is on top/left border
+                        for ce_reach in ces_reach:
+                            in_traversal = traversals[ce_reach]
+                            # if out_traversal is reachable from in_traversal,
+                            if (in_traversal.b < out_traversal.a):
+                                # connect graph
+                                graph[ce_reach].append(trav_i) # TODO: include slopes
+
+                # update cell_ces_reach for neighbors
+                if (not reachable_top.is_nan() and not reachable_top.is_point()):
+                    cell_ces_reach[i_p][i_q+1].extend(ces_reach)
+                if (not reachable_right.is_nan() and not reachable_right.is_point()):
+                    cell_ces_reach[i_p+1][i_q].extend(ces_reach)
+
+
+        # DEBUG
+        print("===generate_traversal_graph===")
+        print("traversals: ", [str(traversal.a)+'->'+str(traversal.b) for traversal in traversals])
+        print("cell_ces_reach: ", cell_ces_reach)
+        print("graph: ", graph)
+        print("==============")
+
+        return graph
 
     def cm_point_a(self, a: Vector) -> CM_Point:
         cell_a = (self.p.i_rl_path(a.x), self.q.i_rl_path(a.y))
@@ -1157,7 +1267,7 @@ class CellMatrix:
         critical_epsilon = critical_event[0]
 
         # critical event is lower than or equal to max_ab_epsilon or is traversable without critical event
-        if max_ab_epsilon >= critical_epsilon or (critical_epsilon > max_ab_epsilon and self.decide_traversal(a_cm, b_cm, max_ab_epsilon)):
+        if max_ab_epsilon >= critical_epsilon or self.decide_traversal(a_cm, b_cm, max_ab_epsilon):
 
             print("=== lower-equal ===")
 
@@ -1481,6 +1591,14 @@ class CellMatrix:
         print("=== higher ===")
         critical_traversals = critical_event[1]
         print("===4===critical_traversals=== ", critical_traversals)
+
+
+
+        # using graph
+        graph = self.generate_traversal_graph(a_cm, b_cm, critical_traversals.copy(), critical_epsilon)
+        print("graph: ", graph)
+
+
 
         traversals_and_slopes = []
         for i in range(len(critical_traversals)):

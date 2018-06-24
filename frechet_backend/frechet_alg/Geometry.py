@@ -79,6 +79,9 @@ class Bounds1D:
             return float('nan')
         return 0.5 * (self.start + self.end)
 
+    def is_point(self):
+        return about_equal(self.start, self.end)
+
 
 class Vector:
     def __init__(self, x: float, y: float):
