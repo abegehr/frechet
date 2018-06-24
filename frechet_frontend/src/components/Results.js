@@ -241,11 +241,11 @@ class Results extends Component {
         type: 'scatter3d',
         x: traversal.x,
         y: traversal.y,
-        z: traversal.z,
+        z: traversal.z.map((z, i) => {return z+delta_epsilon/100}),
         mode: 'lines',
         line: {
           color: 'rgba(255, 0, 0, 1)',
-          width: 5,
+          width: 8,
           dash: 'line'
         },
         hoverinfo: 'name+text',
