@@ -151,7 +151,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text',
         name: "#"+i,
-        text: 'Lexicographic Fréchet Distance: ' + epsilon_points[2][0]
+        text: 'Fréchet Distance: ' + epsilon_points[2][0]
       });
     });
 
@@ -271,7 +271,7 @@ class Results extends Component {
         hoverinfo: 'name+text',
         name: "#"+i,
         text: epsilon_points[2].map((eps) => {
-          return 'Lexicographic Fréchet Distance: ' + eps;
+          return 'Fréchet Distance: ' + eps;
         })
       });
     });
