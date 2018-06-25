@@ -15,7 +15,7 @@
 from .Geometry import Bounds1D, Vector, LineSegment, Ellipse, EllipseInfinite,\
                       Hyperbola, Path, about_equal, tol
 import math
-import np
+import numpy as np
 
 
 CellCoord = (int, int)
@@ -207,7 +207,7 @@ class Cell:
             hyperbola_ver = hyperbola.scaled(d_y / a_a2.l)\
                                      .move_x(min(a.y, a2.y))
 
-        return a2, a2_epsilon, hyperbola, (hyperbola_hor, hyperbola_ver)
+        return a2, a2_epsilon, hyperbola, hyperbola_hor, hyperbola_ver
 
     def hyperbola_horizontal(self, y: float) -> Hyperbola:
         """
