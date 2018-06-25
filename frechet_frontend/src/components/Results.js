@@ -307,7 +307,7 @@ class Results extends Component {
         x: traversal.t,
         y: traversal.z,
         mode: 'lines',
-        hoverinfo: 'name+y',
+        hoverinfo: 'name+x+y',
         name: "#"+i
       });
     });
