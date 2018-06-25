@@ -563,10 +563,10 @@ class Hyperbola:
             return 0
         return (self.a * (x - self.s.x)) / self.fx(x)
 
-    def f2ax(self, x: float) -> float: # first derivative of f squared: (f^2)'
-        return 2*self.a * (x-self.s.x)**2
+    def f2ax(self, x: float) -> float:  # first derivative of f squared: (f^2)'
+        return 2*self.a * (x-self.s.x)
 
-    def f2aax(self, x: float) -> float: # second derivative of f squared: (f^2)''
+    def f2aax(self) -> float:  # second derivative of f squared: (f^2)''
         return 2*self.a
 
     # third derivative of f squared: (f^2)''' = 0
@@ -586,7 +586,7 @@ class Hyperbola:
     def move_y(self, d_y: float) -> "Hyperbola":  # moves hyperbola on y-axis
         return self.move_p(Vector(0, d_y))
 
-    def move_p(self, d_p: Vector) -> "Hyperbola":  # moves hyperbola on y-axis
+    def move_p(self, d_p: Vector) -> "Hyperbola":  # moves hyperbola on both axes
         return Hyperbola(self.s + d_p, self.a)
 
     def scaled(self, f: float) -> "Hyperbola":  # scale hyperbola by factor f
