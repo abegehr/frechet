@@ -9,8 +9,9 @@ from frechet_alg.Geometry import Vector
 app = Flask(__name__)
 CORS(app)
 
-# converts array of vectors to x- & y-coordinate arrays
+
 def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):
+    """ converts array of vectors to x- & y-coordinate arrays """
     x = []
     y = []
 
@@ -23,8 +24,9 @@ def vectors_to_xy(vectors: [Vector]) -> ([float], [float]):
 
     return x, y
 
-# converts x- & y-coordinate arrays to arrays of vectors
+
 def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:
+    """ converts x- & y-coordinate arrays to arrays of vectors """
     vectors = []
 
     for i in range(min(len(xs), len(ys))):
@@ -33,9 +35,11 @@ def xy_to_vectors(xs: [float], ys: [float]) -> [Vector]:
         if isinstance(x, Number) and isinstance(y, Number):
             vectors.append(Vector(x, y))
         else:
-            print("Error: either is not a valid float: x:" + str(x) + " y:" + str(y))
+            print("Error: either is not a valid float: x:" + str(x) +
+                  " y:" + str(y))
 
     return vectors
+
 
 def remove_consecutive_equals(vectors):
     return [v for i, v in enumerate(vectors) if i == 0 or v != vectors[i-1]]
@@ -45,9 +49,10 @@ def remove_consecutive_equals(vectors):
 def test():
     return "test: success!"
 
+
 @app.route("/", methods=['POST'])
 def index():
-    req = request.get_json(force= True)
+    req = request.get_json(force=True)
     print("=req= ", req)
     path_p = req['p']
     path_q = req['q']
@@ -61,7 +66,7 @@ def index():
     vec_q = remove_consecutive_equals(vec_q)
 
     # calculations
-    cell_matrix = CellMatrix(vec_p, vec_q, traverse = 1)
+    cell_matrix = CellMatrix(vec_p, vec_q, traverse=1)
 
     # sampling
     sample = cell_matrix.sample_l(10, 100, heatmap_n=100)
@@ -97,7 +102,7 @@ def index():
     # cell borders
     borders_v = sample["borders-v"]
     borders_h = sample["borders-h"]
-    borders = [[b[1][0].x for b in borders_v],[b[1][0].y for b in borders_h]]
+    borders = [[b[1][0].x for b in borders_v], [b[1][0].y for b in borders_h]]
 
     # l-lines
     l_lines = []
@@ -114,7 +119,6 @@ def index():
         e = critical_event.epsilon
         critical_events.append([[xs[0], xs[-1]], [ys[0], ys[-1]], e])
 
-
     return jsonify({
         "lengths": lengths, "heatmap": sample["heatmap"],
         "bounds_l": sample["bounds-l"], "traversals": traversals,
@@ -123,6 +127,7 @@ def index():
     #    "cross-section-p": sample["cross-section-p"],
     #    "cross-section-q": sample["cross-section-p"]
     #    });#, 'log': str(cell_matrix)})
+
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True)

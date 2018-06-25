@@ -1,18 +1,21 @@
-########################################################################################################################
-#                                                                                                                      #
-#                                    Software Projekt: Frechet Distanz                                                 #
-#                                    Teilgebiet: Ellipsen-Alg. einer Zelle                                             #
-#                                    Erstellt: WS 16/17 FU Berlin                                                      #
-#                                                                                                                      #
-#                                    Team: Josephine Mertens, Jana Kirschner,                                          #
-#                                    Alexander Korzech, Fabian Kovacs, Alexander                                       #
-#                                    Timme, Kilian Kraatz & Anton Begehr                                               #
-#                                                                                                                      #
-########################################################################################################################
+###############################################################################
+#                                                                             #
+#                 Software Projekt: Frechet Distanz                           #
+#                 Teilgebiet: Ellipsen-Alg. einer Zelle                       #
+#                 Erstellt: WS 16/17 FU Berlin                                #
+#                                                                             #
+#                 Team: Josephine Mertens, Jana Kirschner,                    #
+#                 Alexander Korzech, Fabian Kovacs, Alexander                 #
+#                 Timme, Kilian Kraatz & Anton Begehr                         #
+#                                                                             #
+###############################################################################
 
 # -*- coding: utf-8 -*-
 
-from .Geometry import *
+from .Geometry import Bounds1D, Vector, LineSegment, Ellipse, EllipseInfinite,\
+                      Hyperbola, Path, about_equal, tol
+import math
+import np
 
 
 CellCoord = (int, int)
@@ -20,17 +23,21 @@ CM_Point = (Vector, CellCoord)
 
 
 class Cell:
-    def __init__(self, parallel: bool, p: LineSegment, q: LineSegment, norm_ellipsis: Ellipse,
-                 bounds_xy: Bounds1D, bounds_l: (float, float), offset: Vector = Vector(0, 0)):
+    def __init__(self, parallel: bool, p: LineSegment, q: LineSegment,
+                 norm_ellipsis: Ellipse, bounds_xy: Bounds1D,
+                 bounds_l: (float, float), offset: Vector = Vector(0, 0)):
         self.parallel = parallel
         # line segments
         self.p = p
         self.q = q
 
         self.norm_ellipsis = norm_ellipsis  # normed ellipsis (l=1)
-        self.bounds_hor = Bounds1D(offset.x, offset.x + bounds_xy[0])  # global bounds horizontal
-        self.bounds_ver = Bounds1D(offset.y, offset.y + bounds_xy[1])  # global bounds vertical
-        self.bounds_xy = (self.bounds_hor, self.bounds_ver)  # global cell bounds
+        # global bounds horizontal
+        self.bounds_hor = Bounds1D(offset.x, offset.x + bounds_xy[0])
+        # global bounds vertical
+        self.bounds_ver = Bounds1D(offset.y, offset.y + bounds_xy[1])
+        # global cell bounds
+        self.bounds_xy = (self.bounds_hor, self.bounds_ver)
         self.bounds_l = bounds_l  # l length bounds
         self.offset = offset  # offset in cell-matrix
 
@@ -63,17 +70,24 @@ class Cell:
                "      l: " + str(self.l_ver) + '\n' + \
                "      l': " + str(self.l_hor) + '\n' + \
                "    Bounds l: " + str(self.bounds_l) + '\n' + \
-               "    Bounds XY: " + str([str(bound) for bound in self.bounds_xy]) + '\n'
+               "    Bounds XY: " + \
+               str([str(bound) for bound in self.bounds_xy]) + '\n'
 
     def lp(self, p: Vector) -> float:  # epsilon for given point
         return self.p.frl(p.x).d(self.q.frl(p.y))
 
-    def steepest_decent(self, a: Vector, direction: int) -> (Vector, float, Hyperbola, (Hyperbola, Hyperbola)):
-        # calculates data needed for steepest decent to the top-right or bottom-left
-        assert a.x in self.bounds_hor and a.y in self.bounds_ver, "Error: Cannot do Steepest Decent.\n" +\
-                                                                  "A:" + str(a) + " not in Cell:\n" + str(self)
-        assert direction == 1 or direction == -1, "Error: Cannot do Steepest Decent.\n" +\
-                                                  "Invalid direction (" + str(direction) + ") given."
+    def steepest_decent(self, a: Vector, direction: int) -> \
+            (Vector, float, Hyperbola, Hyperbola, Hyperbola):
+        """
+            Calculates data needed for steepest decent to the top-right or
+            bottom-left.
+        """
+        assert a.x in self.bounds_hor and a.y in self.bounds_ver, \
+            "Error: Cannot do Steepest Decent.\n" + \
+            "A:" + str(a) + " not in Cell:\n" + str(self)
+        assert direction == 1 or direction == -1, \
+            "Error: Cannot do Steepest Decent.\n" + \
+            "Invalid direction (" + str(direction) + ") given."
 
         # define default return values
         a_epsilon = self.lp(a - self.offset)
@@ -102,8 +116,9 @@ class Cell:
 
         # determine direction of traversal
         if not self.parallel and self.norm_ellipsis.m == a:
-            print("Error: Cannot do Steepest Decent. Lowest Point reached.\nA:" + str(a) + " Cell:\n" + str(self))
-            return a, a_epsilon, Hyperbola.nan(), (hyperbola_hor, hyperbola_ver)
+            print("Error: Cannot do Steepest Decent. Lowest Point reached.\n" +
+                  "A:" + str(a) + " Cell:\n" + str(self))
+            return a, a_epsilon, Hyperbola.nan(), hyperbola_hor, hyperbola_ver
         elif on_lv:
             if self.acute:
                 r = lv.d.norm_dir() * direction
@@ -116,11 +131,13 @@ class Cell:
                 r = Vector(0, direction)
         elif case_hor:
             assert lh_left, "Error: Cannot do Steepest Decent.\n" +\
-                            "A:" + str(a) + " above l & right of l'. Cell:\n" + str(self)
+                            "A:" + str(a) + " above l & right of l'." +\
+                            "Cell:\n" + str(self)
             r = Vector(direction, 0)
         elif case_ver:
             assert lv_below, "Error: Cannot do Steepest Decent.\n" +\
-                             "A:" + str(a) + " above l & right of l'. Cell:\n" + str(self)
+                             "A:" + str(a) + " above l & right of l'." +\
+                             "Cell:\n" + str(self)
             r = Vector(0, direction)
         elif case_eq:
             r = Vector(math.sqrt(0.5), math.sqrt(0.5)) * direction
@@ -139,7 +156,8 @@ class Cell:
             if lh_rl < 0 or about_equal(lh_rl, 0):
                 lh_rl = math.inf
             cut_l_rl = np.nanmin([lv_rl, lh_rl])
-        elif not self.parallel and (direction == 1 and a < self.norm_ellipsis.m) or\
+        elif not self.parallel and \
+                (direction == 1 and a < self.norm_ellipsis.m) or \
                 (direction == -1 and a > self.norm_ellipsis.m):
             cut_l_rl = a.d(self.norm_ellipsis.m)
         else:
@@ -159,7 +177,7 @@ class Cell:
 
         if a == a2:
             print("Error: Steepest decent not possible.")
-            return a, a_epsilon, Hyperbola.nan(), (hyperbola_hor, hyperbola_ver)
+            return a, a_epsilon, Hyperbola.nan(), hyperbola_hor, hyperbola_ver
 
         a2_epsilon = self.lp(a2 - self.offset)
         a2_epsilon = self.bounds_l.to_bounds(a2_epsilon)
@@ -175,15 +193,26 @@ class Cell:
             hyperbola_hor = self.hyperbola_horizontal(a2.y)
             hyperbola = hyperbola_hor
         else:
-            p_cut = LineSegment(self.p.frl(min(a.x, a2.x) - self.offset.x), self.p.frl(max(a.x, a2.x) - self.offset.x))
-            q_cut = LineSegment(self.q.frl(min(a.y, a2.y) - self.offset.y), self.q.frl(max(a.y, a2.y) - self.offset.y))
+            p_cut = LineSegment(
+                self.p.frl(min(a.x, a2.x) - self.offset.x),
+                self.p.frl(max(a.x, a2.x) - self.offset.x)
+            )
+            q_cut = LineSegment(
+                self.q.frl(min(a.y, a2.y) - self.offset.y),
+                self.q.frl(max(a.y, a2.y) - self.offset.y)
+            )
             hyperbola = p_cut.hyperbola_with_line(q_cut)
-            hyperbola_hor = hyperbola.scaled(d_x / a_a2.l).move_x(min(a.x, a2.x))
-            hyperbola_ver = hyperbola.scaled(d_y / a_a2.l).move_x(min(a.y, a2.y))
+            hyperbola_hor = hyperbola.scaled(d_x / a_a2.l)\
+                                     .move_x(min(a.x, a2.x))
+            hyperbola_ver = hyperbola.scaled(d_y / a_a2.l)\
+                                     .move_x(min(a.y, a2.y))
 
         return a2, a2_epsilon, hyperbola, (hyperbola_hor, hyperbola_ver)
 
-    def hyperbola_horizontal(self, y: float) -> Hyperbola:  # hyperbola for set height y
+    def hyperbola_horizontal(self, y: float) -> Hyperbola:
+        """
+        hyperbola for set height y
+        """
         bounds = self.bounds_ver
         if y not in bounds:
             return Hyperbola.nan()
@@ -192,9 +221,13 @@ class Cell:
         elif about_equal(y, bounds[1]):
             return self.hyperbola_top
         else:
-            return self.p.hyperbola_with_point(self.q.frl(y - self.offset.y)).move_x(self.offset.x)
+            return self.p.hyperbola_with_point(self.q.frl(y - self.offset.y))\
+                         .move_x(self.offset.x)
 
-    def hyperbola_vertical(self, x: float) -> Hyperbola:  # hyperbola for set spot x
+    def hyperbola_vertical(self, x: float) -> Hyperbola:
+        """
+        hyperbola for set spot x
+        """
         bounds = self.bounds_hor
         if x not in bounds:
             return Hyperbola.nan()
@@ -203,9 +236,13 @@ class Cell:
         elif about_equal(x, bounds[1]):
             return self.hyperbola_right
         else:
-            return self.q.hyperbola_with_point(self.p.frl(x - self.offset.x)).move_x(self.offset.y)
+            return self.q.hyperbola_with_point(self.p.frl(x - self.offset.x))\
+                         .move_x(self.offset.y)
 
-    def free_bounds_horizontal(self, y: float, epsilon: float) -> Bounds1D:  # free interval for epsilon on height y
+    def free_bounds_horizontal(self, y: float, epsilon: float) -> Bounds1D:
+        """
+        free interval for epsilon on height y
+        """
         ret_bounds = Bounds1D.nan()
         hyperbola = self.hyperbola_horizontal(y)
         if not hyperbola.is_nan():
@@ -216,7 +253,10 @@ class Cell:
                 ret_bounds = Bounds1D(min(ys), max(ys))
         return self.bounds_hor.cut(ret_bounds)
 
-    def free_bounds_vertical(self, x: float, epsilon: float) -> Bounds1D:  # free interval for epsilon on spot x
+    def free_bounds_vertical(self, x: float, epsilon: float) -> Bounds1D:
+        """
+        free interval for epsilon on spot x
+        """
         ret_bounds = Bounds1D.nan()
         hyperbola = self.hyperbola_vertical(x)
         if not hyperbola.is_nan():
@@ -228,35 +268,44 @@ class Cell:
         return self.bounds_ver.cut(ret_bounds)
 
     def sample_l(self, n_l: int, n_p: int) -> {}:
-        # sample cell for n_l: # of ls, n_p: # of points per ellipsis, rel_bounds: relative xy bounds
+        """
+        sample cell for:
+        n_l: number of ls
+        n_p: number of points per ellipsis
+        rel_bounds: relative xy bounds
+        """
         ls = []
         for i in range(n_l):
-            l = self.bounds_l[0] + (float(i) / (n_l - 1)) * (self.bounds_l[1] - self.bounds_l[0])
-            ls.append(l)
+            ls.append(self.bounds_l[0] + (float(i) / (n_l - 1)) *
+                      (self.bounds_l[1] - self.bounds_l[0]))
 
         return self.sample(ls, n_p)
 
     def sample(self, ls: [float], n: int) -> {}:
-        # sample cell with ls: array of ls to sample, n: # of points per ellipsis, rel_bounds: relative xy bounds
-
+        """
+        sample cell with:
+        ls: array of ls to sample
+        n: number of points per ellipsis
+        rel_bounds: relative xy bounds
+        """
         bounds = self.bounds_xy
 
-        # holds ellipses, steepest decent lines and axis in form: (name, [Vector])
+        # ellipses, steepest decent lines and axis in form: (name, [Vector])
         sample = {"ellipses": [], "l-lines": [], "axis": []}
 
         # Sample Ellipses
-        for l in ls:
-            if l < self.bounds_l[0] or l > self.bounds_l[1]:
-                continue  # skip if l is not in bounds
+        for eps in ls:
+            if eps < self.bounds_l[0] or eps > self.bounds_l[1]:
+                continue  # skip if eps is not in bounds
 
             if not self.parallel:  # case 1: lines are not parallel
-                if l == 0:  # plot points as points
+                if eps == 0:  # plot points as points
                     p = self.norm_ellipsis.m
                     if p.in_bounds(bounds):
-                        sample["ellipses"].append((l, [p]))
+                        sample["ellipses"].append((eps, [p]))
                     continue
 
-                ellipsis_to_sample = self.norm_ellipsis * l
+                ellipsis_to_sample = self.norm_ellipsis * eps
 
                 # sample ellipsis only in bounds of cell
                 ts = ellipsis_to_sample.cuts_bounds_t(bounds)
@@ -285,19 +334,24 @@ class Cell:
 
                         ellipsis_sample.append(ellipsis_to_sample.p(t2))
 
-                        sample["ellipses"].append((l, ellipsis_sample))
+                        sample["ellipses"].append((eps, ellipsis_sample))
 
             else:  # case 2: lines are parallel
-                ellipsis_to_sample = self.norm_ellipsis * l
-                for ellipsis_sample in ellipsis_to_sample.cuts_bounds_p(bounds):
-                    sample["ellipses"].append((l, ellipsis_sample))
+                ellipsis_to_sample = self.norm_ellipsis * eps
+                for ellipsis_sample in \
+                        ellipsis_to_sample.cuts_bounds_p(bounds):
+                    sample["ellipses"].append((eps, ellipsis_sample))
 
         # Sample Ellipsis axis
         if not self.parallel:
-            sample["axis"].append(("c", LineSegment(self.norm_ellipsis.m, self.norm_ellipsis.m +
-                                                    self.norm_ellipsis.a).cuts_bounds(bounds)))
-            sample["axis"].append(("d", LineSegment(self.norm_ellipsis.m, self.norm_ellipsis.m +
-                                                    self.norm_ellipsis.b).cuts_bounds(bounds)))
+            sample["axis"].append(("c", LineSegment(
+                self.norm_ellipsis.m,
+                self.norm_ellipsis.m + self.norm_ellipsis.a
+            ).cuts_bounds(bounds)))
+            sample["axis"].append(("d", LineSegment(
+                self.norm_ellipsis.m,
+                self.norm_ellipsis.m + self.norm_ellipsis.b
+            ).cuts_bounds(bounds)))
 
         # Sample steepest decent lines
         sample["l-lines"].append(("l", self.l_ver.cuts_bounds(bounds)))
@@ -306,7 +360,11 @@ class Cell:
         return sample
 
 
-class OneLineSegment(LineSegment):  # one line segment and intersection point
+class OneLineSegment(LineSegment):
+    """
+    one line segment and intersection point
+    """
+
     def __init__(self, ls: LineSegment, s: Vector):
         super().__init__(ls.p1, ls.p2)
 
@@ -315,15 +373,19 @@ class OneLineSegment(LineSegment):  # one line segment and intersection point
         self.rs = self.r_point(s)  # S in parametric terms of line segment
 
     def __str__(self):
-        return str(self.p1) + "->" + str(self.p2) + ": l=" + str(self.l) + " m=" + str(self.m) + " n=" + str(self.n) + \
-               "\n      Intersects:" + str(self.intersects) + " Direction:" + str(self.dir) + " r(S): " + str(self.rs)
+        return str(self.p1) + "->" + str(self.p2) + ": l=" + str(self.l) + \
+               " m=" + str(self.m) + " n=" + str(self.n) + \
+               "\n      Intersects:" + str(self.intersects) + \
+               " Direction:" + str(self.dir) + " r(S): " + str(self.rs)
 
 
 class TwoLineSegments:  # calculates and saves parameters of two line segments
     def __init__(self, a, b):
         # calculate shortest and longest possible line length
-        self.bounds_l = Bounds1D(min(a.d_ls_point(b.p1), a.d_ls_point(b.p2), b.d_ls_point(a.p1), b.d_ls_point(a.p2)),
-                         max(a.p1.d(b.p1), a.p1.d(b.p2), a.p2.d(b.p1), a.p2.d(b.p2)))
+        self.bounds_l = Bounds1D(min(a.d_ls_point(b.p1), a.d_ls_point(b.p2),
+                                     b.d_ls_point(a.p1), b.d_ls_point(a.p2)),
+                                 max(a.p1.d(b.p1), a.p1.d(b.p2),
+                                     a.p2.d(b.p1), a.p2.d(b.p2)))
 
         self.parallel = about_equal(a.m, b.m)
         if not self.parallel:  # case 1: lines are not parallel
@@ -332,8 +394,10 @@ class TwoLineSegments:  # calculates and saves parameters of two line segments
             self.a = OneLineSegment(a, self.s)  # line segment a
             self.b = OneLineSegment(b, self.s)  # line segment b
 
-            self.intersect = self.a.intersects and self.b.intersects  # does the intersection point lie on A and B
-            if self.intersect:  # if line segments intersect, set min length to 0
+            # does the intersection point lie on A and B
+            self.intersect = self.a.intersects and self.b.intersects
+            # if line segments intersect, set min length to 0
+            if self.intersect:
                 self.bounds_l = Bounds1D(0.0, self.bounds_l[1])
 
         else:  # case 2: lines are parallel
@@ -343,13 +407,16 @@ class TwoLineSegments:  # calculates and saves parameters of two line segments
             self.a = a  # line segment a
             self.b = b  # line segment b
 
-            self.dirB = (a.r_point(a.p1 + b.d) >= 0)  # do A and B point in the same direction
+            # do A and B point in the same direction
+            self.dirB = (a.r_point(a.p1 + b.d) >= 0)
             b1_p = a.project_p(b.p1)  # projection of b1 on a
             self.dist = b.p1.d(b1_p)  # distance of the two lines
-            self.anchor = Vector(a.r_point(b1_p) * a.l, 0)  # point with b(0) and minimal l
+            # point with b(0) and minimal l
+            self.anchor = Vector(a.r_point(b1_p) * a.l, 0)
 
     def __str__(self):
-        return "    Line Segment A: " + str(self.a) + "\n    Line Segment B: " + str(self.b) + '\n' + \
+        return "    Line Segment A: " + str(self.a) + '\n' + \
+               "    Line Segment B: " + str(self.b) + '\n' + \
                "       Parallel: " + str(self.parallel) + '\n' + \
                "       Intersect (" + str(self.intersect) + "): " + str(self.s)
 
@@ -385,11 +452,13 @@ class TwoLineSegments:  # calculates and saves parameters of two line segments
         # set cell bounds: length of a and b
         bounds_xy = Bounds1D(self.a.d.l, self.b.d.l)
 
-        return Cell(self.parallel, self.a, self.b, norm_ellipsis, bounds_xy, self.bounds_l, offset=offset)
+        return Cell(self.parallel, self.a, self.b, norm_ellipsis, bounds_xy,
+                    self.bounds_l, offset=offset)
 
 
 class Traversal:
-    def __init__(self, cell_matrix: "CellMatrix", a_cm: CM_Point, b_cm: CM_Point, points: [Vector], epsilon: float,
+    def __init__(self, cell_matrix: "CellMatrix", a_cm: CM_Point,
+                 b_cm: CM_Point, points: [Vector], epsilon: float,
                  epsilons: [float]):
         self.cell_matrix = cell_matrix
 
@@ -413,16 +482,19 @@ class Traversal:
     def __str__(self):
         return "    " + str(self.epsilon) + "-Traversal:" + '\n' + \
                "      A: " + str(self.a) + " -> B: " + str(self.b) + '\n' + \
-               "      Cell_A: " + str(self.cell_a) + " -> Cell_B: " + str(self.cell_b) + '\n' + \
-               "      Points: " + str([str(point) for point in self.points]) + '\n' + \
+               "      Cell_A: " + str(self.cell_a) + " -> Cell_B: " + \
+               str(self.cell_b) + '\n' + \
+               "      Points: " + str([str(x) for x in self.points]) + '\n' + \
                "      Epsilon: " + str(self.epsilon) + '\n' + \
                "      Epsilons: " + str(self.epsilons) + '\n' + \
-               "      Decision: " + str(self.cell_matrix.decide_critical_traversal(self.cell_matrix.a_cm, self,
-                                                                                   self.cell_matrix.b_cm))
+               "      Decision: " + str(
+                   self.cell_matrix.decide_critical_traversal(
+                       self.cell_matrix.a_cm, self, self.cell_matrix.b_cm))
 
     @staticmethod
     def nan() -> "Traversal":
-        traversal = Traversal(None, (Vector.nan(), (math.nan, math.nan)), (Vector.nan(), (math.nan, math.nan)),
+        traversal = Traversal(None, (Vector.nan(), (math.nan, math.nan)),
+                              (Vector.nan(), (math.nan, math.nan)),
                               [Vector.nan()], math.inf, [math.inf])
         traversal.set_reci_sqslope(-math.inf, math.inf)
         traversal.set_sqslope2(-math.inf, math.inf)
@@ -437,12 +509,30 @@ class Traversal:
         if other.is_nan():
             return self
 
-        traversal = Traversal(self.cell_matrix, self.a_cm, other.b_cm, self.points[:-1] + other.points,
-                              max(self.epsilon, other.epsilon), self.epsilons[:-1] + other.epsilons)
-        traversal.reci_sqslope_a = self.reci_sqslope_a if self.reci_sqslope_a != 0 else other.reci_sqslope_a
-        traversal.sqslope2_a = self.sqslope2_a if self.sqslope2_a != 0 else other.sqslope2_a
-        traversal.reci_sqslope_b = other.reci_sqslope_b if other.reci_sqslope_b != 0 else self.reci_sqslope_b
-        traversal.sqslope2_b = other.sqslope2_b if other.sqslope2_b != 0 else self.sqslope2_b
+        traversal = Traversal(self.cell_matrix, self.a_cm, other.b_cm,
+                              self.points[:-1] + other.points,
+                              max(self.epsilon, other.epsilon),
+                              self.epsilons[:-1] + other.epsilons)
+
+        # set reci_sqslope
+        if self.reci_sqslope_a != 0:
+            traversal.reci_sqslope_a = self.reci_sqslope_a
+        else:
+            traversal.reci_sqslope_a = other.reci_sqslope_a
+        if other.reci_sqslope_b != 0:
+            traversal.reci_sqslope_b = other.reci_sqslope_b
+        else:
+            traversal.reci_sqslope_b = self.reci_sqslope_b
+        # set sqslope2
+        if self.sqslope2_a != 0:
+            traversal.sqslope2_a = self.sqslope2_a
+        else:
+            traversal.sqslope2_a = other.sqslope2_a
+        if other.sqslope2_b != 0:
+            traversal.sqslope2_b = other.sqslope2_b
+        else:
+            traversal.sqslope2_b = self.sqslope2_b
+
         return traversal
 
     def count(self) -> float:
@@ -450,9 +540,9 @@ class Traversal:
             self._count = len(self.points)
         return self._count
 
-    def set_reci_sqslope(self, reci_sqslope_a: float, reci_sqslope_b: float):
-        self.reci_sqslope_a = 1/abs(reci_sqslope_a) if reci_sqslope_a < 0 else math.inf
-        self.reci_sqslope_b = 1/abs(reci_sqslope_b) if reci_sqslope_b > 0 else math.inf
+    def set_reci_sqslope(self, sqslope_a: float, sqslope_b: float):
+        self.reci_sqslope_a = 1/abs(sqslope_a) if sqslope_a < 0 else math.inf
+        self.reci_sqslope_b = 1/abs(sqslope_b) if sqslope_b > 0 else math.inf
 
     def set_sqslope2(self, sqslope2_a: float, sqslope2_b: float):
         self.sqslope2_a = sqslope2_a
@@ -545,18 +635,21 @@ class CriticalEvents:
             for traversal in self[epsilon]:
                 b1 = traversal.a
                 a2 = traversal.b
-                if a1 < b1 and a2 < b2 and not (b1 == a2 and (a1 == b1 or a2 == b2)):
+                if a1 < b1 and a2 < b2 and not (b1 == a2 and
+                                                (a1 == b1 or a2 == b2)):
                     critical_events_cut.append(traversal)
 
         return critical_events_cut
 
-    def critical(self, cell_matrix: 'CellMatrix', a_cm: CM_Point, b_cm: CM_Point) -> (float, [Traversal]):
+    def critical(self, cell_matrix: 'CellMatrix', a_cm: CM_Point,
+                 b_cm: CM_Point) -> (float, [Traversal]):
         traversals = []
 
         if len(self) == 0:
             return -1, traversals
 
-        critical_epsilon = self.critical_helper(cell_matrix, a_cm, b_cm, 0, len(self) - 1)
+        critical_epsilon = self.critical_helper(cell_matrix, a_cm, b_cm, 0,
+                                                len(self) - 1)
         for traversal in self[critical_epsilon]:
             if cell_matrix.decide_critical_traversal(a_cm, traversal, b_cm):
                 traversals.append(traversal)
@@ -566,7 +659,8 @@ class CriticalEvents:
 
         return critical_epsilon, traversals
 
-    def critical_helper(self, cell_matrix: 'CellMatrix', a_cm: CM_Point, b_cm: CM_Point, i_start_epsilon: int,
+    def critical_helper(self, cell_matrix: 'CellMatrix', a_cm: CM_Point,
+                        b_cm: CM_Point, i_start_epsilon: int,
                         i_end_epsilon: int) -> [Traversal]:
 
         epsilons = self.epsilons()
@@ -576,14 +670,17 @@ class CriticalEvents:
                 return start_epsilon
             return epsilons[i_end_epsilon]
 
-        i_mid_epsilon = i_start_epsilon + int(math.floor(0.5 * (i_end_epsilon - i_start_epsilon)))
+        i_mid_epsilon = i_start_epsilon + int(
+            math.floor(0.5*(i_end_epsilon - i_start_epsilon)))
         mid_epsilon = epsilons[i_mid_epsilon]
 
         decision = cell_matrix.decide_traversal(a_cm, b_cm, mid_epsilon)
         if decision:
-            return self.critical_helper(cell_matrix, a_cm, b_cm, i_start_epsilon, i_mid_epsilon)
+            return self.critical_helper(cell_matrix, a_cm, b_cm,
+                                        i_start_epsilon, i_mid_epsilon)
         else:
-            return self.critical_helper(cell_matrix, a_cm, b_cm, i_mid_epsilon, i_end_epsilon)
+            return self.critical_helper(cell_matrix, a_cm, b_cm,
+                                        i_mid_epsilon, i_end_epsilon)
 
 
 class CrossSection:
@@ -594,11 +691,14 @@ class CrossSection:
         self.hyperbolas = []
         for i_segment in range(len(path.segments)):
             segment = path.segments[i_segment]
-            hyperbola = segment.hyperbola_with_point(point).move_x(path.offsets[i_segment])
+            hyperbola = segment.hyperbola_with_point(point)\
+                               .move_x(path.offsets[i_segment])
             self.hyperbolas.append(hyperbola)
 
-        self.hyperbolas_overload = [self.hyperbolas[0].reflect_x(self.path.offsets[0])] + self.hyperbolas + \
-                                   [self.hyperbolas[-1].reflect_x(self.path.offsets[-1])]
+        self.hyperbolas_overload = \
+            [self.hyperbolas[0].reflect_x(self.path.offsets[0])] + \
+            self.hyperbolas + \
+            [self.hyperbolas[-1].reflect_x(self.path.offsets[-1])]
         self._minima = []
         self._minima_no_borders = []
         self._minima_borders = []
@@ -609,7 +709,8 @@ class CrossSection:
         desc = ""
         for i in range(self.path.count):
             bounds = (self.path.offsets[i], self.path.offsets[i + 1])
-            desc += "     " + str(i) + ": " + str(bounds) + ": " + str(self.hyperbolas[i]) + '\n'
+            desc += "     " + str(i) + ": " + str(bounds) + ": " + \
+                    str(self.hyperbolas[i]) + '\n'
         desc += "     => Minima: " + str(self.minima())
         desc += "     => Maxima_1: " + str(self.maxima_1())
         desc += "     => Maxima_2: " + str(self.maxima_2())
@@ -619,16 +720,19 @@ class CrossSection:
         return self.path.count
 
     def __getitem__(self, item) -> Hyperbola:
-        assert 0 <= int(item) <= self.path.count, "Error: No Hyperbola with index: " + str(item) + '\n' + \
-                                                  "Hyperbolas: \n" + str(self)
+        assert 0 <= int(item) <= self.path.count, \
+            "Error: No Hyperbola with index: " + str(item) + '\n' + \
+            "Hyperbolas: \n" + str(self)
         return self.hyperbolas[int(item)]
 
-    def minima(self) -> [float]:  # returns all local minima
+    def minima(self) -> [float]:
+        """ returns all local minima """
         if len(self._minima) == 0:
             self._minima = self.minima_no_borders() + self.minima_borders()
         return self._minima
 
-    def minima_no_borders(self) -> [float]:  # returns local minima that don't lie on borders
+    def minima_no_borders(self) -> [float]:
+        """ returns local minima that don't lie on borders """
         if len(self._minima_no_borders) == 0:
             for i in range(self.path.count):
                 hyperbola = self.hyperbolas[i]
@@ -638,22 +742,26 @@ class CrossSection:
                     self._minima_no_borders.append(x)
         return self._minima_no_borders
 
-    def minima_borders(self) -> [float]:  # returns local minima that lie on borders
+    def minima_borders(self) -> [float]:
+        """ returns local minima that lie on borders """
         if len(self._minima_borders) == 0:
             for i in range(self.path.count + 1):
                 x = self.path.offsets[i]
                 left_hyperbola = self.hyperbolas_overload[i]
                 right_hyperbola = self.hyperbolas_overload[i + 1]
-                if left_hyperbola.orientation(x) <= 0 <= right_hyperbola.orientation(x):
+                if left_hyperbola.orientation(x) <= 0 \
+                        <= right_hyperbola.orientation(x):
                     self._minima_borders.append(x)
         return self._minima_borders
 
-    def is_minima(self, x: float) -> bool:  # checks if local minima at set x
+    def is_minima(self, x: float) -> bool:
+        """ checks if local minima at set x """
         if len(self._minima) == 0:
             self._minima = self.minima()
         return x in self._minima
 
-    def maxima_1(self) -> [float]:  # returns all local maxima (always on borders)
+    def maxima_1(self) -> [float]:
+        """returns all local maxima (always on borders) """
         if len(self._maxima_1) == 0:
             for i in range(self.path.count + 1):
                 x = self.path.offsets[i]
@@ -661,11 +769,13 @@ class CrossSection:
                 right_hyperbola = self.hyperbolas_overload[i + 1]
                 orientation_left = left_hyperbola.orientation(x)
                 orientation_right = right_hyperbola.orientation(x)
-                if orientation_left >= 0 > orientation_right or orientation_left > 0 >= orientation_right:
+                if orientation_left >= 0 > orientation_right or \
+                        orientation_left > 0 >= orientation_right:
                     self._maxima_1.append(x)
         return self._maxima_1
 
-    def maxima_2(self) -> [float]:  # returns all local maxima (always on borders)
+    def maxima_2(self) -> [float]:
+        """ returns all local maxima (always on borders) """
         if len(self._maxima_2) == 0:
             for i in range(self.path.count + 1):
                 x = self.path.offsets[i]
@@ -677,19 +787,23 @@ class CrossSection:
                     self._maxima_2.append(x)
         return self._maxima_2
 
-    def is_maxima_1(self, x: float) -> bool:  # checks if local maxima at set x
+    def is_maxima_1(self, x: float) -> bool:
+        """ checks if local maxima at set x """
         if len(self._maxima_1) == 0:
             self._maxima_1 = self.maxima_1()
         return x in self._maxima_1
 
-    def is_maxima_2(self, x: float) -> bool:  # checks if local maxima at set x
+    def is_maxima_2(self, x: float) -> bool:
+        """ checks if local maxima at set x """
         if len(self._maxima_2) == 0:
             self._maxima_2 = self.maxima_2()
         return x in self._maxima_2
 
 
-def steepest_decent_helper_point_for_epsilon(hyperbola_hor: Hyperbola, bounds_hor: Bounds1D, hyperbola_ver: Hyperbola,
-                                             bounds_ver: Bounds1D, point: Vector, epsilon: float) -> Vector:
+def steepest_decent_helper_point_for_epsilon(
+        hyperbola_hor: Hyperbola, bounds_hor: Bounds1D,
+        hyperbola_ver: Hyperbola, bounds_ver: Bounds1D, point: Vector,
+        epsilon: float) -> Vector:
     x = point.x
     y = point.y
     if not hyperbola_hor.is_nan():
@@ -703,13 +817,16 @@ def steepest_decent_helper_point_for_epsilon(hyperbola_hor: Hyperbola, bounds_ho
     return Vector(x, y)
 
 
-def steepest_decent_helper_new_type_critical_1(bounds: Bounds1D, decent_hyperbola: Hyperbola,
-                                                      hyperbolas: [Hyperbola], direction: int) -> [(float, float, int)]:
+def steepest_decent_helper_new_type_critical_1(
+        bounds: Bounds1D, decent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
+        direction: int) -> [(float, float, int)]:
     critical = []
 
     for i in range(len(hyperbolas)):
         border_hyperbola = hyperbolas[i]
-        intersections = decent_hyperbola.intersects_hyperbola_in_bounds_critical(border_hyperbola, bounds, direction)
+        intersections = decent_hyperbola\
+            .intersects_hyperbola_in_bounds_critical(
+                border_hyperbola, bounds, direction)
         if len(intersections) == 0:
             continue
         intersection = intersections[0]
@@ -729,9 +846,9 @@ def steepest_decent_helper_new_type_critical_1(bounds: Bounds1D, decent_hyperbol
     return critical
 
 
-def steepest_decent_helper_new_type_critical_2(bounds: Bounds1D, decent_hyperbola: Hyperbola,
-                                                      hyperbolas: [Hyperbola], x: float, direction: int)\
-                                                      -> [(float, float, int)]:
+def steepest_decent_helper_new_type_critical_2(
+        bounds: Bounds1D, decent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
+        x: float, direction: int) -> [(float, float, int)]:
     critical = []
 
     for i in range(len(hyperbolas)):
@@ -759,21 +876,25 @@ def steepest_decent_helper_new_type_critical_2(bounds: Bounds1D, decent_hyperbol
 
 
 class CellMatrix:
-    def __init__(self, points_p: [Vector], points_q: [Vector], traverse: int = 1):
+    def __init__(self, points_p: [Vector], points_q: [Vector],
+                 traverse: int = 1):
         # paths
         self.p = Path(points_p)
         self.q = Path(points_q)
 
         # Cell Matrix Points
         self.a_cm = (Vector(0, 0), (0, 0))
-        self.b_cm = (Vector(self.p.length, self.q.length), (self.p.count - 1, self.q.count - 1))
+        self.b_cm = (Vector(self.p.length, self.q.length),
+                     (self.p.count - 1, self.q.count - 1))
 
         # real bounds of length l over the whole cell matrix
         self.bounds_l = Bounds1D(math.inf, 0)
 
         # border hyperbolas
-        self.cross_sections_hor = self.calculate_cross_sections(self.p, self.q.points)
-        self.cross_sections_ver = self.calculate_cross_sections(self.q, self.p.points)
+        self.cross_sections_hor = self.calculate_cross_sections(self.p,
+                                                                self.q.points)
+        self.cross_sections_ver = self.calculate_cross_sections(self.q,
+                                                                self.p.points)
 
         # generate and save TwoLineSegments & Cells
         self.twoLSs = []
@@ -782,11 +903,15 @@ class CellMatrix:
             self.twoLSs.append([])
             self.cells.append([])
             for i_q in range(self.q.count):
-                two_line_segments = TwoLineSegments(self.p.segments[i_p], self.q.segments[i_q])
-                self.bounds_l = Bounds1D(min(self.bounds_l[0], two_line_segments.bounds_l[0]),
-                                         max(self.bounds_l[1], two_line_segments.bounds_l[1]))
+                two_line_segments = TwoLineSegments(self.p.segments[i_p],
+                                                    self.q.segments[i_q])
+                self.bounds_l = Bounds1D(min(self.bounds_l[0],
+                                             two_line_segments.bounds_l[0]),
+                                         max(self.bounds_l[1],
+                                             two_line_segments.bounds_l[1]))
                 self.twoLSs[i_p].append(two_line_segments)
-                cell = two_line_segments.cell(offset=Vector(self.p.offsets[i_p], self.q.offsets[i_q]))
+                cell = two_line_segments.cell(offset=Vector(
+                    self.p.offsets[i_p], self.q.offsets[i_q]))
                 self.cells[i_p].append(cell)
 
         # critical events
@@ -799,8 +924,8 @@ class CellMatrix:
             self.max_epsilon, self.traversals = self.do_traverse()
 
     def __str__(self):
-        desc = "Input (" + str(self.p.count) + "x" + str(self.q.count) + ") (" + \
-               str(self.p.length) + "x" + str(self.q.length) + "):\n"
+        desc = "Input (" + str(self.p.count) + "x" + str(self.q.count) + \
+               ") (" + str(self.p.length) + "x" + str(self.q.length) + "):\n"
         desc += " Points P:\n"
         desc += "  p_xs = " + str([point.x for point in self.p.points]) + '\n'
         desc += "  p_ys = " + str([point.y for point in self.p.points]) + '\n'
@@ -823,10 +948,12 @@ class CellMatrix:
         desc += " Border Hyperbolas: " + '\n'
         desc += "  Horizontal: " + '\n'
         for i_q in range(self.q.count + 1):
-            desc += "   " + str(i_q) + ".\n" + str(self.cross_sections_hor[i_q]) + '\n'
+            desc += "   " + str(i_q) + ".\n" + \
+                    str(self.cross_sections_hor[i_q]) + '\n'
         desc += "  Vertical: " + '\n'
         for i_p in range(self.p.count + 1):
-            desc += "   " + str(i_p) + ".\n" + str(self.cross_sections_ver[i_p]) + '\n'
+            desc += "   " + str(i_p) + ".\n" + \
+                    str(self.cross_sections_ver[i_p]) + '\n'
         desc += '\n'
         if len(self.critical_events) > 0:
             desc += " Critical Events: " + str(self.critical_events) + '\n'
@@ -852,7 +979,9 @@ class CellMatrix:
         return cross_sections
 
     @staticmethod
-    def calculate_critical_points(cross_sections: [CrossSection], other_cross_sections: [CrossSection]) -> [[Vector]]:
+    def calculate_critical_points(
+            cross_sections: [CrossSection],
+            other_cross_sections: [CrossSection]) -> [[Vector]]:
         critical_points = []
         n_cross_sections = len(cross_sections)
         path = cross_sections[0].path
@@ -880,7 +1009,8 @@ class CellMatrix:
 
         # events of type c
         for i_section in range(path.count):
-            bounds = Bounds1D(path.offsets[i_section], path.offsets[i_section + 1])
+            bounds = Bounds1D(path.offsets[i_section],
+                              path.offsets[i_section + 1])
             for i_start in range(n_cross_sections):
                 cross_section_start = cross_sections[i_start]
                 hyperbola_start = cross_section_start[i_section]
@@ -888,7 +1018,9 @@ class CellMatrix:
                     cross_section_end = cross_sections[i_end]
                     hyperbola_end = cross_section_end[i_section]
 
-                    intersections = hyperbola_start.intersects_hyperbola_in_bounds_critical(hyperbola_end, bounds)
+                    intersections = hyperbola_start\
+                        .intersects_hyperbola_in_bounds_critical(
+                            hyperbola_end, bounds)
                     if len(intersections) == 0:
                         continue
                     intersection = intersections[0]
@@ -896,9 +1028,12 @@ class CellMatrix:
                     if math.isnan(x):
                         continue
 
-                    other_cross_section = CrossSection(other_path, path.p_rl(x))
-                    if not other_cross_section.is_maxima_2(other_path.offsets[i_start]) or \
-                            not other_cross_section.is_maxima_2(other_path.offsets[i_end]):
+                    other_cross_section = CrossSection(other_path,
+                                                       path.p_rl(x))
+                    if not other_cross_section.is_maxima_2(
+                            other_path.offsets[i_start]) or \
+                            not other_cross_section.is_maxima_2(
+                            other_path.offsets[i_end]):
                         continue
 
                     is_critical = True
@@ -907,8 +1042,10 @@ class CellMatrix:
                     while is_critical and i_between < i_end:
                         cross_section_between = cross_sections[i_between]
                         hyperbola_between = cross_section_between[i_section]
-                        points.append((Vector(x, other_path.offsets[i_between])))
-                        is_critical = is_critical and intersection.y >= hyperbola_between.fx(intersection.x)
+                        points.append((
+                            Vector(x, other_path.offsets[i_between])))
+                        is_critical = is_critical and intersection.y >= \
+                            hyperbola_between.fx(intersection.x)
                         i_between += 1
                     points.append(Vector(x, other_path.offsets[i_end]))
 
@@ -921,21 +1058,24 @@ class CellMatrix:
         critical_events = CriticalEvents()
 
         # horizontal
-        critical_points_hor = self.calculate_critical_points(self.cross_sections_ver, self.cross_sections_hor)
+        critical_points_hor = self.calculate_critical_points(
+            self.cross_sections_ver, self.cross_sections_hor)
         for points in critical_points_hor:
             points = [point.x_to_y() for point in points]
             traversal = self.traversal_from_points(points)
             critical_events.append(traversal)
 
         # vertical
-        critical_points_ver = self.calculate_critical_points(self.cross_sections_hor, self.cross_sections_ver)
+        critical_points_ver = self.calculate_critical_points(
+            self.cross_sections_hor, self.cross_sections_ver)
         for points in critical_points_ver:
             traversal = self.traversal_from_points(points)
             critical_events.append(traversal)
 
         return critical_events
 
-    def decide_critical_traversal(self, a1_cm: CM_Point, traversal: Traversal, b2_cm: CM_Point) -> bool:
+    def decide_critical_traversal(self, a1_cm: CM_Point, traversal: Traversal,
+                                  b2_cm: CM_Point) -> bool:
         epsilon = traversal.epsilon
         b1_cm = traversal.a_cm
         a2_cm = traversal.b_cm
@@ -943,7 +1083,9 @@ class CellMatrix:
         decision2 = self.decide_traversal(a2_cm, b2_cm, epsilon)
         return decision1 and decision2
 
-    def generate_reachable_freespace(self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> ([[Bounds1D]], [[Bounds1D]]):
+    def generate_reachable_freespace(
+            self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> \
+            ([[Bounds1D]], [[Bounds1D]]):
         """
             Returns two matrices: reachable_hor and reachable_ver
             For all cells (i_p|i_q), the matrices describe the reachable space
@@ -990,39 +1132,43 @@ class CellMatrix:
         offsets_ver[0] = a.y
         offsets_ver[-1] = b.y
 
-        bounds_hor = [Bounds1D(offsets_hor[i_p], offsets_hor[i_p + 1]) for i_p in range(d_p)]
-        bounds_ver = [Bounds1D(offsets_ver[i_q], offsets_ver[i_q + 1]) for i_q in range(d_q)]
+        bounds_hor = [Bounds1D(offsets_hor[i_p], offsets_hor[i_p + 1])
+                      for i_p in range(d_p)]
+        bounds_ver = [Bounds1D(offsets_ver[i_q], offsets_ver[i_q + 1])
+                      for i_q in range(d_q)]
 
-        reachable_hor = [[Bounds1D.nan() for i_q in range(d_q + 1)] for i_p in range(d_p)]
-        reachable_ver = [[Bounds1D.nan() for i_q in range(d_q)] for i_p in range(d_p + 1)]
+        reachable_hor = [[Bounds1D.nan() for i_q in range(d_q + 1)]
+                         for i_p in range(d_p)]
+        reachable_ver = [[Bounds1D.nan() for i_q in range(d_q)]
+                         for i_p in range(d_p + 1)]
 
         start_cell = cells[start_i_p][start_i_q]
 
         # build up reachable freespace on borders for given epsilon
         # bottom row
         if d_p > 0:
-            reachable_bottom = bounds_hor[0].cut(start_cell.free_bounds_horizontal(offsets_ver[0], epsilon))
+            reachable_bottom = bounds_hor[0].cut(
+                start_cell.free_bounds_horizontal(offsets_ver[0], epsilon))
             if offsets_hor[0] in reachable_bottom:
                 reachable_hor[0][0] = reachable_bottom
             for i_p in range(1, d_p):
                 cell = cells[start_i_p + i_p][start_i_q]
-                reachable_bottom = bounds_hor[i_p].cut(cell.free_bounds_horizontal(offsets_ver[0], epsilon))
+                reachable_bottom = bounds_hor[i_p].cut(
+                    cell.free_bounds_horizontal(offsets_ver[0], epsilon))
                 if reachable_bottom.start in reachable_hor[i_p - 1][0]:
                     reachable_hor[i_p][0] = reachable_bottom
-            #if d_q == 0:
-            #    return b.x in reachable_hor[d_p - 1][0]
         # left row
         if d_q > 0:
-            reachable_left = bounds_ver[0].cut(start_cell.free_bounds_vertical(offsets_hor[0], epsilon))
+            reachable_left = bounds_ver[0].cut(
+                start_cell.free_bounds_vertical(offsets_hor[0], epsilon))
             if offsets_ver[0] in reachable_left:
                 reachable_ver[0][0] = reachable_left
             for i_q in range(1, d_q):
                 cell = cells[start_i_p][start_i_q + i_q]
-                reachable_left = bounds_ver[i_q].cut(cell.free_bounds_vertical(offsets_hor[0], epsilon))
+                reachable_left = bounds_ver[i_q].cut(
+                    cell.free_bounds_vertical(offsets_hor[0], epsilon))
                 if reachable_left.start in reachable_ver[0][i_q - 1]:
                     reachable_ver[0][i_q] = reachable_left
-            #if d_p == 0:
-            #    return b.y in reachable_ver[0][d_q - 1]
         # all other rows
         for i_p in range(d_p):
             for i_q in range(d_q):
@@ -1031,53 +1177,63 @@ class CellMatrix:
                 reachable_left = reachable_ver[i_p][i_q]
                 reachable_bottom = reachable_hor[i_p][i_q]
 
-                free_top = bounds_hor[i_p].cut(cell.free_bounds_horizontal(offsets_ver[i_q + 1], epsilon))
+                free_top = bounds_hor[i_p].cut(
+                    cell.free_bounds_horizontal(offsets_ver[i_q + 1], epsilon))
                 reachable_top = Bounds1D.nan()
                 if not reachable_left.is_nan():
                     reachable_top = free_top
                 elif reachable_bottom.start <= free_top.end + tol:
-                    reachable_top = bounds_hor[i_p].cut(Bounds1D(max(reachable_bottom.start, free_top.start),
-                                                                 free_top.end))
+                    reachable_top = bounds_hor[i_p].cut(
+                        Bounds1D(max(reachable_bottom.start, free_top.start),
+                                 free_top.end))
                 reachable_hor[i_p][i_q + 1] = reachable_top
 
-                free_right = bounds_ver[i_q].cut(cell.free_bounds_vertical(offsets_hor[i_p + 1], epsilon))
+                free_right = bounds_ver[i_q].cut(
+                    cell.free_bounds_vertical(offsets_hor[i_p + 1], epsilon))
                 reachable_right = Bounds1D.nan()
                 if not reachable_bottom.is_nan():
                     reachable_right = free_right
                 elif reachable_left.start <= free_right.end + tol:
-                    reachable_right = bounds_ver[i_q].cut(Bounds1D(max(reachable_left.start, free_right.start),
-                                                                   free_right.end))
+                    reachable_right = bounds_ver[i_q].cut(
+                        Bounds1D(max(reachable_left.start, free_right.start),
+                                 free_right.end))
                 reachable_ver[i_p + 1][i_q] = reachable_right
 
         '''if epsilon == 0.6170368168895033:  # DEBUG
             print("A: " + str([str(p) for p in a_cm]))
             print("B: " + str([str(p) for p in b_cm]))
-            print("start_i_p: " + str(start_i_p) + " bis end_i_p: " + str(end_i_p))
-            print("start_i_q: " + str(start_i_q) + " bis end_i_q: " + str(end_i_q))
+            print("start_i_p: " + str(start_i_p) + " bis end_i_p: " + \
+                  str(end_i_p))
+            print("start_i_q: " + str(start_i_q) + " bis end_i_q: " + \
+                  str(end_i_q))
             print("d_p: " + str(d_p))
             print("d_q: " + str(d_q))
-            print("reachable_hor: " + str([[str(b) for b in bs] for bs in reachable_hor]))
-            print("reachable_ver: " + str([[str(b) for b in bs] for bs in reachable_ver]))
-            print("offsets_hor: " + str([str(offset) for offset in offsets_hor]))
-            print("offsets_ver: " + str([str(offset) for offset in offsets_ver]))
+            print("reachable_hor: " + str([[str(b) for b in bs]
+                                           for bs in reachable_hor]))
+            print("reachable_ver: " + str([[str(b) for b in bs]
+                                           for bs in reachable_ver]))
+            print("offsets_hor: " + str([str(offset)
+                                         for offset in offsets_hor]))
+            print("offsets_ver: " + str([str(offset)
+                                         for offset in offsets_ver]))
             print("bounds_hor: " + str([str(bound) for bound in bounds_hor]))
             print("bounds_ver: " + str([str(bound) for bound in bounds_ver]))
             print("==============")'''
 
         return (reachable_hor, reachable_ver)
 
-    def decide_traversal(self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> bool:
+    def decide_traversal(
+            self, a_cm: CM_Point, b_cm: CM_Point, epsilon: float) -> bool:
         a = a_cm[0]
-        cell_a = a_cm[1]
         b = b_cm[0]
-        cell_b = b_cm[1]
 
         if a == b:
             return True
         if not a < b:
             return False
 
-        (reachable_hor, reachable_ver) = self.generate_reachable_freespace(a_cm, b_cm, epsilon)
+        (reachable_hor, reachable_ver) = self\
+            .generate_reachable_freespace(a_cm, b_cm, epsilon)
 
         if len(reachable_hor) == 0:
             return (b.y in reachable_ver[-1][-1])
@@ -1086,7 +1242,8 @@ class CellMatrix:
 
         return (b.x in reachable_hor[-1][-1]) or (b.y in reachable_ver[-1][-1])
 
-    def steepest_decent_hyperbola(self, a_cm: CM_Point, direction: int) -> Hyperbola:
+    def steepest_decent_hyperbola(self, a_cm: CM_Point, direction: int) -> \
+            Hyperbola:
         """
             Returns the steepest-descent hyperbola for point a_cm.
         """
@@ -1105,15 +1262,18 @@ class CellMatrix:
         # get coresponding cell
         cell = self.cells[i_p][i_q]
         # get steepest descent hyperbola
-        a2, a2_epsilon, a_hyperbola, (a_hyperbola_hor, a_hyperbola_ver) = cell.steepest_decent(a, direction)
+        a2, a2_epsilon, a_hyperbola, a_hyperbola_hor, a_hyperbola_ver = cell\
+            .steepest_decent(a, direction)
 
         return a_hyperbola
 
-    def generate_traversal_graph(self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal], epsilon: float) -> []:
+    def generate_traversal_graph(
+            self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal],
+            epsilon: float) -> []:
         """
-            Generates a graph that represents paths through critical events at height epsilon.
-            Every node is eighter start- (a) or endpoint (b) or a critical event.
-            Every edge has a outgoing and incoming slope.
+            Generates a graph that represents paths through critical events at
+            height epsilon. Every node is eighter start- (a) or endpoint (b) or
+            a critical event. Every edge has a outgoing and incoming slope.
 
             graph = {
                 'a': [(traversal_i, hyperbola, stelle)],
@@ -1130,19 +1290,23 @@ class CellMatrix:
 
         # add start and end to traversals
         a_cm_pre = (a, (cell_a[0]-1, cell_a[1]-1))
-        start_traversal = Traversal(self, a_cm_pre, a_cm, [a_cm[0]], epsilon, [epsilon])
+        start_traversal = Traversal(self, a_cm_pre, a_cm, [a_cm[0]], epsilon,
+                                    [epsilon])
         b_cm_post = (b, (cell_b[0]+1, cell_b[1]+1))
-        end_traversal = Traversal(self, b_cm, b_cm_post, [b_cm[0]], epsilon, [epsilon])
+        end_traversal = Traversal(self, b_cm, b_cm_post, [b_cm[0]], epsilon,
+                                  [epsilon])
         traversals.insert(0, start_traversal)
         traversals.append(end_traversal)
 
-        # calculate reciprocals of slopes and second derivative of squared steepest decent hyperbolas
+        # calculate reciprocals of slopes and second derivative of squared
+        # steepest decent hyperbolas
         traversal_slopes = [0 for traversal in traversals]
         for i, traversal in enumerate(traversals):
             if i == 0 or i == len(traversals)-1:
-                continue # skip start and end
+                continue  # skip start and end
 
-            print("XXXslopesXXX ", traversal.a, traversal.cell_a, traversal.b, traversal.cell_b)
+            print("XXXslopesXXX ", traversal.a, traversal.cell_a, traversal.b,
+                  traversal.cell_b)
             reci_sqslope = 0
             sqslope2 = 0
             # incoming slopes
@@ -1154,10 +1318,13 @@ class CellMatrix:
             print("---in_sqslope: ", in_sqslope)
             # critical event slopes
             if (not traversal.a == traversal.b):
-                reci_sqslope += traversal.reci_sqslope_a + traversal.reci_sqslope_b
+                reci_sqslope += traversal.reci_sqslope_a + \
+                    traversal.reci_sqslope_b
                 sqslope2 += traversal.sqslope2_a + traversal.sqslope2_b
-                print("---traversal.reci_sqslope_a: ", traversal.reci_sqslope_a)
-                print("---traversal.reci_sqslope_b: ", traversal.reci_sqslope_b)
+                print("---traversal.reci_sqslope_a: ",
+                      traversal.reci_sqslope_a)
+                print("---traversal.reci_sqslope_b: ",
+                      traversal.reci_sqslope_b)
             # outgoing slopes
             out_hyperbola = self.steepest_decent_hyperbola(traversal.b_cm, 1)
             out_sqslope = out_hyperbola.f2ax(0)
@@ -1174,7 +1341,8 @@ class CellMatrix:
             graph[i] = set([])
 
         # generate reachable border freespace for given epsilon
-        (reachable_hor, reachable_ver) = self.generate_reachable_freespace(a_cm, b_cm, epsilon)
+        (reachable_hor, reachable_ver) = self\
+            .generate_reachable_freespace(a_cm, b_cm, epsilon)
 
         # cells vertical and horizontal between start and end
         d_p = len(reachable_hor)
@@ -1206,18 +1374,21 @@ class CellMatrix:
                             # if out_traversal is reachable from in_traversal,
                             if (in_traversal.b < out_traversal.a):
                                 # connect graph
-                                graph[ce_reach].add(trav_i) # TODO: include slopes
+                                graph[ce_reach].add(trav_i)
+                                # TODO: include slopes
 
                 # update cell_ces_reach for neighbors
-                if (not reachable_top.is_nan() and not reachable_top.is_point()):
+                if (not reachable_top.is_nan() and
+                        not reachable_top.is_point()):
                     cell_ces_reach[i_p][i_q+1].extend(ces_reach)
-                if (not reachable_right.is_nan() and not reachable_right.is_point()):
+                if (not reachable_right.is_nan() and
+                        not reachable_right.is_point()):
                     cell_ces_reach[i_p+1][i_q].extend(ces_reach)
-
 
         # DEBUG
         print("===generate_traversal_graph===")
-        print("traversals: ", [str(traversal.a)+'->'+str(traversal.b) for traversal in traversals])
+        print("traversals: ", [str(traversal.a)+'->'+str(traversal.b)
+                               for traversal in traversals])
         print("cell_ces_reach: ", cell_ces_reach)
         print("graph: ", graph)
         print("traversal_slopes: ", traversal_slopes)
@@ -1250,7 +1421,8 @@ class CellMatrix:
             epsilons.append(tmp_epsilon)
         epsilon = max(epsilons)
 
-        traversal = Traversal(self, start_cm, end_cm, points, epsilon, epsilons)
+        traversal = Traversal(self, start_cm, end_cm, points, epsilon,
+                              epsilons)
 
         if len(points) <= 1:
             traversal.set_reci_sqslope(-math.inf, math.inf)
@@ -1263,13 +1435,17 @@ class CellMatrix:
             if about_equal(start.y, end.y):
                 hyperbola_a = cell_a.hyperbola_horizontal(start.y)
                 hyperbola_b = cell_b.hyperbola_horizontal(end.y)
-                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.x), hyperbola_b.f2ax(end.x))
-                traversal.set_sqslope2(hyperbola_a.f2aax(start.x), hyperbola_b.f2aax(end.x))
+                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.x),
+                                           hyperbola_b.f2ax(end.x))
+                traversal.set_sqslope2(hyperbola_a.f2aax(start.x),
+                                       hyperbola_b.f2aax(end.x))
             elif about_equal(start.x, end.x):
                 hyperbola_a = cell_a.hyperbola_vertical(start.x)
                 hyperbola_b = cell_b.hyperbola_vertical(end.x)
-                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.y), hyperbola_b.f2ax(end.y))
-                traversal.set_sqslope2(hyperbola_a.f2aax(start.y), hyperbola_b.f2aax(end.y))
+                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.y),
+                                           hyperbola_b.f2ax(end.y))
+                traversal.set_sqslope2(hyperbola_a.f2aax(start.y),
+                                       hyperbola_b.f2aax(end.y))
 
         return traversal
 
@@ -1281,18 +1457,23 @@ class CellMatrix:
 
     def epsilon_from_cm_point(self, point_cm: CM_Point) -> float:
         cell = point_cm[1]
-        point = point_cm[0] - Vector(self.p.offsets[cell[0]], self.q.offsets[cell[1]])
+        point = point_cm[0] - Vector(self.p.offsets[cell[0]],
+                                     self.q.offsets[cell[1]])
         epsilon = self.p[cell[0]].frl(point.x).d(self.q[cell[1]].frl(point.y))
         if about_equal(epsilon, 0):
             return 0.0
         return epsilon
 
     def do_traverse(self) -> (float, [Traversal]):
-        traversals = self.traverse_recursive(self.a_cm, self.critical_events, self.b_cm)
-        assert len(traversals) > 0, "Error: No Traversal was found !!? Traversals: " + str(traversals)
+        traversals = self.traverse_recursive(self.a_cm, self.critical_events,
+                                             self.b_cm)
+        assert len(traversals) > 0, \
+            "Error: No Traversal was found !!? Traversals: " + str(traversals)
         return traversals[0].epsilon, traversals
 
-    def traverse_recursive(self, a_cm: CM_Point, critical_events: CriticalEvents, b_cm: CM_Point) -> [Traversal]:
+    def traverse_recursive(
+            self, a_cm: CM_Point, critical_events: CriticalEvents,
+            b_cm: CM_Point) -> [Traversal]:
 
         print("===========================================================")
 
@@ -1312,7 +1493,8 @@ class CellMatrix:
             return [Traversal.nan()]
 
         # done: just connect a and b vertical or horizontal
-        if about_equal(a.x, b.x) or about_equal(a.y, b.y) or a.x > b.x or a.y > b.y:
+        if (about_equal(a.x, b.x) or about_equal(a.y, b.y) or
+                a.x > b.x or a.y > b.y):
             points = []
             if about_equal(a.x, b.x) or a.x > b.x:
                 x = 0.5 * (a.x + b.x)
@@ -1332,8 +1514,10 @@ class CellMatrix:
         print("===1===critical_event=== ", critical_event)
         critical_epsilon = critical_event[0]
 
-        # critical event is lower than or equal to max_ab_epsilon or is traversable without critical event
-        if max_ab_epsilon >= critical_epsilon or self.decide_traversal(a_cm, b_cm, max_ab_epsilon):
+        # critical event is lower than or equal to max_ab_epsilon or is
+        # traversable without critical event
+        if (max_ab_epsilon >= critical_epsilon or
+                self.decide_traversal(a_cm, b_cm, max_ab_epsilon)):
 
             print("=== lower-equal ===")
 
@@ -1343,22 +1527,28 @@ class CellMatrix:
             # steepest decent
             if about_equal(a_epsilon, b_epsilon):
                 # do steepest decent from A and B
-                a2, a2_epsilon, a_hyperbola, (a_hyperbola_hor, a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
-                b2, b2_epsilon, b_hyperbola, (b_hyperbola_hor, b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
+                (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
+                    a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
+                (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
+                    b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
                 a2_cm = self.cm_point_a(a2)
                 b2_cm = self.cm_point_b(b2)
             elif a_epsilon > b_epsilon:
                 # do steepest decent from A
-                a2, a2_epsilon, a_hyperbola, (a_hyperbola_hor, a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
-                b2, b2_epsilon, b_hyperbola, (b_hyperbola_hor, b_hyperbola_ver) = b, b_epsilon, Hyperbola.nan(),\
-                                                                                  (Hyperbola.nan(), Hyperbola.nan())
+                (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
+                    a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
+                (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
+                    b_hyperbola_ver) = (b, b_epsilon, Hyperbola.nan(),
+                                        (Hyperbola.nan(), Hyperbola.nan()))
                 a2_cm = self.cm_point_a(a2)
                 b2_cm = b_cm
             else:
                 # do steepest decent from B
-                a2, a2_epsilon, a_hyperbola, (a_hyperbola_hor, a_hyperbola_ver) = a, a_epsilon, Hyperbola.nan(),\
-                                                                                  (Hyperbola.nan(), Hyperbola.nan())
-                b2, b2_epsilon, b_hyperbola, (b_hyperbola_hor, b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
+                (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
+                    a_hyperbola_ver) = (a, a_epsilon, Hyperbola.nan(),
+                                        (Hyperbola.nan(), Hyperbola.nan()))
+                (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
+                    b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
                 a2_cm = a_cm
                 b2_cm = self.cm_point_b(b2)
 
@@ -1369,22 +1559,26 @@ class CellMatrix:
             b_bounds_ver = Bounds1D(min(b.y, b2.y), max(b.y, b2.y))
 
             # if possible decent to equal height
-            if not about_equal(a2_epsilon, b2_epsilon) and b2_epsilon > a2_epsilon:
-                a2 = steepest_decent_helper_point_for_epsilon(a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
-                                                              a_bounds_ver, a, b2_epsilon)
+            if (not about_equal(a2_epsilon, b2_epsilon) and
+                    b2_epsilon > a2_epsilon):
+                a2 = steepest_decent_helper_point_for_epsilon(
+                    a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
+                    a_bounds_ver, a, b2_epsilon)
                 a2_cm = self.cm_point_a(a2)
                 a2_epsilon = b2_epsilon
                 a_bounds_hor = Bounds1D(min(a.x, a2.x), max(a.x, a2.x))
                 a_bounds_ver = Bounds1D(min(a.y, a2.y), max(a.y, a2.y))
-            elif not about_equal(a2_epsilon, b2_epsilon) and a2_epsilon > b2_epsilon:
-                b2 = steepest_decent_helper_point_for_epsilon(b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
-                                                              b_bounds_ver, b, a2_epsilon)
+            elif (not about_equal(a2_epsilon, b2_epsilon) and
+                    a2_epsilon > b2_epsilon):
+                b2 = steepest_decent_helper_point_for_epsilon(
+                    b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
+                    b_bounds_ver, b, a2_epsilon)
                 b2_cm = self.cm_point_b(b2)
                 b2_epsilon = a2_epsilon
                 b_bounds_hor = Bounds1D(min(b.x, b2.x), max(b.x, b2.x))
                 b_bounds_ver = Bounds1D(min(b.y, b2.y), max(b.y, b2.y))
 
-            # if steepest decent paths cut horizontal or vertical do not go further
+            # if steepest decent paths cut hor. or ver. do not go further
             ls_a_a2 = LineSegment.nan
             ls_b_b2 = LineSegment.nan
             if a != a2:
@@ -1399,7 +1593,9 @@ class CellMatrix:
                     elif about_equal(b.x, b2.x):
                         a2 = ls_a_a2.px(b.x)
                     else:
-                        intersections = a_hyperbola_hor.intersects_hyperbola_in_bounds(b_hyperbola_hor, cut_bounds_hor)
+                        intersections = a_hyperbola_hor\
+                            .intersects_hyperbola_in_bounds(b_hyperbola_hor,
+                                                            cut_bounds_hor)
                         if len(intersections) == 0:
                             x = cut_bounds_hor.middle()
                         else:
@@ -1417,7 +1613,9 @@ class CellMatrix:
                     elif about_equal(b.y, b2.y):
                         a2 = ls_a_a2.py(b.y)
                     else:
-                        intersections = a_hyperbola_ver.intersects_hyperbola_in_bounds(b_hyperbola_ver, cut_bounds_ver)
+                        intersections = a_hyperbola_ver\
+                            .intersects_hyperbola_in_bounds(b_hyperbola_ver,
+                                                            cut_bounds_ver)
                         if len(intersections) == 0:
                             y = cut_bounds_ver.middle()
                         else:
@@ -1436,9 +1634,12 @@ class CellMatrix:
 
             # check for critical events
             # old type
-            bound_epsilon = Bounds1D(max(a2_epsilon, b2_epsilon), max(a_epsilon, b_epsilon))
-            old_type_critical_events = critical_events.in_epsilon_bound(bound_epsilon)
-            print("===2===old_type_critical_events=== ", old_type_critical_events)
+            bound_epsilon = Bounds1D(max(a2_epsilon, b2_epsilon),
+                                     max(a_epsilon, b_epsilon))
+            old_type_critical_events = critical_events\
+                .in_epsilon_bound(bound_epsilon)
+            print("===2===old_type_critical_events=== ",
+                  old_type_critical_events)
             # new type
             # on a_a2
             new_type_critical_events_a = CriticalEvents()
@@ -1446,107 +1647,131 @@ class CellMatrix:
                 # vertical
                 border_hyperbolas = []
                 for i in range(cc_a[1], cc_b[1] + 1):
-                        border_hyperbolas.append(self.cells[cc_a[0]][i].hyperbola_top)
+                        border_hyperbolas.append(self.cells[cc_a[0]][i]
+                                                     .hyperbola_top)
                 if not about_equal(a.x, a2.x):
-                    criticals = steepest_decent_helper_new_type_critical_1(a_bounds_hor, a_hyperbola_hor,
-                                                                           border_hyperbolas, 1)
+                    criticals = steepest_decent_helper_new_type_critical_1(
+                        a_bounds_hor, a_hyperbola_hor, border_hyperbolas, 1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
                         points = [ls_a_a2.px(x)]
                         for i in range(d_i + 1):
-                            points.append(Vector(x, self.q.offsets[cc_a[1] + i + 1]))
+                            points.append(
+                                Vector(x, self.q.offsets[cc_a[1] + i + 1]))
                         if points[0] != points[1]:
-                            new_type_critical_events_a.append(self.traversal_from_points(points))
+                            new_type_critical_events_a.append(
+                                self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(a_bounds_ver, a_hyperbola_ver,
-                                                                           border_hyperbolas, a.x, 1)
+                    criticals = steepest_decent_helper_new_type_critical_2(
+                        a_bounds_ver, a_hyperbola_ver, border_hyperbolas, a.x,
+                        1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
                         points = [Vector(a.x, y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(a.x, self.q.offsets[cc_a[1] + i + 1]))
+                            points.append(
+                                Vector(a.x, self.q.offsets[cc_a[1] + i + 1]))
                         if points[0] != points[1]:
-                            new_type_critical_events_a.append(self.traversal_from_points(points))
+                            new_type_critical_events_a.append(
+                                self.traversal_from_points(points))
 
                 # horizontal
                 border_hyperbolas = []
                 for i in range(cc_a[0], cc_b[0] + 1):
-                    border_hyperbolas.append(self.cells[i][cc_a[1]].hyperbola_right)
+                    border_hyperbolas.append(self.cells[i][cc_a[1]]
+                                                 .hyperbola_right)
                 if not about_equal(a.y, a2.y):
-                    criticals = steepest_decent_helper_new_type_critical_1(a_bounds_ver, a_hyperbola_ver,
-                                                                           border_hyperbolas, 1)
+                    criticals = steepest_decent_helper_new_type_critical_1(
+                        a_bounds_ver, a_hyperbola_ver, border_hyperbolas, 1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
                         points = [ls_a_a2.py(y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(self.p.offsets[cc_a[0] + i + 1], y))
+                            points.append(
+                                Vector(self.p.offsets[cc_a[0] + i + 1], y))
                         if points[0] != points[1]:
-                            new_type_critical_events_a.append(self.traversal_from_points(points))
+                            new_type_critical_events_a.append(
+                                self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(a_bounds_hor, a_hyperbola_hor,
-                                                                           border_hyperbolas, a.y, 1)
+                    criticals = steepest_decent_helper_new_type_critical_2(
+                        a_bounds_hor, a_hyperbola_hor, border_hyperbolas, a.y,
+                        1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
                         points = [Vector(x, a.y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(self.p.offsets[cc_a[0] + i + 1], a.y))
+                            points.append(
+                                Vector(self.p.offsets[cc_a[0] + i + 1], a.y))
                         if points[0] != points[1]:
-                            new_type_critical_events_a.append(self.traversal_from_points(points))
+                            new_type_critical_events_a.append(
+                                self.traversal_from_points(points))
             # on b_b2
             new_type_critical_events_b = CriticalEvents()
             if b != b2:
                 # vertical
                 border_hyperbolas = []
                 for i in range(cc_b[1], cc_a[1] - 1, -1):
-                    border_hyperbolas.append(self.cells[cc_b[0]][i].hyperbola_bottom)
+                    border_hyperbolas.append(self.cells[cc_b[0]][i]
+                                                 .hyperbola_bottom)
                 if not about_equal(b.x, b2.x):
-                    criticals = steepest_decent_helper_new_type_critical_1(b_bounds_hor, b_hyperbola_hor,
-                                                                           border_hyperbolas, -1)
+                    criticals = steepest_decent_helper_new_type_critical_1(
+                        b_bounds_hor, b_hyperbola_hor, border_hyperbolas, -1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
                         points = [ls_b_b2.px(x)]
                         for i in range(d_i + 1):
-                            points.append(Vector(x, self.q.offsets[cc_b[1] - i]))
+                            points.append(
+                                Vector(x, self.q.offsets[cc_b[1] - i]))
                         points.reverse()
                         if points[0] != points[1]:
-                            new_type_critical_events_b.append(self.traversal_from_points(points))
+                            new_type_critical_events_b.append(
+                                self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(b_bounds_ver, b_hyperbola_ver,
-                                                                           border_hyperbolas, b.x, -1)
+                    criticals = steepest_decent_helper_new_type_critical_2(
+                        b_bounds_ver, b_hyperbola_ver, border_hyperbolas, b.x,
+                        -1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
                         points = [Vector(b.x, y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(b.x, self.q.offsets[cc_b[1] - i]))
+                            points.append(
+                                Vector(b.x, self.q.offsets[cc_b[1] - i]))
                         points.reverse()
                         if points[0] != points[1]:
-                            new_type_critical_events_b.append(self.traversal_from_points(points))
+                            new_type_critical_events_b.append(
+                                self.traversal_from_points(points))
                 # horizontal
                 border_hyperbolas = []
                 for i in range(cc_b[0], cc_a[0] - 1, -1):
-                    border_hyperbolas.append(self.cells[i][cc_b[1]].hyperbola_left)
+                    border_hyperbolas.append(self.cells[i][cc_b[1]]
+                                                 .hyperbola_left)
                 if not about_equal(b.y, b2.y):
-                    criticals = steepest_decent_helper_new_type_critical_1(b_bounds_ver, b_hyperbola_ver,
-                                                                           border_hyperbolas, -1)
+                    criticals = steepest_decent_helper_new_type_critical_1(
+                        b_bounds_ver, b_hyperbola_ver, border_hyperbolas, -1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
                         points = [ls_b_b2.py(y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(self.p.offsets[cc_b[0] - i], y))
+                            points.append(
+                                Vector(self.p.offsets[cc_b[0] - i], y))
                         points.reverse()
                         if points[0] != points[1]:
-                            new_type_critical_events_b.append(self.traversal_from_points(points))
+                            new_type_critical_events_b.append(
+                                self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(b_bounds_hor, b_hyperbola_hor,
-                                                                           border_hyperbolas, b.y, -1)
+                    criticals = steepest_decent_helper_new_type_critical_2(
+                        b_bounds_hor, b_hyperbola_hor, border_hyperbolas, b.y,
+                        -1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
                         points = [Vector(x, b.y)]
                         for i in range(d_i + 1):
-                            points.append(Vector(self.p.offsets[cc_b[0] - i], b.y))
+                            points.append(
+                                Vector(self.p.offsets[cc_b[0] - i], b.y))
                         points.reverse()
                         if points[0] != points[1]:
-                            new_type_critical_events_b.append(self.traversal_from_points(points))
+                            new_type_critical_events_b.append(
+                                self.traversal_from_points(points))
 
             # traverse
             traversals = []
@@ -1555,36 +1780,51 @@ class CellMatrix:
                 traversal_a = Traversal.nan()
                 traversal_b = Traversal.nan()
                 if a != a2:
-                    traversal_a = Traversal(self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
-                                            [a_epsilon, a2_epsilon])
-                    traversal_a.set_reci_sqslope(a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a2)))
-                    traversal_a.set_sqslope2(a_hyperbola.f2aax(0), a_hyperbola.f2aax(a.d(a2)))
+                    traversal_a = Traversal(
+                        self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
+                        [a_epsilon, a2_epsilon])
+                    traversal_a.set_reci_sqslope(a_hyperbola.f2ax(0),
+                                                 a_hyperbola.f2ax(a.d(a2)))
+                    traversal_a.set_sqslope2(a_hyperbola.f2aax(0),
+                                             a_hyperbola.f2aax(a.d(a2)))
                 if b != b2:
-                    traversal_b = Traversal(self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
-                                            [b2_epsilon, b_epsilon])
-                    traversal_a.set_reci_sqslope(b_hyperbola.f2ax(0), b_hyperbola.f2ax(b2.d(b)))
-                    traversal_a.set_sqslope2(b_hyperbola.f2aax(0), b_hyperbola.f2aax(b2.d(b)))
+                    traversal_b = Traversal(
+                        self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
+                        [b2_epsilon, b_epsilon])
+                    traversal_a.set_reci_sqslope(b_hyperbola.f2ax(0),
+                                                 b_hyperbola.f2ax(b2.d(b)))
+                    traversal_a.set_sqslope2(b_hyperbola.f2aax(0),
+                                             b_hyperbola.f2aax(b2.d(b)))
                 if a == a2 and b == b2:
-                    return [Traversal(self, a_cm, b_cm, [a, b], max(a_epsilon, b_epsilon),
-                                      [a_epsilon, b_epsilon])]
-                new_critical_events = critical_events.in_and_on_bounds_1(a2, b2)
-                rec_traversals = self.traverse_recursive(a2_cm, new_critical_events, b2_cm)
+                    return [Traversal(
+                        self, a_cm, b_cm, [a, b], max(a_epsilon, b_epsilon),
+                        [a_epsilon, b_epsilon])]
+                new_critical_events = critical_events\
+                    .in_and_on_bounds_1(a2, b2)
+                rec_traversals = self.traverse_recursive(
+                    a2_cm, new_critical_events, b2_cm)
                 for rec_traversal in rec_traversals:
-                    traversals.append(traversal_a + rec_traversal + traversal_b)
+                    traversals.append(
+                        traversal_a + rec_traversal + traversal_b)
                 traversed = True
 
-            possible_critical_events = old_type_critical_events + new_type_critical_events_a +\
-                                       new_type_critical_events_b
-            print("===3===possible_critical_events=== ", possible_critical_events)
+            possible_critical_events = (old_type_critical_events +
+                                        new_type_critical_events_a +
+                                        new_type_critical_events_b)
+            print("===3===possible_critical_events=== ",
+                  possible_critical_events)
             possible_critical_epsilons = possible_critical_events.epsilons()
             i_epsilon = 0
             traversals_and_slopes = []
-            while not traversed and i_epsilon < len(possible_critical_epsilons):
+            while (not traversed and
+                    i_epsilon < len(possible_critical_epsilons)):
                 epsilon = possible_critical_epsilons[i_epsilon]
-                a3 = steepest_decent_helper_point_for_epsilon(a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
-                                                              a_bounds_ver, a2, epsilon)
-                b3 = steepest_decent_helper_point_for_epsilon(b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
-                                                              b_bounds_ver, b2, epsilon)
+                a3 = steepest_decent_helper_point_for_epsilon(
+                    a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
+                    a_bounds_ver, a2, epsilon)
+                b3 = steepest_decent_helper_point_for_epsilon(
+                    b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
+                    b_bounds_ver, b2, epsilon)
                 a3_cm = (a3, cc_a)
                 b3_cm = (b3, cc_b)
 
@@ -1601,7 +1841,8 @@ class CellMatrix:
                     elif b3 == b4:
                         decision = self.decide_traversal(a3_cm, a4_cm, epsilon)
                     else:
-                        decision = self.decide_critical_traversal(a3_cm, critical_traversal, b3_cm)
+                        decision = self.decide_critical_traversal(
+                            a3_cm, critical_traversal, b3_cm)
 
                     if decision:
                         traversal_a_a3 = Traversal.nan()
@@ -1610,42 +1851,67 @@ class CellMatrix:
                         traversal_b4_b3 = Traversal.nan()
 
                         if a != a3:
-                            traversal_a_a3 = Traversal(self, a_cm, a3_cm, [a, a3], max(a_epsilon, epsilon),
-                                                       [a_epsilon, epsilon])
-                            traversal_a_a3.set_reci_sqslope(a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a3)))
-                            traversal_a_a3.set_sqslope2(a_hyperbola.f2aax(0), a_hyperbola.f2aax(a.d(a3)))
+                            traversal_a_a3 = Traversal(
+                                self, a_cm, a3_cm, [a, a3],
+                                max(a_epsilon, epsilon), [a_epsilon, epsilon])
+                            traversal_a_a3.set_reci_sqslope(
+                                a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a3)))
+                            traversal_a_a3.set_sqslope2(
+                                a_hyperbola.f2aax(0),
+                                a_hyperbola.f2aax(a.d(a3)))
                         if b != b3:
-                            traversal_b3_b = Traversal(self, b3_cm, b_cm, [b3, b], max(b_epsilon, epsilon),
-                                                       [epsilon, b_epsilon])
-                            traversal_b3_b.set_reci_sqslope(a_hyperbola.f2ax(b2.d(b3)), a_hyperbola.f2ax(b2.d(b)))
-                            traversal_b3_b.set_sqslope2(a_hyperbola.f2aax(b2.d(b3)), a_hyperbola.f2aax(b2.d(b)))
+                            traversal_b3_b = Traversal(
+                                self, b3_cm, b_cm, [b3, b],
+                                max(b_epsilon, epsilon), [epsilon, b_epsilon])
+                            traversal_b3_b.set_reci_sqslope(
+                                a_hyperbola.f2ax(b2.d(b3)),
+                                a_hyperbola.f2ax(b2.d(b)))
+                            traversal_b3_b.set_sqslope2(
+                                a_hyperbola.f2aax(b2.d(b3)),
+                                a_hyperbola.f2aax(b2.d(b)))
                         if a3 != a4:
                             if critical_traversal.count() > 1:
-                                new_critical_events_1 = critical_events.in_and_on_bounds_1(a3, a4)
+                                new_critical_events_1 = critical_events\
+                                    .in_and_on_bounds_1(a3, a4)
                             else:
-                                new_critical_events_1 = critical_events.in_and_on_bounds_2(a3, a4)
-                            traversals_a3_a4 = self.traverse_recursive(a3_cm, new_critical_events_1, a4_cm)
-                            traversals_a3_a4.sort(key=lambda tra: tra.reci_sqslope_a)
+                                new_critical_events_1 = critical_events\
+                                    .in_and_on_bounds_2(a3, a4)
+                            traversals_a3_a4 = self.traverse_recursive(
+                                a3_cm, new_critical_events_1, a4_cm)
+                            traversals_a3_a4.sort(
+                                key=lambda tra: tra.reci_sqslope_a)
                             traversal_a3_a4 = traversals_a3_a4[0]
-                            reci_sqslope_a = traversal_a3_a4.reci_sqslope_a + traversal_a3_a4.reci_sqslope_b + critical_traversal.reci_sqslope_a
+                            reci_sqslope_a = (traversal_a3_a4.reci_sqslope_a +
+                                              traversal_a3_a4.reci_sqslope_b +
+                                              critical_traversal.reci_sqslope_a
+                                              )
                         else:
                             reci_sqslope_a = critical_traversal.reci_sqslope_a
                         if b3 != b4:
                             if critical_traversal.count() > 1:
-                                new_critical_events_2 = critical_events.in_and_on_bounds_1(b4, b3)
+                                new_critical_events_2 = critical_events\
+                                    .in_and_on_bounds_1(b4, b3)
                             else:
-                                new_critical_events_2 = critical_events.in_and_on_bounds_2(b4, b3)
-                            traversals_b4_b3 = self.traverse_recursive(b4_cm, new_critical_events_2, b3_cm)
-                            traversals_b4_b3.sort(key=lambda tra: tra.reci_sqslope_b)
+                                new_critical_events_2 = critical_events\
+                                    .in_and_on_bounds_2(b4, b3)
+                            traversals_b4_b3 = self.traverse_recursive(
+                                b4_cm, new_critical_events_2, b3_cm)
+                            traversals_b4_b3.sort(
+                                key=lambda tra: tra.reci_sqslope_b)
                             traversal_b4_b3 = traversals_b4_b3[0]
-                            reci_sqslope_b = traversal_b4_b3.reci_sqslope_b + traversal_b4_b3.reci_sqslope_a + critical_traversal.reci_sqslope_b
+                            reci_sqslope_b = (traversal_b4_b3.reci_sqslope_b +
+                                              traversal_b4_b3.reci_sqslope_a +
+                                              critical_traversal.reci_sqslope_b
+                                              )
                         else:
                             reci_sqslope_b = critical_traversal.reci_sqslope_b
 
-                        traversal = traversal_a_a3 + traversal_a3_a4 + critical_traversal + traversal_b4_b3 +\
-                                    traversal_b3_b
+                        traversal = (traversal_a_a3 + traversal_a3_a4 +
+                                     critical_traversal + traversal_b4_b3 +
+                                     traversal_b3_b)
 
-                        traversals_and_slopes.append((reci_sqslope_a + reci_sqslope_b, traversal))
+                        traversals_and_slopes.append(
+                            (reci_sqslope_a + reci_sqslope_b, traversal))
                         traversed = True
 
                 i_epsilon += 1
@@ -1655,7 +1921,8 @@ class CellMatrix:
             traversals_and_slopes.sort(key=lambda tup: tup[0])
             # Show Traversals Setting:
             # To show one traversal: [traversals_and_slopes[0][1]]
-            # To show all possible traversals: [tra[1] for tra in traversals_and_slopes]
+            # To show all possible traversals:
+            # [tra[1] for tra in traversals_and_slopes]
             return [tra[1] for tra in traversals_and_slopes]
 
         # critical event is higher than max_ab_epsilon
@@ -1663,13 +1930,10 @@ class CellMatrix:
         critical_traversals = critical_event[1]
         print("===4===critical_traversals=== ", critical_traversals)
 
-
-
         # using graph
-        graph = self.generate_traversal_graph(a_cm, b_cm, critical_traversals.copy(), critical_epsilon)
+        graph = self.generate_traversal_graph(
+            a_cm, b_cm, critical_traversals.copy(), critical_epsilon)
         print("graph: ", graph)
-
-
 
         traversals_and_slopes = []
         for i in range(len(critical_traversals)):
@@ -1683,8 +1947,10 @@ class CellMatrix:
             critical_events_1 = critical_events.in_bounds(a, b1)
             critical_events_2 = critical_events.in_bounds(a1, b)
 
-            traversals_1 = self.traverse_recursive(a_cm, critical_events_1, b1_cm)
-            traversals_2 = self.traverse_recursive(a1_cm, critical_events_2, b_cm)
+            traversals_1 = self.traverse_recursive(
+                a_cm, critical_events_1, b1_cm)
+            traversals_2 = self.traverse_recursive(
+                a1_cm, critical_events_2, b_cm)
             traversals_1.sort(key=lambda tra: tra.reci_sqslope_b)
             traversals_2.sort(key=lambda tra: tra.reci_sqslope_a)
             traversal_1 = traversals_1[0]
@@ -1692,37 +1958,49 @@ class CellMatrix:
 
             traversal = traversal_1 + critical_traversal + traversal_2
 
-            reci_sqslope_a = traversal_1.reci_sqslope_b + critical_traversal.reci_sqslope_a
-            reci_sqslope_b = critical_traversal.reci_sqslope_b + traversal_2.reci_sqslope_a
-            traversals_and_slopes.append((reci_sqslope_a + reci_sqslope_b, traversal))
+            reci_sqslope_a = (traversal_1.reci_sqslope_b +
+                              critical_traversal.reci_sqslope_a)
+            reci_sqslope_b = (critical_traversal.reci_sqslope_b +
+                              traversal_2.reci_sqslope_a)
+            traversals_and_slopes.append(
+                (reci_sqslope_a + reci_sqslope_b, traversal))
 
         traversals_and_slopes.sort(key=lambda tup: tup[0])
         return [tra[1] for tra in traversals_and_slopes]
 
-    def sample_l(self, n_l: int, n_p: int, heatmap_n: int = 100, traversals_n: int = 10, cross_sections_n: int = 100)\
-            -> {}:
-        # sample cell-matrix with n_l: number of ls and n_p: points per ellipses
+    def sample_l(self, n_l: int, n_p: int, heatmap_n: int = 100,
+                 traversals_n: int = 10, cross_sections_n: int = 100) -> {}:
+        """
+        sample cell-matrix with n_l: number of ls and n_p: points per ellipses
+        """
         ls = []
 
         if n_l > 0:
             for i in range(n_l + 1):
-                l = self.bounds_l[0] + (float(i) / n_l) * (self.bounds_l[1] - self.bounds_l[0])
-                ls.append(l)
+                ls.append(
+                    (self.bounds_l[0] +
+                     (float(i) / n_l) * (self.bounds_l[1] - self.bounds_l[0])))
         elif n_l == -1:
             ls = [self.max_epsilon]
 
-        return self.sample(ls, n_p, heatmap_n=heatmap_n, traversals_n=traversals_n, cross_sections_n=cross_sections_n)
+        return self.sample(
+            ls, n_p, heatmap_n=heatmap_n, traversals_n=traversals_n,
+            cross_sections_n=cross_sections_n)
 
-    def sample(self, ls: [float], n_p: int, heatmap_n: int = 100, traversals_n: int = 25, cross_sections_n: int = 100)\
-            -> {}:
-        # sample cell-matrix for given ls and n_p: points per ellipses
-        samples = {"bounds-l": [], "borders-v": [], "borders-h": [], "cells": [], "traversals": [], "heatmap": [],
+    def sample(self, ls: [float], n_p: int, heatmap_n: int = 100,
+               traversals_n: int = 25, cross_sections_n: int = 100) -> {}:
+        """
+        sample cell-matrix for given ls and n_p: points per ellipses
+        """
+        samples = {"bounds-l": [], "borders-v": [], "borders-h": [],
+                   "cells": [], "traversals": [], "heatmap": [],
                    "cross-section-p": [], "cross-section-q": []}
 
         # are all ls in bounds
         for l in ls:
             if l < self.bounds_l[0] or l > self.bounds_l[1]:
-                print("l: " + str(l) + " is not in bounds_l: " + str(self.bounds_l))
+                print("l: " + str(l) + " is not in bounds_l: " +
+                      str(self.bounds_l))
                 ls.remove(l)
 
         # include bounds_l in sample
@@ -1735,15 +2013,20 @@ class CellMatrix:
         for i_p in range(self.p.count):
             for i_q in range(self.q.count):
                 cell = self.cells[i_p][i_q]
-                samples["cells"].append((str(i_p) + "x" + str(i_q), cell.sample(ls, n_p)))
+                samples["cells"].append(
+                    (str(i_p) + "x" + str(i_q), cell.sample(ls, n_p)))
 
         # sample cell borders
         for i in range(1, self.p.count):  # vertical
-            samples["borders-v"].append(("border-v: " + str(i), [Vector(self.p.offsets[i], 0),
-                                                                 Vector(self.p.offsets[i], self.q.length)]))
+            samples["borders-v"].append(
+                ("border-v: " + str(i), [Vector(self.p.offsets[i], 0),
+                                         Vector(self.p.offsets[i],
+                                                self.q.length)]))
         for i in range(1, self.q.count):  # horizontal
-            samples["borders-h"].append(("border-h: " + str(i), [Vector(0, self.q.offsets[i]),
-                                                                 Vector(self.p.length, self.q.offsets[i])]))
+            samples["borders-h"].append(
+                ("border-h: " + str(i), [Vector(0, self.q.offsets[i]),
+                                         Vector(self.p.length,
+                                                self.q.offsets[i])]))
 
         # include size in sample
         samples["size"] = (self.p.length, self.q.length)
@@ -1755,15 +2038,17 @@ class CellMatrix:
         if self.traverse > 0:
             for traversal in self.traversals:
                 samples["traversals"].append(
-                    self.sample_traversal(traversal, traversals_n * max(self.p.count, self.q.count))
-                )
+                    self.sample_traversal(
+                        traversal, traversals_n * max(self.p.count,
+                                                      self.q.count)))
 
         # sample heatmap
         if heatmap_n > 0:
             samples["heatmap"] = self.sample_heatmap_p(heatmap_n)
 
         if cross_sections_n > 0:
-            samples["cross-sections-hor"], samples["cross-sections-ver"] = self.sample_cross_sections_p(cross_sections_n)
+            samples["cross-sections-hor"], samples["cross-sections-ver"] = \
+                self.sample_cross_sections_p(cross_sections_n)
 
         return samples
 
@@ -1778,8 +2063,10 @@ class CellMatrix:
             points_hor = []
             for i_p in range(self.p.count):
                 bounds = (self.p.offsets[i_p], self.p.offsets[i_p + 1])
-                n_points = int(math.ceil(n_p * (self.p.lengths[i_p] / self.p.length)))
-                hyperbola_sample = self.cross_sections_hor[i_q][i_p].sample(bounds, n_points)
+                n_points = int(math.ceil(n_p * (self.p.lengths[i_p] /
+                                                self.p.length)))
+                hyperbola_sample = self.cross_sections_hor[i_q][i_p]\
+                    .sample(bounds, n_points)
                 points_hor += hyperbola_sample
             sample_hor.append((str(i_q), points_hor))
         # vertical
@@ -1788,17 +2075,25 @@ class CellMatrix:
             points_ver = []
             for i_q in range(self.q.count):
                 bounds = (self.q.offsets[i_q], self.q.offsets[i_q + 1])
-                n_points = int(math.ceil(n_q * (self.q.lengths[i_q] / self.q.length)))
-                hyperbola_sample = self.cross_sections_ver[i_p][i_q].sample(bounds, n_points)
+                n_points = int(math.ceil(n_q * (self.q.lengths[i_q] /
+                                                self.q.length)))
+                hyperbola_sample = self.cross_sections_ver[i_p][i_q]\
+                    .sample(bounds, n_points)
                 points_ver += hyperbola_sample
             sample_ver.append((str(i_p), points_ver))
         return sample_hor, sample_ver
 
-    def sample_heatmap_p(self, n_p: int) -> []:  # sample heat map with squares scaled by n_p divisions on p-axis
+    def sample_heatmap_p(self, n_p: int) -> []:
+        """
+        sample heat map with squares scaled by n_p divisions on p-axis
+        """
         n_b = int(math.floor(n_p * (self.q.length / self.p.length)))
         return self.sample_heatmap(n_p, n_b)
 
-    def sample_heatmap(self, n_p: int, n_q: int) -> []:  # sample heatmap by n_p rectangles on p-axis and n_q on q-axis
+    def sample_heatmap(self, n_p: int, n_q: int) -> []:
+        """
+        sample heatmap by n_p rectangles on p-axis and n_q on q-axis
+        """
         # coordinates
         xs = [[]]
         ys = [[]]
@@ -1814,13 +2109,16 @@ class CellMatrix:
         c_a, c_b = 0, 0
 
         # iterate through cells & a-/b-axis
-        while c_b < self.q.count:
-            while y <= self.q.offsets[c_b + 1] or (c_b >= self.q.count - 1 and i_y <= n_q):
-                while x <= self.p.offsets[c_a + 1] or (c_a >= self.p.count - 1 and i_x <= n_p):
+        while (c_b < self.q.count):
+            while (y <= self.q.offsets[c_b + 1] or
+                    (c_b >= self.q.count - 1 and i_y <= n_q)):
+                while (x <= self.p.offsets[c_a + 1] or
+                        (c_a >= self.p.count - 1 and i_x <= n_p)):
                     xs[-1].append(x)
                     ys[-1].append(y)
                     cell = self.cells[c_a][c_b]
-                    z = cell.lp(Vector(x - self.p.offsets[c_a], y - self.q.offsets[c_b]))
+                    z = cell.lp(Vector(x - self.p.offsets[c_a],
+                                       y - self.q.offsets[c_b]))
                     zs[-1].append(z)
 
                     i_x += 1
@@ -1844,7 +2142,9 @@ class CellMatrix:
 
         return [xs, ys, zs]
 
-    def points_for_traversal_point(self, traversal_p: Vector, c_a: int = 0, c_b: int = 0) -> (Vector, Vector):
+    def points_for_traversal_point(
+            self, traversal_p: Vector, c_a: int = 0, c_b: int = 0) -> \
+            (Vector, Vector):
         # sample lines for sampling over the input paths
         r_a = traversal_p.x
         r_b = traversal_p.y
@@ -1869,10 +2169,13 @@ class CellMatrix:
         return pa, pb
 
     def sample_traversal(self, traversal: Traversal, n: int) -> {}:
-        # sample a specific traversal for lines between paths and 3d-plot with n points
+        """
+        sample a specific traversal for lines between paths and 3d-plot with n
+        points
+        """
 
-        sample = {"epsilon-bounds": (float, float), "in-traversal-l": [], "in-traversal": [], "traversal-3d": [],
-                  "traversal-3d-l": []}
+        sample = {"epsilon-bounds": (float, float), "in-traversal-l": [],
+                  "in-traversal": [], "traversal-3d": [], "traversal-3d-l": []}
 
         epsilon = traversal.epsilon
         sample["epsilon-bounds"] = (min(traversal.epsilons), epsilon)
@@ -1934,7 +2237,8 @@ class CellMatrix:
                 i_t += 1
 
         if about_equal(epsilons[-1], epsilon):
-            sample["in-traversal-l"].append((self.p.points[-1], self.q.points[-1]))
+            sample["in-traversal-l"].append(
+                (self.p.points[-1], self.q.points[-1]))
             x_l.append(self.p.length)
             y_l.append(self.q.length)
             z_l.append(epsilons[-1])
