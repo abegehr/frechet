@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b2dd6b-9cb6-435d-a7d9-8e78cd7608c2" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/anton.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/anton.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frechet_alg/Algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/frechet_alg/Algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frechet_alg/Geometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/frechet_alg/Geometry.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -12,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/frechet_backend$frechet_backend.coverage" NAME="frechet_backend Coverage Results" MODIFIED="1529972629906" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/frechet_backend$frechet_backend.coverage" NAME="frechet_backend Coverage Results" MODIFIED="1529979388829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -28,8 +30,8 @@
       <file leaf-file-name="Algorithm.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frechet_alg/Algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="1469" column="62" selection-start-line="1469" selection-start-column="62" selection-end-line="1469" selection-end-column="62" />
+            <state relative-caret-position="736">
+              <caret line="1462" column="34" selection-start-line="1462" selection-start-column="34" selection-end-line="1462" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -37,8 +39,8 @@
       <file leaf-file-name="Geometry.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frechet_alg/Geometry.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="568" column="18" selection-start-line="568" selection-start-column="18" selection-end-line="568" selection-end-column="18" />
+            <state relative-caret-position="484">
+              <caret line="262" column="31" lean-forward="true" selection-start-line="262" selection-start-column="31" selection-end-line="262" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -50,7 +52,6 @@
       <find>steepest_decent_hyperbola</find>
       <find>hyperb</find>
       <find>hyperbola_with_line</find>
-      <find>steepest_decent(</find>
       <find>f2ax</find>
       <find>f2aax</find>
       <find>traversal_from_points</find>
@@ -60,6 +61,17 @@
       <find>out_sqslo</find>
       <find>out_hyper</find>
       <find>traversal_from</find>
+      <find>error: ste</find>
+      <find>error: stee</find>
+      <find>to_bounds</find>
+      <find>steepest_decent</find>
+      <find>rlx</find>
+      <find>steepest_decent(</find>
+      <find>cell(</find>
+      <find>traversal_from_p</find>
+      <find>in_sqsl</find>
+      <find>generate_traversal_graph</find>
+      <find>rly</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -180,7 +192,7 @@
       <window_info anchor="bottom" id="Python Console" order="8" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.62034076" weight="0.43184182" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.06614583" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.06614583" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="4" />
@@ -197,6 +209,31 @@
       <window_info anchor="right" id="R Graphics" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.06614583" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="4" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="5" />
+      <window_info anchor="bottom" id="Database Changes" order="6" show_stripe_button="false" />
+      <window_info anchor="right" id="R Graphics" order="6" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.62034076" weight="0.43184182" />
+      <window_info anchor="right" id="R Packages" order="5" />
+      <window_info anchor="bottom" id="Python Console" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info active="true" anchor="right" id="Debug" order="8" sideWeight="0.94207317" visible="true" weight="0.45989582" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="right" id="Event Log" order="7" sideWeight="0.05792683" side_tool="true" weight="0.35833332" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -218,19 +255,12 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="10" />
+      <option name="time" value="13" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/frechet_backend.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/socketserver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="466" selection-start-line="466" selection-end-line="466" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/sre_compile.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -274,17 +304,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/socketserver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="466" selection-start-line="466" selection-end-line="466" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/frechet_alg/Geometry.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="568" column="18" selection-start-line="568" selection-start-column="18" selection-end-line="568" selection-end-column="18" />
+        <state relative-caret-position="484">
+          <caret line="262" column="31" lean-forward="true" selection-start-line="262" selection-start-column="31" selection-end-line="262" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frechet_alg/Algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="1469" column="62" selection-start-line="1469" selection-start-column="62" selection-end-line="1469" selection-end-column="62" />
+        <state relative-caret-position="736">
+          <caret line="1462" column="34" selection-start-line="1462" selection-start-column="34" selection-end-line="1462" selection-end-column="34" />
         </state>
       </provider>
     </entry>

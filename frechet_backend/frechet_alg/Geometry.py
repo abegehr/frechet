@@ -245,7 +245,7 @@ class LineSegment:
         self.l = self.d.l  # length
 
         # calculate slope m and y(or x)-intercept n of line defined by the line segment
-        if (p2.x - p1.x) != 0:
+        if not about_equal((p2.x - p1.x), 0):
             self.m = (p2.y - p1.y) / (p2.x - p1.x)
             self.n = p1.y - self.m * p1.x
         else:
@@ -294,13 +294,13 @@ class LineSegment:
         if not math.isinf(self.m):
             return (x - self.p1.x) / (self.p2.x - self.p1.x)
         else:
-            return float("nan")
+            return float("inf")
 
     def ry(self, y: float) -> float:  # parameter r for set y-value
-        if self.m != 0:
+        if not about_equal(self.m, 0):
             return (y - self.p1.y) / (self.p2.y - self.p1.y)
         else:
-            return float("nan")
+            return float("inf")
 
     def rlx(self, x: float) -> float:  # parameter rl for set x-value
         return self.rx(x) * self.l
