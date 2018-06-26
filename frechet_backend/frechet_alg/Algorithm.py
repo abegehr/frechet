@@ -136,12 +136,12 @@ class Cell:
                 r = Vector(0, direction)
         elif case_hor:
             assert lh_left, "Error: Cannot do Steepest Decent.\n" +\
-                            "A:" + str(a) + " above l & right of l'." +\
+                            "A:" + str(a) + " above l & right of l'.\n" +\
                             "Cell:\n" + str(self)
             r = Vector(direction, 0)
         elif case_ver:
             assert lv_below, "Error: Cannot do Steepest Decent.\n" +\
-                             "A:" + str(a) + " above l & right of l'." +\
+                             "A:" + str(a) + " above l & right of l'.\n" +\
                              "Cell:\n" + str(self)
             r = Vector(0, direction)
         elif case_eq:
@@ -479,10 +479,8 @@ class Traversal:
         self.epsilons = epsilons
         self._count = -1
 
-        self.reci_sqslope_a = 0
-        self.reci_sqslope_b = 0
-        self.sqslope2_a = 0
-        self.sqslope2_b = 0
+        self.reci_sqslope = 0
+        self.sqslope2 = 0
 
     def __str__(self):
         return "    " + str(self.epsilon) + "-Traversal:" + '\n' + \
@@ -501,8 +499,6 @@ class Traversal:
         traversal = Traversal(None, (Vector.nan(), (math.nan, math.nan)),
                               (Vector.nan(), (math.nan, math.nan)),
                               [Vector.nan()], math.inf, [math.inf])
-        traversal.set_reci_sqslope(-math.inf, math.inf)
-        traversal.set_sqslope2(-math.inf, math.inf)
         return traversal
 
     def is_nan(self) -> bool:
@@ -519,24 +515,22 @@ class Traversal:
                               max(self.epsilon, other.epsilon),
                               self.epsilons[:-1] + other.epsilons)
 
-        # set reci_sqslope
-        if self.reci_sqslope_a != 0:
-            traversal.reci_sqslope_a = self.reci_sqslope_a
+        # set slopes
+        # if the epsilons are equal,
+        if about_equal(self.epsilon, other.epsilon):
+            # add slopes to make new slopes
+            traversal.reci_sqslope = self.reci_sqslope + other.reci_sqslope
+            traversal.sqslope2 = self.sqslope2 + other.sqslope2
         else:
-            traversal.reci_sqslope_a = other.reci_sqslope_a
-        if other.reci_sqslope_b != 0:
-            traversal.reci_sqslope_b = other.reci_sqslope_b
-        else:
-            traversal.reci_sqslope_b = self.reci_sqslope_b
-        # set sqslope2
-        if self.sqslope2_a != 0:
-            traversal.sqslope2_a = self.sqslope2_a
-        else:
-            traversal.sqslope2_a = other.sqslope2_a
-        if other.sqslope2_b != 0:
-            traversal.sqslope2_b = other.sqslope2_b
-        else:
-            traversal.sqslope2_b = self.sqslope2_b
+            # take slopes of traversal with higher epsilon
+            if self.epsilon > other.epsilon:
+                # self hast higher epsilon
+                traversal.reci_sqslope = self.reci_sqslope
+                traversal.sqslope2 = self.sqslope2
+            else:
+                # other has higher epsilon
+                traversal.reci_sqslope = other.reci_sqslope
+                traversal.sqslope2 = other.sqslope2
 
         return traversal
 
@@ -545,13 +539,16 @@ class Traversal:
             self._count = len(self.points)
         return self._count
 
-    def set_reci_sqslope(self, sqslope_a: float, sqslope_b: float):
-        self.reci_sqslope_a = 1/abs(sqslope_a) if sqslope_a < 0 else math.inf
-        self.reci_sqslope_b = 1/abs(sqslope_b) if sqslope_b > 0 else math.inf
+    def set_sqslopes(self, sqslopes: [float]):
+        self.reci_sqslope = 0
+        for sqslope in sqslopes:
+            self.reci_sqslope += 1/abs(sqslope) if sqslope != 0 else math.inf
 
-    def set_sqslope2(self, sqslope2_a: float, sqslope2_b: float):
-        self.sqslope2_a = sqslope2_a
-        self.sqslope2_b = sqslope2_b
+    def set_sqslopes2(self, sqslopes2: [float]):
+        self.sqslope2 = 0
+        for sqslope2 in sqslopes2:
+            self.sqslope2 += sqslope2
+
 
 
 class CriticalEvents:
@@ -1248,7 +1245,7 @@ class CellMatrix:
         return (b.x in reachable_hor[-1][-1]) or (b.y in reachable_ver[-1][-1])
 
     def steepest_decent_hyperbola(self, a_cm: CM_Point, direction: int) -> \
-            (Vector, Hyperbola):
+            Hyperbola:
         """
             Returns the steepest-descent hyperbola for point a_cm.
             The hyperbola returned by steepest_decent is oriented
@@ -1333,17 +1330,12 @@ class CellMatrix:
             print("---in_sqslope2: ", in_sqslope2)
             # critical event slopes
             if not traversal.a == traversal.b:
-                reci_sqslope += traversal.reci_sqslope_a + \
-                    traversal.reci_sqslope_b
-                sqslope2 += traversal.sqslope2_a + traversal.sqslope2_b
-                print("---traversal.reci_sqslope_a: ",
-                      traversal.reci_sqslope_a)
-                print("---traversal.sqslope2_a: ",
-                      traversal.sqslope2_a)
-                print("---traversal.reci_sqslope_b: ",
-                      traversal.reci_sqslope_b)
-                print("---traversal.sqslope2_b: ",
-                      traversal.sqslope2_b)
+                reci_sqslope += traversal.reci_sqslope
+                sqslope2 += traversal.sqslope2
+                print("---traversal.reci_sqslope: ",
+                      traversal.reci_sqslope)
+                print("---traversal.sqslope2: ",
+                      traversal.sqslope2)
             # outgoing slopes
             out_hyperbola = self.steepest_decent_hyperbola(traversal.b_cm, 1)
             print("---out_hyperbola: ", out_hyperbola)
@@ -1430,43 +1422,90 @@ class CellMatrix:
         return b, cell_b
 
     def traversal_from_points(self, points: [Vector]) -> Traversal:
+        """
+        Traversal from points in horizontal row or vertical column.
+        This means either the x- or y-value of all points needs to be the same.
+        """
+
+        # remove duplicates
+        tmp_points = [points[0]]
+        for i in range(1, len(points)):
+            if tmp_points[-1] != points[i]:
+                tmp_points.append(points[i])
+        points = tmp_points
+
+        # calculate epsilons
+        epsilons = []
+        for i, point in enumerate(points):
+            tmp_epsilon = self.epsilon_from_point(point)
+            epsilons.append(tmp_epsilon)
+        max_epsilon = max(epsilons)
+
+        # traversal start and end
         start = points[0]
         end = points[-1]
-
         start_cm = self.cm_point_b(start)
         end_cm = self.cm_point_a(end)
 
-        epsilons = []
-        for point in points:
-            tmp_epsilon = self.epsilon_from_point(point)
-            epsilons.append(tmp_epsilon)
-        epsilon = max(epsilons)
-
-        traversal = Traversal(self, start_cm, end_cm, points, epsilon,
+        # init traversal
+        traversal = Traversal(self, start_cm, end_cm, points, max_epsilon,
                               epsilons)
 
-        if len(points) <= 1:
-            traversal.set_reci_sqslope(-math.inf, math.inf)
-            traversal.set_sqslope2(-math.inf, math.inf)
-        elif about_equal(start.x, end.x) or about_equal(start.y, end.y):
-            cc_a = self.cm_point_a(start)[1]
-            cc_b = self.cm_point_b(end)[1]
-            cell_a = self.cells[cc_a[0]][cc_a[1]]
-            cell_b = self.cells[cc_b[0]][cc_b[1]]
-            if about_equal(start.y, end.y):
-                hyperbola_a = cell_a.hyperbola_horizontal(start.y)
-                hyperbola_b = cell_b.hyperbola_horizontal(end.y)
-                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.x),
-                                           hyperbola_b.f2ax(end.x))
-                traversal.set_sqslope2(hyperbola_a.f2aax(),
-                                       hyperbola_b.f2aax())
-            elif about_equal(start.x, end.x):
-                hyperbola_a = cell_a.hyperbola_vertical(start.x)
-                hyperbola_b = cell_b.hyperbola_vertical(end.x)
-                traversal.set_reci_sqslope(hyperbola_a.f2ax(start.y),
-                                           hyperbola_b.f2ax(end.y))
-                traversal.set_sqslope2(hyperbola_a.f2aax(),
-                                       hyperbola_b.f2aax())
+        sqslopes = []
+        sqslopes2 = []
+        '''# calculate slopes using steepest decent
+        for i in range(len(points)):
+            if about_equal(epsilons[i], max_epsilon):
+                # the point at i is a critical point, add its solpe
+                point = points[i]
+                a_cm = self.cm_point_b(point)
+                b_cm = self.cm_point_a(point)
+                in_hyperbola = self.steepest_decent_hyperbola(a_cm, -1)
+                out_hyperbola = self.steepest_decent_hyperbola(b_cm, 1)
+                if i != 0:  # don't add incoming slope for start point
+                    sqslopes.append(in_hyperbola.f2ax(0))
+                    sqslopes2.append(in_hyperbola.f2aax())
+                if i != len(points)-1:  # don't add outgoing slope for end point
+                    sqslopes.append(out_hyperbola.f2ax(0))
+                    sqslopes2.append(out_hyperbola.f2aax())'''
+        # calculate horizontal and vertical slopes
+        if len(points) > 1:
+            # determine horizontal or vertical
+            horizontal = False
+            if about_equal(start.x, end.x):
+                horizontal = True
+            for i in range(len(points)):
+                if about_equal(epsilons[i], max_epsilon):
+                    # the point at i is a critical point, add its slope
+                    point = points[i]
+                    a_cm = self.cm_point_b(point)
+                    b_cm = self.cm_point_a(point)
+                    cell_a = self.cells[a_cm[1][0]][a_cm[1][1]]
+                    cell_b = self.cells[b_cm[1][0]][b_cm[1][1]]
+                    if horizontal:  # is horizontal
+                        in_hyperbola = cell_a.hyperbola_horizontal(point.y)
+                        out_hyperbola = cell_b.hyperbola_horizontal(point.y)
+                        stelle = point.y
+                    else:  # is vertical
+                        in_hyperbola = cell_a.hyperbola_vertical(point.x)
+                        out_hyperbola = cell_b.hyperbola_vertical(point.x)
+                        stelle = point.x
+
+                    if i != 0:  # don't add incoming slope for start point
+                        sqslopes.append(in_hyperbola.f2ax(stelle))
+                        sqslopes2.append(in_hyperbola.f2aax())
+                    if i != len(points)-1:  # don't add outgoing slope for end point
+                        sqslopes.append(out_hyperbola.f2ax(stelle))
+                        sqslopes2.append(out_hyperbola.f2aax())
+
+        # set slopes
+        traversal.set_sqslopes(sqslopes)
+        traversal.set_sqslopes2(sqslopes2)
+
+        # DEBUG
+        print("||traversal|| ", traversal)
+        print(" |sqslopes| ", sqslopes)
+        print(" |sqslopes2| ", sqslopes2)
 
         return traversal
 
@@ -1804,18 +1843,18 @@ class CellMatrix:
                     traversal_a = Traversal(
                         self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
                         [a_epsilon, a2_epsilon])
-                    traversal_a.set_reci_sqslope(a_hyperbola.f2ax(0),
-                                                 a_hyperbola.f2ax(a.d(a2)))
-                    traversal_a.set_sqslope2(a_hyperbola.f2aax(),
-                                             a_hyperbola.f2aax())
+                    traversal_a.set_sqslopes([a_hyperbola.f2ax(0),
+                                                 a_hyperbola.f2ax(a.d(a2))])
+                    traversal_a.set_sqslopes2([a_hyperbola.f2aax(),
+                                             a_hyperbola.f2aax()])
                 if b != b2:
                     traversal_b = Traversal(
                         self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
                         [b2_epsilon, b_epsilon])
-                    traversal_a.set_reci_sqslope(b_hyperbola.f2ax(0),
-                                                 b_hyperbola.f2ax(b2.d(b)))
-                    traversal_a.set_sqslope2(b_hyperbola.f2aax(),
-                                             b_hyperbola.f2aax())
+                    traversal_a.set_sqslopes([b_hyperbola.f2ax(0),
+                                                 b_hyperbola.f2ax(b2.d(b))])
+                    traversal_a.set_sqslopes2([b_hyperbola.f2aax(),
+                                             b_hyperbola.f2aax()])
                 if a == a2 and b == b2:
                     return [Traversal(
                         self, a_cm, b_cm, [a, b], max(a_epsilon, b_epsilon),
@@ -1875,21 +1914,21 @@ class CellMatrix:
                             traversal_a_a3 = Traversal(
                                 self, a_cm, a3_cm, [a, a3],
                                 max(a_epsilon, epsilon), [a_epsilon, epsilon])
-                            traversal_a_a3.set_reci_sqslope(
-                                a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a3)))
-                            traversal_a_a3.set_sqslope2(
+                            traversal_a_a3.set_sqslopes(
+                                [a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a3))])
+                            traversal_a_a3.set_sqslopes2([
                                 a_hyperbola.f2aax(),
-                                a_hyperbola.f2aax())
+                                a_hyperbola.f2aax()])
                         if b != b3:
                             traversal_b3_b = Traversal(
                                 self, b3_cm, b_cm, [b3, b],
                                 max(b_epsilon, epsilon), [epsilon, b_epsilon])
-                            traversal_b3_b.set_reci_sqslope(
+                            traversal_b3_b.set_sqslopes([
                                 a_hyperbola.f2ax(b2.d(b3)),
-                                a_hyperbola.f2ax(b2.d(b)))
-                            traversal_b3_b.set_sqslope2(
+                                a_hyperbola.f2ax(b2.d(b))])
+                            traversal_b3_b.set_sqslopes2([
                                 a_hyperbola.f2aax(),
-                                a_hyperbola.f2aax())
+                                a_hyperbola.f2aax()])
                         if a3 != a4:
                             if critical_traversal.count() > 1:
                                 new_critical_events_1 = critical_events\
@@ -1900,14 +1939,14 @@ class CellMatrix:
                             traversals_a3_a4 = self.traverse_recursive(
                                 a3_cm, new_critical_events_1, a4_cm)
                             traversals_a3_a4.sort(
-                                key=lambda tra: tra.reci_sqslope_a)
+                                key=lambda tra: tra.reci_sqslope)
                             traversal_a3_a4 = traversals_a3_a4[0]
-                            reci_sqslope_a = (traversal_a3_a4.reci_sqslope_a +
-                                              traversal_a3_a4.reci_sqslope_b +
-                                              critical_traversal.reci_sqslope_a
-                                              )
+                            reci_sqslope = (traversal_a3_a4.reci_sqslope +
+                                            traversal_a3_a4.reci_sqslope +
+                                            critical_traversal.reci_sqslope
+                                            )
                         else:
-                            reci_sqslope_a = critical_traversal.reci_sqslope_a
+                            reci_sqslope = critical_traversal.reci_sqslope
                         if b3 != b4:
                             if critical_traversal.count() > 1:
                                 new_critical_events_2 = critical_events\
@@ -1918,21 +1957,21 @@ class CellMatrix:
                             traversals_b4_b3 = self.traverse_recursive(
                                 b4_cm, new_critical_events_2, b3_cm)
                             traversals_b4_b3.sort(
-                                key=lambda tra: tra.reci_sqslope_b)
+                                key=lambda tra: tra.reci_sqslope)
                             traversal_b4_b3 = traversals_b4_b3[0]
-                            reci_sqslope_b = (traversal_b4_b3.reci_sqslope_b +
-                                              traversal_b4_b3.reci_sqslope_a +
-                                              critical_traversal.reci_sqslope_b
-                                              )
+                            reci_sqslope = (traversal_b4_b3.reci_sqslope +
+                                            traversal_b4_b3.reci_sqslope +
+                                            critical_traversal.reci_sqslope
+                                            )
                         else:
-                            reci_sqslope_b = critical_traversal.reci_sqslope_b
+                            reci_sqslope = critical_traversal.reci_sqslope
 
                         traversal = (traversal_a_a3 + traversal_a3_a4 +
                                      critical_traversal + traversal_b4_b3 +
                                      traversal_b3_b)
 
                         traversals_and_slopes.append(
-                            (reci_sqslope_a + reci_sqslope_b, traversal))
+                            (reci_sqslope + reci_sqslope, traversal))
                         traversed = True
 
                 i_epsilon += 1
@@ -1972,19 +2011,19 @@ class CellMatrix:
                 a_cm, critical_events_1, b1_cm)
             traversals_2 = self.traverse_recursive(
                 a1_cm, critical_events_2, b_cm)
-            traversals_1.sort(key=lambda tra: tra.reci_sqslope_b)
-            traversals_2.sort(key=lambda tra: tra.reci_sqslope_a)
+            traversals_1.sort(key=lambda tra: tra.reci_sqslope)
+            traversals_2.sort(key=lambda tra: tra.reci_sqslope)
             traversal_1 = traversals_1[0]
             traversal_2 = traversals_2[0]
 
             traversal = traversal_1 + critical_traversal + traversal_2
 
-            reci_sqslope_a = (traversal_1.reci_sqslope_b +
-                              critical_traversal.reci_sqslope_a)
-            reci_sqslope_b = (critical_traversal.reci_sqslope_b +
-                              traversal_2.reci_sqslope_a)
+            reci_sqslope = (traversal_1.reci_sqslope +
+                            critical_traversal.reci_sqslope)
+            reci_sqslope = (critical_traversal.reci_sqslope +
+                            traversal_2.reci_sqslope)
             traversals_and_slopes.append(
-                (reci_sqslope_a + reci_sqslope_b, traversal))
+                (reci_sqslope + reci_sqslope, traversal))
 
         traversals_and_slopes.sort(key=lambda tup: tup[0])
         return [tra[1] for tra in traversals_and_slopes]
