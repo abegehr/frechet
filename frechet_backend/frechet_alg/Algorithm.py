@@ -608,6 +608,16 @@ class CriticalEvents:
 
         return critical_events_cut
 
+    def remove_epsilon(self, epsilon: float) -> "CriticalEvents":
+        critical_events_cut = CriticalEvents()
+
+        for eps in self.epsilons():
+            if not about_equal(eps, epsilon):
+                for traversal in self[eps]:
+                    critical_events_cut.append(traversal)
+
+        return critical_events_cut
+
     def in_bounds(self, a1: Vector, b2: Vector) -> "CriticalEvents":
         critical_events_cut = CriticalEvents()
 
@@ -1281,7 +1291,7 @@ class CellMatrix:
 
     def generate_traversal_graph(
             self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal],
-            epsilon: float) -> {}:
+            epsilon: float) -> ({}, [Traversal]):
         """
             Generates a graph that represents paths through critical events at
             height epsilon. Every node is either start- (a) or endpoint (b) or
@@ -1414,7 +1424,7 @@ class CellMatrix:
         print("==============")
         '''
 
-        return graph
+        return graph, traversals
 
     def paths_through_graph(self, graph: {}) -> [([int], (float, float))]:
         """
@@ -1499,14 +1509,14 @@ class CellMatrix:
 
     def best_paths_through_multiple_ces(
             self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal],
-            epsilon: float) -> [([int], (float, float))]:
+            epsilon: float) -> ([([int], (float, float))], [Traversal]):
         """
         Generates the best paths through multiple critical events.
         Deciding on best by minimizing first reci_sqslope and then sqslope2.
         """
 
         # 1) generate_traversal_graph
-        graph = self.generate_traversal_graph(a_cm, b_cm, traversals, epsilon)
+        graph, traversals = self.generate_traversal_graph(a_cm, b_cm, traversals, epsilon)
 
         # 2) find all paths through graph
         all_paths = self.paths_through_graph(graph)
@@ -1514,7 +1524,7 @@ class CellMatrix:
         # 3) filter for best paths (using reci_sqslope and sqslope2)
         best_paths = self.best_paths(all_paths)
 
-        return best_paths
+        return best_paths, traversals
 
     def cm_point_a(self, a: Vector) -> CM_Point:
         cell_a = (self.p.i_rl_path(a.x), self.q.i_rl_path(a.y))
@@ -1637,6 +1647,7 @@ class CellMatrix:
         b = b_cm[0]
 
         print("===0===traverse_recursive=== a:", a, " b:", b)
+        print("---0---critical_events--- ", critical_events)
 
         cc_a = a_cm[1]
         cc_b = b_cm[1]
@@ -2087,45 +2098,38 @@ class CellMatrix:
         print("===4===critical_traversals=== ", critical_traversals)
 
         # multiple critical events handling
-        ces = critical_traversals.copy()
         # calculate best paths through the critical events
-        best_paths = self.best_paths_through_multiple_ces(
-            a_cm, b_cm, ces, critical_epsilon)
+        best_paths, ces = self.best_paths_through_multiple_ces(
+            a_cm, b_cm, critical_traversals.copy(), critical_epsilon)
         print("BEST PATHS: ", best_paths)
 
-        traversals_and_slopes = []
-        for i in range(len(critical_traversals)):
-            critical_traversal = critical_traversals[i]
+        traversals = []
+        # for all paths
+        for i, path in enumerate(best_paths):
+            # for all critical traversals on path
+            path_traversals = [ces[0]]  # traversals for given path
+            last_b_cm = a_cm
+            for ce_i in path[0][1::]:
+                # traverse to ce
+                ce = ces[ce_i]
+                # get critical events inbetween, ignoring critical events of the current critical epsilon
+                ces_in_between = critical_events.in_bounds(last_b_cm[0], ce.a_cm[0])\
+                                                .remove_epsilon(critical_epsilon)
+                traversals_to_ce = self.traverse_recursive(
+                    last_b_cm, ces_in_between, ce.a_cm)
 
-            b1_cm = critical_traversal.a_cm
-            a1_cm = critical_traversal.b_cm
-            b1 = b1_cm[0]
-            a1 = a1_cm[0]
+                # traverse to ce and traverse ce
+                traversals_to_ce_and_ce = [traversal_to_ce + ce for traversal_to_ce in traversals_to_ce]
 
-            critical_events_1 = critical_events.in_bounds(a, b1)
-            critical_events_2 = critical_events.in_bounds(a1, b)
+                # combine with path traversals up to this point
+                path_traversals = [path_traversal + traversal_to_ce_and_ce
+                                   for path_traversal in path_traversals
+                                   for traversal_to_ce_and_ce in traversals_to_ce_and_ce]
+                last_b_cm = ce.b_cm
 
-            traversals_1 = self.traverse_recursive(
-                a_cm, critical_events_1, b1_cm)
-            traversals_2 = self.traverse_recursive(
-                a1_cm, critical_events_2, b_cm)
-            traversals_1.sort(key=lambda tra: tra.reci_sqslope)
-            traversals_2.sort(key=lambda tra: tra.reci_sqslope)
-            traversal_1 = traversals_1[0]
-            traversal_2 = traversals_2[0]
+            traversals += path_traversals
 
-            traversal = traversal_1 + critical_traversal + traversal_2
-
-            # todo! what is going on here!!?
-            reci_sqslope = (traversal_1.reci_sqslope +
-                            critical_traversal.reci_sqslope)
-            reci_sqslope = (critical_traversal.reci_sqslope +
-                            traversal_2.reci_sqslope)
-            traversals_and_slopes.append(
-                (reci_sqslope + reci_sqslope, traversal))
-
-        traversals_and_slopes.sort(key=lambda tup: tup[0])
-        return [tra[1] for tra in traversals_and_slopes]
+        return traversals
 
     def sample_l(self, n_l: int, n_p: int, heatmap_n: int = 100,
                  traversals_n: int = 10, cross_sections_n: int = 100) -> {}:
@@ -2268,7 +2272,7 @@ class CellMatrix:
         c_a, c_b = 0, 0
 
         # iterate through cells & a-/b-axis
-        while (c_b < self.q.count):
+        while c_b < self.q.count:
             while (y <= self.q.offsets[c_b + 1] or
                     (c_b >= self.q.count - 1 and i_y <= n_q)):
                 while (x <= self.p.offsets[c_a + 1] or

@@ -14,33 +14,36 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/frechet_backend$frechet_backend.coverage" NAME="frechet_backend Coverage Results" MODIFIED="1530016455395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/frechet_backend$frechet_backend.coverage" NAME="frechet_backend Coverage Results" MODIFIED="1530023283434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="frechet_backend.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="frechet_backend.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frechet_backend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="435">
+              <caret line="119" column="67" selection-start-line="119" selection-start-column="67" selection-end-line="119" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Algorithm.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/flask/app.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="267">
+              <caret line="1812" selection-start-line="1812" selection-end-line="1812" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Algorithm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frechet_alg/Algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="2090" column="58" selection-start-line="2090" selection-start-column="58" selection-end-line="2090" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="socketserver.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/socketserver.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
-              <caret line="471" lean-forward="true" selection-start-line="471" selection-end-line="471" />
+            <state relative-caret-position="224">
+              <caret line="1656" column="50" lean-forward="true" selection-start-line="1656" selection-start-column="50" selection-end-line="1656" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -48,8 +51,8 @@
       <file leaf-file-name="Geometry.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frechet_alg/Geometry.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="582">
+              <caret line="142" column="66" selection-start-line="142" selection-start-column="66" selection-end-line="142" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -81,6 +84,11 @@
       <find>in_sqsl</find>
       <find>generate_traversal_graph</find>
       <find>rly</find>
+      <find>.cop</find>
+      <find>copy</find>
+      <find>criticalevents(</find>
+      <find>vect</find>
+      <find>critical</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -91,6 +99,7 @@
       <list>
         <option value="$PROJECT_DIR$/frechet_alg/Geometry.py" />
         <option value="$PROJECT_DIR$/frechet_alg/Algorithm.py" />
+        <option value="$PROJECT_DIR$/frechet_backend.py" />
       </list>
     </option>
   </component>
@@ -114,25 +123,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="frechet_backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frechet_backend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frechet_backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frechet_backend" type="462c0819:PsiDirectoryNode" />
-              <item name="frechet_alg" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -204,7 +195,7 @@
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="4" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="right" id="Debug" order="8" sideWeight="0.94207317" visible="true" weight="0.45972222" />
+      <window_info active="true" anchor="right" id="Debug" order="8" sideWeight="0.94207317" visible="true" weight="0.53402776" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="R Graphics" order="6" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -262,7 +253,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="13" />
+      <option name="time" value="17" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -270,6 +261,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -325,31 +319,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frechet_backend.py">
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/flask/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frechet_alg/Geometry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="267">
+          <caret line="1812" selection-start-line="1812" selection-end-line="1812" />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/socketserver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
-          <caret line="471" lean-forward="true" selection-start-line="471" selection-end-line="471" />
+        <state relative-caret-position="335">
+          <caret line="239" selection-start-line="239" selection-end-line="239" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/selectors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="388" selection-start-line="388" selection-end-line="388" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frechet_alg/Geometry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="142" column="66" selection-start-line="142" selection-start-column="66" selection-end-line="142" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frechet_alg/Algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="2090" column="58" selection-start-line="2090" selection-start-column="58" selection-end-line="2090" selection-end-column="58" />
+        <state relative-caret-position="224">
+          <caret line="1656" column="50" lean-forward="true" selection-start-line="1656" selection-start-column="50" selection-end-line="1656" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frechet_backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="119" column="67" selection-start-line="119" selection-start-column="67" selection-end-line="119" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

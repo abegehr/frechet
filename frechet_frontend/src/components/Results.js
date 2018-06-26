@@ -66,7 +66,7 @@ class Results extends Component {
     const slider_step = delta_epsilon/slider_ticks;
     const slider_marks = {};
     slider_marks[frechet_epsilon] = {
-      label: "ε = "+frechet_epsilon,
+      label: "ε: "+frechet_epsilon,
       style: {color: 'white'}
     };
     const frechet_round = (eps) => {return roundTo(eps, 1e6)};
@@ -134,7 +134,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text+x+y',
         name: "#"+i,
-        text: traversal.z.map(z => {return "ε ≈ "+round(z)})
+        text: traversal.z.map(z => {return "ε: "+round(z)})
       });
       // epsilon points
       const epsilon_points = traversal.epsilon_points;
@@ -206,6 +206,7 @@ class Results extends Component {
     // critical events
     const critical_events = [];
     this.props.data.critical_events.forEach((c) => {
+      const label = 'ε: ' + round(c[2]);
       critical_events.push({
         x: c[0],
         y: c[1],
@@ -220,7 +221,7 @@ class Results extends Component {
           dash: 'dash'
         },
         hoverinfo: 'text+x+y',
-        text: 'ε ≈ ' + round(c[2])
+        text: label
       });
     });
 
@@ -251,7 +252,7 @@ class Results extends Component {
         },
         hoverinfo: 'name+text+x+y',
         name: "#"+i,
-        text: traversal.z.map(z => {return "ε ≈ "+round(z)})
+        text: traversal.z.map(z => {return "ε: "+round(z)})
       });
       // epsilon points
       const epsilon_points = traversal.epsilon_points;
@@ -280,6 +281,7 @@ class Results extends Component {
     // critical events 3d
     const critical_events_3d = [];
     this.props.data.critical_events.forEach((c) => {
+      const label = 'ε: ' + round(c[2]);
       critical_events_3d.push({
         type: 'scatter3d',
         x: c[0],
@@ -296,7 +298,7 @@ class Results extends Component {
           dash: 'dash'
         },
         hoverinfo: 'text+x+y',
-        text: ['ε ≈ ' + round(c[2]), 'ε ≈ ' + round(c[2])]
+        text: [label, label]
       });
     });
 
