@@ -2119,7 +2119,11 @@ class CellMatrix:
                     last_b_cm, ces_in_between, ce.a_cm)
 
                 # traverse to ce and traverse ce
-                traversals_to_ce_and_ce = [traversal_to_ce + ce for traversal_to_ce in traversals_to_ce]
+                # if ce is goal, skip ce
+                if ce_i == len(ces)-1:
+                    traversals_to_ce_and_ce = traversals_to_ce
+                else:
+                    traversals_to_ce_and_ce = [traversal_to_ce + ce for traversal_to_ce in traversals_to_ce]
 
                 # combine with path traversals up to this point
                 path_traversals = [path_traversal + traversal_to_ce_and_ce
