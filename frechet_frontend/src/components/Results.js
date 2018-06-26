@@ -132,7 +132,7 @@ class Results extends Component {
           width: 4,
           dash: 'line'
         },
-        hoverinfo: 'name+text',
+        hoverinfo: 'name+text+x+y',
         name: "#"+i,
         text: traversal.z.map(z => {return "ε ≈ "+round(z)})
       });
@@ -150,7 +150,7 @@ class Results extends Component {
             width: 1
           }
         },
-        hoverinfo: 'name+text',
+        hoverinfo: 'name+text+x+y',
         name: "#"+i,
         text: 'Fréchet Distance: ' + frechet_round(epsilon_points[2][0])
       });
@@ -219,7 +219,7 @@ class Results extends Component {
           width: 2,
           dash: 'dash'
         },
-        hoverinfo: 'text',
+        hoverinfo: 'text+x+y',
         text: 'ε ≈ ' + round(c[2])
       });
     });
@@ -249,7 +249,7 @@ class Results extends Component {
           width: 8,
           dash: 'line'
         },
-        hoverinfo: 'name+text',
+        hoverinfo: 'name+text+x+y',
         name: "#"+i,
         text: traversal.z.map(z => {return "ε ≈ "+round(z)})
       });
@@ -269,7 +269,7 @@ class Results extends Component {
             width: 1
           }
         },
-        hoverinfo: 'name+text',
+        hoverinfo: 'name+text+x+y',
         name: "#"+i,
         text: epsilon_points[2].map((eps) => {
           return 'Fréchet Distance: ' + frechet_round(eps);
@@ -295,7 +295,7 @@ class Results extends Component {
           width: 2,
           dash: 'dash'
         },
-        hoverinfo: 'text',
+        hoverinfo: 'text+x+y',
         text: ['ε ≈ ' + round(c[2]), 'ε ≈ ' + round(c[2])]
       });
     });
