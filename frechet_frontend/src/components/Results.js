@@ -342,7 +342,7 @@ class Results extends Component {
         y: traversal.profile[1],
         mode: 'lines',
         hoverinfo: 'name+x+y',
-        name: "#"+i,
+        name: "#"+i+" profile",
         line: {
           shape: 'linear',
           color:  color(i)
