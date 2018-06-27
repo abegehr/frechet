@@ -1,4 +1,13 @@
-# Lexicographic Fréchet Matchings (with Degenerate Inputs)
+# Lexicographic Fréchet Matchings with Degenerate Inputs
+
+## Bachelor Thesis
+
+My Bachelors Thesis "Lexicographic Fréchet Matchings with Degenerate Inputs" will be released and linked here on 12. July 2018.
+
+## Live Version
+
+Check out the live version and start experimenting here:
+[https://abegehr.github.io/frechet-webapp/](https://abegehr.github.io/frechet-webapp/)
 
 ## Run in development environement
 
