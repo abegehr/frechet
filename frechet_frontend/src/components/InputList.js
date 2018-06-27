@@ -23,8 +23,7 @@ class InputList extends Component {
 
   renderPoints = () => {
     const step = 0.5;
-    const percision = 2;
-
+    
     return this.props.points.map((point, index) => {
       return (
         <div key={index}>
@@ -32,9 +31,9 @@ class InputList extends Component {
             <span style={{textTransform: "uppercase"}}>
               {this.props.id}<sub>{index}</sub> </span>
             (
-            <NumericInput step={step} precision={percision} value={point.x} snap
+            <NumericInput step={step} value={point.x} snap
               onChange={this.onValueChange(index, "x")}/>
-            <NumericInput step={step} precision={percision} value={point.y} snap
+            <NumericInput step={step} value={point.y} snap
               onChange={this.onValueChange(index, "y")}/>
             )
             <span> </span>

@@ -31,6 +31,13 @@ class Results extends Component {
     this.toggleSetting = this.toggleSetting.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const new_freespace_epsilon = nextProps.data.traversals[0].epsilon[0];
+    if (this.state.freespace_epsilon !== new_freespace_epsilon) {
+      this.setState({freespace_epsilon: new_freespace_epsilon});
+    }
+  }
+
   toggleSetting = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -47,8 +54,7 @@ class Results extends Component {
     });
   }
 
-  showFreespace = (epsilon) => {
-    console.log("Show freespace for: ", epsilon);
+  change_freespace_epsilon = (epsilon) => {
     this.setState({freespace_epsilon: epsilon});
   }
 
@@ -474,7 +480,7 @@ class Results extends Component {
               defaultValue={frechet_epsilon}
               included={true}
               disabled={!this.state.settings.show_freespace}
-              onAfterChange={this.showFreespace}
+              onAfterChange={this.change_freespace_epsilon}
               />
           </div>
         </div>

@@ -28,12 +28,6 @@
   color: rgb(79, 79, 79);
 }
 
-.input {
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-}
-
 .buttons {
   display: flex;
   width: 100%;
@@ -47,13 +41,6 @@
   cursor: pointer;
 }
 
-.button.clear {
-  flex-grow: 1;
-  background-color: rgb(227, 99, 99);
-}
-.button.clear:hover {
-  background-color: rgb(176, 84, 84);
-}
 .button.go {
   flex-grow: 4;
   background-color: rgb(136, 207, 125);
@@ -61,7 +48,17 @@
 .button.go:hover {
   background-color: rgb(95, 161, 85);
 }
+.button.clear {
+  font-size: 1.6em;
+  flex-grow: 1;
+  background-color: rgb(227, 99, 99);
+}
+.button.clear:hover {
+  background-color: rgb(176, 84, 84);
+}
 .button.reset {
+  font-size: 1.6em;
+  flex-grow: 1;
   background-color: rgb(227, 99, 99);
 }
 .button.reset:hover {
