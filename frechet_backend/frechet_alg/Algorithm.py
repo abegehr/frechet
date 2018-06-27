@@ -1428,6 +1428,7 @@ class CellMatrix:
                         not (reachable_right.is_point() and ce_right)):
                     cell_ces_reach[i_p + 1][i_q].extend(ces_reach)
 
+        '''
         # DEBUG
         print("===generate_traversal_graph===")
         print("traversals: ", [str(traversal.a) + '->' + str(traversal.b) for traversal in traversals])
@@ -1435,6 +1436,7 @@ class CellMatrix:
         print("graph: ", graph)
         print("traversal_slopes: ", traversal_slopes)
         print("==============")
+        '''
 
         return graph, traversals
 
@@ -1506,22 +1508,26 @@ class CellMatrix:
             if about_equal(path[1][0], min_reci_sqslope):
                 paths_1.append(path)
 
+        ''' # todo: fix sqslope, first understand maths
         # 2) filter for minimum sqslope2
         min_sqslope2 = min(paths_1, key=lambda t: t[1][1])[1][1]
         paths_2 = []  # paths with min_sqslope2
         for path in paths_1:
             if about_equal(path[1][1], min_sqslope2):
                 paths_2.append(path)
+        '''
 
         # if multiple paths remain, keep all
 
+        '''
         # DEBUG
         print("=/=best_paths=/=")
         print("-paths_0: ", paths_0)
         print("-paths_1: ", paths_1)
-        print("-paths_2: ", paths_2)
+        #print("-paths_2: ", paths_2)
+        '''
 
-        return paths_2
+        return paths_1
 
     def best_paths_through_ces(
             self, a_cm: CM_Point, b_cm: CM_Point, traversals: [Traversal],
@@ -1818,12 +1824,45 @@ class CellMatrix:
                 b_bounds_hor = Bounds1D(min(b.x, b2.x), max(b.x, b2.x))
                 b_bounds_ver = Bounds1D(min(b.y, b2.y), max(b.y, b2.y))
 
-            # check for critical events
-            # old type
+            # traverse (w/o ce)
             bound_epsilon = Bounds1D(max(a2_epsilon, b2_epsilon),
                                      max(a_epsilon, b_epsilon))
-            old_type_critical_events = critical_events \
-                .in_epsilon_bound(bound_epsilon)
+            traversals = []
+            traversed = False
+            if self.decide_traversal(a2_cm, b2_cm, bound_epsilon.start):
+                traversal_a = Traversal.nan()
+                traversal_b = Traversal.nan()
+                if a != a2:
+                    traversal_a = Traversal(
+                        self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
+                        [a_epsilon, a2_epsilon])
+                    traversal_a.set_sqslopes([a_hyperbola.f2ax(0),
+                                              a_hyperbola.f2ax(a.d(a2))])
+                    traversal_a.set_sqslopes2([a_hyperbola.f2aax(),
+                                               a_hyperbola.f2aax()])
+                if b != b2:
+                    traversal_b = Traversal(
+                        self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
+                        [b2_epsilon, b_epsilon])
+                    traversal_a.set_sqslopes([b_hyperbola.f2ax(0),
+                                              b_hyperbola.f2ax(b2.d(b))])
+                    traversal_a.set_sqslopes2([b_hyperbola.f2aax(),
+                                               b_hyperbola.f2aax()])
+                if a == a2 and b == b2:
+                    return [Traversal(
+                        self, a_cm, b_cm, [a, b], max(a_epsilon, b_epsilon),
+                        [a_epsilon, b_epsilon])]
+
+                new_critical_events = critical_events.in_and_on_bounds_1(a2, b2)
+                rec_traversals = self.traverse_recursive(a2_cm, new_critical_events, b2_cm)
+                for rec_traversal in rec_traversals:
+                    traversals.append(
+                        traversal_a + rec_traversal + traversal_b)
+                traversed = True
+
+            # check for critical events
+            # old type
+            old_type_critical_events = critical_events.in_epsilon_bound(bound_epsilon)
             print("===2===old_type_critical_events=== ",
                   old_type_critical_events)
             # new type
@@ -1959,46 +1998,11 @@ class CellMatrix:
                             new_type_critical_events_b.append(
                                 self.traversal_from_points(points))
 
-            # traverse
-            traversals = []
-            traversed = False
-            if self.decide_traversal(a2_cm, b2_cm, bound_epsilon.start):
-                traversal_a = Traversal.nan()
-                traversal_b = Traversal.nan()
-                if a != a2:
-                    traversal_a = Traversal(
-                        self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
-                        [a_epsilon, a2_epsilon])
-                    traversal_a.set_sqslopes([a_hyperbola.f2ax(0),
-                                              a_hyperbola.f2ax(a.d(a2))])
-                    traversal_a.set_sqslopes2([a_hyperbola.f2aax(),
-                                               a_hyperbola.f2aax()])
-                if b != b2:
-                    traversal_b = Traversal(
-                        self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
-                        [b2_epsilon, b_epsilon])
-                    traversal_a.set_sqslopes([b_hyperbola.f2ax(0),
-                                              b_hyperbola.f2ax(b2.d(b))])
-                    traversal_a.set_sqslopes2([b_hyperbola.f2aax(),
-                                               b_hyperbola.f2aax()])
-                if a == a2 and b == b2:
-                    return [Traversal(
-                        self, a_cm, b_cm, [a, b], max(a_epsilon, b_epsilon),
-                        [a_epsilon, b_epsilon])]
-                new_critical_events = critical_events \
-                    .in_and_on_bounds_1(a2, b2)
-                rec_traversals = self.traverse_recursive(
-                    a2_cm, new_critical_events, b2_cm)
-                for rec_traversal in rec_traversals:
-                    traversals.append(
-                        traversal_a + rec_traversal + traversal_b)
-                traversed = True
-
+            # traverse (w/ ce)
             possible_critical_events = (old_type_critical_events +
                                         new_type_critical_events_a +
                                         new_type_critical_events_b)
-            print("===3===possible_critical_events=== ",
-                  possible_critical_events)
+            print("===3===possible_critical_events=== ", possible_critical_events)
             possible_critical_epsilons = possible_critical_events.epsilons()
             i_epsilon = 0
             traversals_and_slopes = []
@@ -2137,7 +2141,7 @@ class CellMatrix:
                     .in_epsilon_bound(bound_epsilon) \
                     .remove_epsilon(critical_epsilon)
                 traversals_to_ce = self.traverse_recursive(
-                    last_b_cm, ces_in_between, ce.a_cm) # todo remove lower ce
+                    last_b_cm, ces_in_between, ce.a_cm)
 
                 # traverse to ce and traverse ce
                 # if ce is goal, skip ce
