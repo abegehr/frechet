@@ -1388,7 +1388,8 @@ class CellMatrix:
         # which critical events can directly (w/o other ce) reach cell
         cell_ces_reach = [[[] for _ in range(d_q + 1)] for _ in range(d_p + 1)]
         for i, traversal in enumerate(traversals):
-            (i_p, i_q) = traversal.cell_b
+            i_p = traversal.cell_b[0] - cell_a[0]
+            i_q = traversal.cell_b[1] - cell_a[1]
             cell_ces_reach[i_p][i_q].append(i)
 
         for i_p in range(d_p):
@@ -1408,7 +1409,7 @@ class CellMatrix:
                 # find traversals on top and right border
                 for trav_i, out_traversal in enumerate(traversals):
                     trav_cell_a = out_traversal.cell_a
-                    if i_p == trav_cell_a[0] and i_q == trav_cell_a[1]:
+                    if i_p == (trav_cell_a[0] - cell_a[0]) and i_q == (trav_cell_a[1] - cell_a[1]):
                         # traversal is on top/right border
                         for ce_reach in ces_reach:
                             in_traversal = traversals[ce_reach]
@@ -1417,12 +1418,13 @@ class CellMatrix:
                                 # connect graph
                                 graph[ce_reach].add((trav_i, traversal_slopes[trav_i]))
 
-                        # on which border is traversal
-                        trav_a = out_traversal.a
-                        if about_equal(trav_a.y, self.q.offsets[i_q+1]):
-                            ce_top = True
-                        if about_equal(trav_a.x, self.p.offsets[i_p+1]):
-                            ce_right = True
+                    # if there is a traversal outgoing, on which border is traversal
+                    # checking cell is not enough for traversals on border crossings
+                    trav_a = out_traversal.a
+                    if about_equal(trav_a.y, self.q.offsets[i_q+1]):
+                        ce_top = True
+                    if about_equal(trav_a.x, self.p.offsets[i_p+1]):
+                        ce_right = True
 
                 # update cell_ces_reach for neighbors
                 if (not reachable_top.is_nan() and
@@ -2054,14 +2056,14 @@ class CellMatrix:
                         # traverse it
                         a4_cm = critical_traversal.a_cm
                         b4_cm = critical_traversal.b_cm
-                        traversal_a3_a4 = self.traverse_recursive(a3_cm, critical_events_in_bounds, a4_cm)
-                        traversal_b4_b3 = self.traverse_recursive(b4_cm, critical_events_in_bounds, b3_cm)
+                        traversals_a3_a4 = self.traverse_recursive(a3_cm, critical_events_in_bounds, a4_cm)
+                        traversals_b4_b3 = self.traverse_recursive(b4_cm, critical_events_in_bounds, b3_cm)
                         return [traversal_a_a3 + traversal_a3_a4 + critical_traversal + traversal_b4_b3 +
-                                traversal_b3_b]
+                                traversal_b3_b for traversal_a3_a4 in traversals_a3_a4
+                                for traversal_b4_b3 in traversals_b4_b3]
                     else:
                         # else skip
                         continue
-
 
                 # multiple critical events handling
                 # calculate best paths through the critical events
