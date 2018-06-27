@@ -22,8 +22,8 @@ Bounds_2D = ((float, float), (float, float))
 tol = 1e-13  # global absolute tolerance
 
 
-def about_equal(x1: float, x2: float) -> bool:
-    return math.isclose(x1, x2, abs_tol=tol)
+def about_equal(x1: float, x2: float, abs_tol=tol) -> bool:
+    return math.isclose(x1, x2, abs_tol=abs_tol)
 
 
 class Bounds1D:

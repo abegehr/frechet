@@ -1369,7 +1369,9 @@ class CellMatrix:
         for i in range(len(traversals)):
             graph[i] = set([])
 
-        # if only one traversal, just use it
+        # WARNING: this means we have to be sure that a single critical event is traversable
+        # (decide before building graph)
+        # does: if only one traversal, just use it
         if len(traversals) <= 3:
             graph[0].add((1, (0, 0)))
             graph[1].add((2, (0, 0)))
@@ -1857,8 +1859,7 @@ class CellMatrix:
                 new_critical_events = critical_events.in_and_on_bounds_1(a2, b2)
                 rec_traversals = self.traverse_recursive(a2_cm, new_critical_events, b2_cm)
                 for rec_traversal in rec_traversals:
-                    traversals.append(
-                        traversal_a + rec_traversal + traversal_b)
+                    traversals.append(traversal_a + rec_traversal + traversal_b)
                 if len(traversals) > 0:
                     return traversals
 
@@ -1874,8 +1875,7 @@ class CellMatrix:
                 # vertical
                 border_hyperbolas = []
                 for i in range(cc_a[1], cc_b[1] + 1):
-                    border_hyperbolas.append(self.cells[cc_a[0]][i]
-                                             .hyperbola_top)
+                    border_hyperbolas.append(self.cells[cc_a[0]][i].hyperbola_top)
                 if not about_equal(a.x, a2.x):
                     criticals = steepest_decent_helper_new_type_critical_1(
                         a_bounds_hor, a_hyperbola_hor, border_hyperbolas, 1)
@@ -1938,8 +1938,7 @@ class CellMatrix:
                 # vertical
                 border_hyperbolas = []
                 for i in range(cc_b[1], cc_a[1] - 1, -1):
-                    border_hyperbolas.append(self.cells[cc_b[0]][i]
-                                             .hyperbola_bottom)
+                    border_hyperbolas.append(self.cells[cc_b[0]][i].hyperbola_bottom)
                 if not about_equal(b.x, b2.x):
                     criticals = steepest_decent_helper_new_type_critical_1(
                         b_bounds_hor, b_hyperbola_hor, border_hyperbolas, -1)
@@ -2007,9 +2006,10 @@ class CellMatrix:
             print("===3===possible_critical_events=== ", possible_critical_events)
             possible_critical_epsilons = possible_critical_events.epsilons()
             i_epsilon = 0
-            while i_epsilon < len(possible_critical_epsilons):
-                # traverse to critical epsilon (points a3 and b3)
+            for i_epsilon in range(len(possible_critical_epsilons)):
                 critical_epsilon = possible_critical_epsilons[i_epsilon]
+
+                # traverse to critical epsilon (points a3 and b3)
                 a3 = steepest_decent_helper_point_for_epsilon(
                     a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
                     a_bounds_ver, a2, critical_epsilon)
@@ -2041,7 +2041,18 @@ class CellMatrix:
                         a_hyperbola.f2aax(),
                         a_hyperbola.f2aax()])
 
-                critical_traversals = possible_critical_events[critical_epsilon]
+                critical_events_in_bounds = critical_events.in_bounds(a3, b3)
+                critical_traversals = possible_critical_events.in_and_on_bounds_2(a3, b3)[critical_epsilon]
+                if len(critical_traversals) == 0:
+                    continue  # if non of the critical events are reachable, continue
+                # if only one critical event is found,
+                elif len(critical_traversals) == 1:
+                    critical_traversal = critical_traversals[0]
+                    # and it is traversable,
+                    if self.decide_critical_traversal(a3_cm, critical_traversal, b3_cm):
+                        # traverse it
+                        return [traversal_a_a3 + critical_traversal + traversal_b3_b]
+
 
                 # multiple critical events handling
                 # calculate best paths through the critical events
@@ -2049,14 +2060,14 @@ class CellMatrix:
                     a3_cm, b3_cm, critical_traversals.copy(), critical_epsilon)
                 print("BEST PATHS: ", best_paths)
 
-                traversals_a3_b3 = self.traverse_best_paths(best_paths, ces, critical_epsilon, critical_events)
+                traversals_a3_b3 = self.traverse_best_paths(best_paths, ces, critical_epsilon,
+                                                            critical_events_in_bounds)
 
-                traversals = [traversal_a_a3 + traversal_a3_b3 + traversal_b3_b for traversal_a3_b3 in traversals_a3_b3]
+                traversals = [traversal_a_a3 + traversal_a3_b3 + traversal_b3_b
+                              for traversal_a3_b3 in traversals_a3_b3]
 
                 if len(traversals) > 0:
                     return traversals
-                
-                i_epsilon += 1
 
         # critical event is higher than max_ab_epsilon
         print("=== higher ===")
@@ -2378,8 +2389,7 @@ class CellMatrix:
                 i_t += 1
 
         if about_equal(epsilons[-1], epsilon):
-            sample["in-traversal-l"].append(
-                (self.p.points[-1], self.q.points[-1]))
+            sample["in-traversal-l"].append((self.p.points[-1], self.q.points[-1]))
             x_l.append(self.p.length)
             y_l.append(self.q.length)
             z_l.append(epsilons[-1])

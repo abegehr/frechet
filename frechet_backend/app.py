@@ -4,7 +4,7 @@ from flask_cors import CORS
 from math import sqrt
 from numbers import Number
 from frechet_alg.Algorithm import CellMatrix
-from frechet_alg.Geometry import Vector
+from frechet_alg.Geometry import Vector, about_equal
 
 app = Flask(__name__)
 CORS(app)
@@ -79,20 +79,39 @@ def index():
     for traversal in sample['traversals']:
         epsilon = traversal['traversal-3d-l'][2]
         epsilon_points = traversal['traversal-3d-l']
+        # compute 3d-coords, cross section and profile of traversal
         xs = traversal['traversal-3d'][0]
         ys = traversal['traversal-3d'][1]
         zs = traversal['traversal-3d'][2]
         ts = [0]
+        dts = [] # delta ts
         for i in range(1, len(xs)):
             dx = xs[i] - xs[i-1]
             dy = ys[i] - ys[i-1]
-            t = sqrt(dx**2 + dy**2)
-            ts.append(ts[i-1] + t)
+            dz = zs[i] - zs[i-1]
+            dt = sqrt(dx**2 + dy**2+ dz**2)
+            dts.append(dt)
+            ts.append(ts[i-1] + dt)
+        # profiles
+        profile_data = sorted(zip(dts, zs), key=lambda t: t[1], reverse=True)
+        profile_ts = [0]
+        profile_zs = [profile_data[0][1]]
+        ddt = 0
+        for _, (dt, z) in enumerate(profile_data):
+            ddt += dt
+            if not about_equal(profile_zs[-1], z, abs_tol=1e-6):
+                profile_ts.append(profile_ts[-1] + ddt)
+                profile_zs.append(z)
+                ddt = 0
+        print("profile_ts", profile_ts)
+        print("profile_zs", profile_zs)
+
         traversal_dict = {
             'x': xs,
             'y': ys,
             'z': zs,
             't': ts,
+            'profile': (profile_ts, profile_zs),
             'epsilon': epsilon,
             'length': ts[-1],
             'epsilon_points': epsilon_points

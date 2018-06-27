@@ -13,6 +13,22 @@ function round(num) {
   return roundTo(num, 100);
 }
 
+function color(i) {
+  const colors = [
+    '#1f77b4',  // muted blue
+    '#ff7f0e',  // safety orange
+    '#2ca02c',  // cooked asparagus green
+    '#d62728',  // brick red
+    '#9467bd',  // muted purple
+    '#8c564b',  // chestnut brown
+    '#e377c2',  // raspberry yogurt pink
+    '#7f7f7f',  // middle gray
+    '#bcbd22',  // curry yellow-green
+    '#17becf'   // blue-teal
+  ];
+  return colors[i%10];
+}
+
 class Results extends Component {
   constructor(props) {
     super(props);
@@ -311,12 +327,26 @@ class Results extends Component {
     // traversals cross section
     const traversals_cs_data = [];
     this.props.data.traversals.forEach((traversal, i) => {
+      // normal cross section
       traversals_cs_data.push({
         x: traversal.t,
         y: traversal.z,
         mode: 'lines',
         hoverinfo: 'name+x+y',
-        name: "#"+i
+        name: "#"+i,
+        line: {color: color(i)}
+      });
+      // cross section added up to the left
+      traversals_cs_data.push({
+        x: traversal.profile[0],
+        y: traversal.profile[1],
+        mode: 'lines',
+        hoverinfo: 'name+x+y',
+        name: "#"+i,
+        line: {
+          shape: 'linear',
+          color:  color(i)
+        }
       });
     });
 
