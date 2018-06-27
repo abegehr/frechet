@@ -61,7 +61,7 @@ def index():
     vec_p = xy_to_vectors([p['x'] for p in path_p], [p['y'] for p in path_p])
     vec_q = xy_to_vectors([q['x'] for q in path_q], [q['y'] for q in path_q])
 
-    # dispose consequitive equal points
+    # dispose consecutive equal points
     vec_p = remove_consecutive_equals(vec_p)
     vec_q = remove_consecutive_equals(vec_q)
 
@@ -109,7 +109,7 @@ def index():
     for cell in sample["cells"]:
         for l_vec in cell[1]['l-lines']:
             l = vectors_to_xy(l_vec[1])
-            if (len(l) == 2 and len(l[0]) == 2 and len(l[1]) == 2):
+            if len(l) == 2 and len(l[0]) == 2 and len(l[1]) == 2:
                 l_lines.append(l)
 
     # critical_events
