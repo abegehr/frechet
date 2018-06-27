@@ -1368,7 +1368,7 @@ class CellMatrix:
             graph[i] = set([])
 
         # if only one traversal, just use it
-        if len(traversals) >= 3:
+        if len(traversals) <= 3:
             graph[0].add((1, (0, 0)))
             graph[1].add((2, (0, 0)))
             return graph, traversals
