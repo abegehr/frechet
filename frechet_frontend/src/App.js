@@ -24,6 +24,7 @@ class App extends Component {
     if (data.p.length < 2 || data.p.length < 2) {
       this.setState({showResults: false});
       alert("Please input at least two points per path.");
+      return;
     }
 
     fetch(frechet_server_url, {
