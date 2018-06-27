@@ -2042,16 +2042,25 @@ class CellMatrix:
                         a_hyperbola.f2aax()])
 
                 critical_events_in_bounds = critical_events.in_bounds(a3, b3)
-                critical_traversals = possible_critical_events.in_and_on_bounds_2(a3, b3)[critical_epsilon]
+                critical_traversals = possible_critical_events.in_and_on_bounds_1(a3, b3)[critical_epsilon]
+
                 if len(critical_traversals) == 0:
-                    continue  # if non of the critical events are reachable, continue
+                    continue  # if non of the critical events are reachable, skip
                 # if only one critical event is found,
                 elif len(critical_traversals) == 1:
                     critical_traversal = critical_traversals[0]
                     # and it is traversable,
                     if self.decide_critical_traversal(a3_cm, critical_traversal, b3_cm):
                         # traverse it
-                        return [traversal_a_a3 + critical_traversal + traversal_b3_b]
+                        a4_cm = critical_traversal.a_cm
+                        b4_cm = critical_traversal.b_cm
+                        traversal_a3_a4 = self.traverse_recursive(a3_cm, critical_events_in_bounds, a4_cm)
+                        traversal_b4_b3 = self.traverse_recursive(b4_cm, critical_events_in_bounds, b3_cm)
+                        return [traversal_a_a3 + traversal_a3_a4 + critical_traversal + traversal_b4_b3 +
+                                traversal_b3_b]
+                    else:
+                        # else skip
+                        continue
 
 
                 # multiple critical events handling
@@ -2082,7 +2091,10 @@ class CellMatrix:
 
         traversals = self.traverse_best_paths(best_paths, ces, critical_epsilon, critical_events)
 
-        return traversals
+        if len(traversals) > 0:
+            return traversals
+        else:
+            return [Traversal.nan()]
 
     def traverse_best_paths(self, best_paths, ces: [Traversal], critical_epsilon: float,
                             critical_events: CriticalEvents) -> [Traversal]:
