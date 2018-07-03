@@ -585,6 +585,7 @@ class Hyperbola:
 
     def move_y(self, d_y: float) -> "Hyperbola":  # moves hyperbola on y-axis
         return self.move_p(Vector(0, d_y))
+        # todo: this is wrong! this does not only move on y axis
 
     def move_p(self, d_p: Vector) -> "Hyperbola":  # moves hyperbola on both axes
         return Hyperbola(self.s + d_p, self.a)
