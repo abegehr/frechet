@@ -1,0 +1,28 @@
+\section{Introduction}
+
+\subsection{Motivation} !!!TODO!!!
+	compare two paths
+
+\subsection{Applications} !!!TODO!!!
+	This is a short overview of real world applications of the Fréchet Distance.
+\subsubsection{Molecule Chains (Proteins)}
+\subsubsection{Handwriting Recognition}
+\subsubsection{Comparing Routes}
+\subsubsection{Computer Vision}
+\subsubsection{Wifi access point placing}
+
+\subsection{Problem Metaphor (Dog Walking)} \label{dogwalking}
+
+The Fréchet distance is often visually explained using the "dog walking"-metaphor, which is described in the following paragraphs.
+
+Imagine two curves:
+\begin{itemize}
+	\item Curve $C_P$ tracing the walking curve of a man
+	\item Curve $C_Q$ tracing the walking curve of the man's dog
+\end{itemize}
+
+The Fréchet Distance then is the shortest possible length of a leash, the man would need to keep ahold of his dog. Both the man and his dog have to traverse their entire paths and neither are allowed to walk backwards.
+
+Both the man and his dog can independently vary their respective speeds. With the conditions described above, at every point in time, either both the man and his dog are walking forwards along their respective paths or one is idle while the other is walking along his path.
+
+To make calculating the Fréchet distance more feasible by simplification, the arbitrary curves $C_P$, on which the man is walking, and and $C_Q$, on which his dog is walking, are approximated each by a connected chain of line segments, a polygonal chain. The arbitrary curve $C_P$ is approximated by the polygonal chain $P$. The arbitrary curve $C_Q$ is approximated by the polygonal chain $Q$.

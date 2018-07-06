@@ -1,0 +1,75 @@
+% !TeX encoding = UTF-8
+
+\documentclass[12pt, a4paper]{article}
+
+% bib
+\usepackage[natbib]{biblatex}
+%\bibliographystyle{plainnat}
+\bibliography{bibliography.bib}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\graphicspath{{./graphics/}}
+
+\usepackage{afterpage}
+
+\usepackage{enumitem}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{float}
+
+\usepackage{mathtools}
+
+\usepackage{subfig}
+
+\usepackage{hyperref}
+
+\newcommand\blankpage{
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \newpage
+}
+
+
+
+% settings
+\author{Anton Begehr}
+\title{Lexicographic Fréchet Matchings with Degenerate Inputs}
+\date{\today}
+
+\newcommand{\thesisData}{\today}
+
+
+
+\begin{document}
+
+% cover page and abstract
+\pagenumbering{roman}
+\include{./title}
+
+% declaration
+\cleardoublepage
+\include{./declaration}
+
+% table of contents
+\cleardoublepage
+\tableofcontents
+
+% content
+\cleardoublepage
+\pagenumbering{arabic}
+
+\input{./1_introduction}
+
+\input{./2_preliminaries}
+
+\input{./3_main}
+
+\input{./4_conclusion}
+
+\printbibliography
+
+\end{document}
