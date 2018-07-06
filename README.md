@@ -9,7 +9,7 @@ My Bachelors Thesis "Lexicographic Fréchet Matchings with Degenerate Inputs" wi
 Check out the live version and start experimenting here:
 [https://abegehr.github.io/frechet/](https://abegehr.github.io/frechet/)
 
-And a cool example of degenerate inputs: [https://abegehr.github.io/frechet-webapp/?p=(0\_0)(4\_0)(3\_2)(4\_3)(2\_3)(3\_4)(2\_6)(6\_6)&q=(0\_0)(0\_4)(6\_2)(6\_6)](https://abegehr.github.io/frechet/?p=(0\_0)(4\_0)(3\_2)(4\_3)(2\_3)(3\_4)(2\_6)(6\_6)&q=(0\_0)(0\_4)(6\_2)(6\_6))
+And a cool example of degenerate inputs: [https://abegehr.github.io/frechet/?p=(0\_0)(4\_0)(3\_2)(4\_3)(2\_3)(3\_4)(2\_6)(6\_6)&q=(0\_0)(0\_4)(6\_2)(6\_6)](https://abegehr.github.io/frechet/?p=(0\_0)(4\_0)(3\_2)(4\_3)(2\_3)(3\_4)(2\_6)(6\_6)&q=(0\_0)(0\_4)(6\_2)(6\_6))
 
 ## Run in development environement
 
