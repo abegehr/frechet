@@ -88,8 +88,8 @@ def index():
         for i in range(1, len(xs)):
             dx = xs[i] - xs[i-1]
             dy = ys[i] - ys[i-1]
-            dz = zs[i] - zs[i-1]
-            dt = sqrt(dx**2 + dy**2+ dz**2)
+            #dz = zs[i] - zs[i-1]
+            dt = max(dx, dy)
             dts.append(dt)
             ts.append(ts[i-1] + dt)
         # profiles
