@@ -46,7 +46,7 @@ class Cell:
         self.hyperbola_left = q.hyperbola_with_point(p.p1).move_x(offset.y)
         self.hyperbola_right = q.hyperbola_with_point(p.p2).move_x(offset.y)
 
-        # steepest decent lines l=l_ver and l'=l_hor
+        # steepest descent lines l=l_ver and l'=l_hor
         if not self.parallel:  # case 1: lines are not parallel
             c = norm_ellipsis.a
             d = norm_ellipsis.b
@@ -65,7 +65,7 @@ class Cell:
     def __str__(self):
         return "    Offset: " + str(self.offset) + '\n' + \
                "    Norm-" + str(self.norm_ellipsis) + '\n' + \
-               "    Steepest Decent Lines:\n" + \
+               "    Steepest descent Lines:\n" + \
                "      l: " + str(self.l_ver) + '\n' + \
                "      l': " + str(self.l_hor) + '\n' + \
                "    Bounds l: " + str(self.bounds_l) + '\n' + \
@@ -75,24 +75,24 @@ class Cell:
     def lp(self, p: Vector) -> float:  # epsilon for given point
         return self.p.frl(p.x).d(self.q.frl(p.y))
 
-    def steepest_decent(self, a: Vector, direction: int) -> \
+    def steepest_descent(self, a: Vector, direction: int) -> \
             (Vector, float, Hyperbola, Hyperbola, Hyperbola):
         """
-            Calculates data needed for steepest decent to the top-right or
+            Calculates data needed for steepest descent to the top-right or
             bottom-left.
-            a is starting point of decent and direction is the direction:
+            a is starting point of descent and direction is the direction:
             direction=-1: bottom-left, direction=1: top-right
             Return Values:
             a2: point which steepest descent traverses to
             a2_epsilon: epsilon at a2
             hyperbola: hyperbola with min(a, a2) representing x=0
-            hyperbola_hor/hyperbola_ver: hor./ver. hyperbola of decent with offset
+            hyperbola_hor/hyperbola_ver: hor./ver. hyperbola of descent with offset
         """
         assert a.x in self.bounds_hor and a.y in self.bounds_ver, \
-            "Error: Cannot do Steepest Decent.\n" + \
+            "Error: Cannot do Steepest descent.\n" + \
             "A:" + str(a) + " not in Cell:\n" + str(self)
         assert direction == 1 or direction == -1, \
-            "Error: Cannot do Steepest Decent.\n" + \
+            "Error: Cannot do Steepest descent.\n" + \
             "Invalid direction (" + str(direction) + ") given."
 
         # define default return values
@@ -100,11 +100,11 @@ class Cell:
         hyperbola_hor = Hyperbola.nan()
         hyperbola_ver = Hyperbola.nan()
 
-        # steepest decent lines
+        # steepest descent lines
         lv = self.l_ver
         lh = self.l_hor
 
-        # which case for steepest decent
+        # which case for steepest descent
         if direction == 1:
             case_hor = lv.point_above(a)
             case_ver = lh.point_right(a)
@@ -122,7 +122,7 @@ class Cell:
 
         # determine direction of traversal
         if not self.parallel and self.norm_ellipsis.m == a:
-            print("Error: Cannot do Steepest Decent. Lowest Point reached.\n" +
+            print("Error: Cannot do Steepest descent. Lowest Point reached.\n" +
                   "A:" + str(a) + " Cell:\n" + str(self))
             return a, a_epsilon, Hyperbola.nan(), hyperbola_hor, hyperbola_ver
         elif on_lv:
@@ -137,20 +137,20 @@ class Cell:
                 r = Vector(0, direction)
         elif case_hor:
             if not lh_left:
-                print("Error: Cannot do Steepest Decent.\n" + \
+                print("Error: Cannot do Steepest descent.\n" + \
                       "A:" + str(a) + " above l & right of l'.\n" + \
                       "Cell:\n" + str(self))
             r = Vector(direction, 0)
         elif case_ver:
             if not lv_below:
-                print("Error: Cannot do Steepest Decent.\n" + \
+                print("Error: Cannot do Steepest descent.\n" + \
                       "A:" + str(a) + " above l & right of l'.\n" + \
                       "Cell:\n" + str(self))
             r = Vector(0, direction)
         elif case_eq:
             r = Vector(math.sqrt(0.5), math.sqrt(0.5)) * direction
         else:
-            print("Error: no direction for steepest decent found!")
+            print("Error: no direction for steepest descent found!")
             r = Vector(direction, direction)
 
         # determine endpoint a2 of traversal
@@ -184,7 +184,7 @@ class Cell:
         a2 = a2.to_bounds(self.bounds_xy)
 
         if a == a2:
-            print("Error: Steepest decent not possible.")
+            print("Error: Steepest descent not possible.")
             return a, a_epsilon, Hyperbola.nan(), hyperbola_hor, hyperbola_ver
 
         a2_epsilon = self.lp(a2 - self.offset)
@@ -214,6 +214,8 @@ class Cell:
                 .move_x(min(a.x, a2.x))
             hyperbola_ver = hyperbola.scaled(d_y / a_a2.l) \
                 .move_x(min(a.y, a2.y))
+            # scale hyperbola to time
+            hyperbola = hyperbola.scaled(max(d_x, d_y) / a_a2.l)
 
         return a2, a2_epsilon, hyperbola, hyperbola_hor, hyperbola_ver
 
@@ -298,7 +300,7 @@ class Cell:
         """
         bounds = self.bounds_xy
 
-        # ellipses, steepest decent lines and axis in form: (name, [Vector])
+        # ellipses, steepest descent lines and axis in form: (name, [Vector])
         sample = {"ellipses": [], "l-lines": [], "axis": []}
 
         # Sample Ellipses
@@ -361,7 +363,7 @@ class Cell:
                 self.norm_ellipsis.m + self.norm_ellipsis.b
             ).cuts_bounds(bounds)))
 
-        # Sample steepest decent lines
+        # Sample steepest descent lines
         sample["l-lines"].append(("l", self.l_ver.cuts_bounds(bounds)))
         sample["l-lines"].append(("l'", self.l_hor.cuts_bounds(bounds)))
 
@@ -814,7 +816,7 @@ class CrossSection:
         return x in self._maxima_2
 
 
-def steepest_decent_helper_point_for_epsilon(
+def steepest_descent_helper_point_for_epsilon(
         hyperbola_hor: Hyperbola, bounds_hor: Bounds1D,
         hyperbola_ver: Hyperbola, bounds_ver: Bounds1D, point: Vector,
         epsilon: float) -> Vector:
@@ -831,14 +833,14 @@ def steepest_decent_helper_point_for_epsilon(
     return Vector(x, y)
 
 
-def steepest_decent_helper_new_type_critical_1(
-        bounds: Bounds1D, decent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
+def steepest_descent_helper_new_type_critical_1(
+        bounds: Bounds1D, descent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
         direction: int) -> [(float, float, int)]:
     critical = []
 
     for i in range(len(hyperbolas)):
         border_hyperbola = hyperbolas[i]
-        intersections = decent_hyperbola \
+        intersections = descent_hyperbola \
             .intersects_hyperbola_in_bounds_critical(
             border_hyperbola, bounds, direction)
         if len(intersections) == 0:
@@ -860,8 +862,8 @@ def steepest_decent_helper_new_type_critical_1(
     return critical
 
 
-def steepest_decent_helper_new_type_critical_2(
-        bounds: Bounds1D, decent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
+def steepest_descent_helper_new_type_critical_2(
+        bounds: Bounds1D, descent_hyperbola: Hyperbola, hyperbolas: [Hyperbola],
         x: float, direction: int) -> [(float, float, int)]:
     critical = []
 
@@ -871,7 +873,7 @@ def steepest_decent_helper_new_type_critical_2(
         if not about_equal(orientation, 0) and orientation < 0:
             continue
         epsilon = border_hyperbola.fx(x)
-        ys = bounds.in_bounds(decent_hyperbola.fy(epsilon))
+        ys = bounds.in_bounds(descent_hyperbola.fy(epsilon))
         if len(ys) == 0:
             continue
         y = ys[0]
@@ -1256,11 +1258,11 @@ class CellMatrix:
 
         return (b.x in reachable_hor[-1][-1]) or (b.y in reachable_ver[-1][-1])
 
-    def steepest_decent_hyperbola(self, a_cm: CM_Point, direction: int) -> \
+    def steepest_descent_hyperbola(self, a_cm: CM_Point, direction: int) -> \
             Hyperbola:
         """
             Returns the steepest-descent hyperbola for point a_cm.
-            The hyperbola returned by steepest_decent is oriented
+            The hyperbola returned by steepest_descent is oriented
             to the top-right, i.e. x=0 represents bottom-left.
             Therefore if direction is -1 we move it to use x=0 as
             start for descent. (a repr. x=0, instead of a2)
@@ -1281,11 +1283,12 @@ class CellMatrix:
         cell = self.cells[i_p][i_q]
         # get steepest descent hyperbola
         a2, a2_epsilon, a_hyperbola, a_hyperbola_hor, a_hyperbola_ver = cell \
-            .steepest_decent(a, direction)
+            .steepest_descent(a, direction)
 
         # move hyperbola to use a as x=0
         if direction == -1:
-            return a_hyperbola.move_x(-a.d(a2))
+            dt = max(abs(a.x-a2.x), abs(a.y-a2.y))
+            return a_hyperbola.move_x(-dt)
 
         return a_hyperbola
 
@@ -1321,7 +1324,7 @@ class CellMatrix:
         traversals.append(end_traversal)
 
         # calculate reciprocals of slopes and second derivative of squared
-        # steepest decent hyperbolas
+        # steepest descent hyperbolas
         traversal_slopes = [(0, 0) for _ in traversals]
         for i, traversal in enumerate(traversals):
             if i == 0 or i == len(traversals) - 1:
@@ -1330,7 +1333,7 @@ class CellMatrix:
             reci_sqslope = 0
             sqslope2 = 0
             # incoming slopes
-            in_hyperbola = self.steepest_decent_hyperbola(traversal.a_cm, -1)
+            in_hyperbola = self.steepest_descent_hyperbola(traversal.a_cm, -1)
             in_sqslope = in_hyperbola.f2ax(0)
             reci_sqslope += 1 / abs(in_sqslope) if in_sqslope > 0 else math.inf
             in_sqslope2 = in_hyperbola.f2aax()
@@ -1340,7 +1343,7 @@ class CellMatrix:
                 reci_sqslope += traversal.reci_sqslope
                 sqslope2 += traversal.sqslope2
             # outgoing slopes
-            out_hyperbola = self.steepest_decent_hyperbola(traversal.b_cm, 1)
+            out_hyperbola = self.steepest_descent_hyperbola(traversal.b_cm, 1)
             out_sqslope = out_hyperbola.f2ax(0)
             reci_sqslope += 1 / abs(out_sqslope) if out_sqslope < 0 else math.inf
             out_sqslope2 = out_hyperbola.f2aax()
@@ -1722,31 +1725,31 @@ class CellMatrix:
             a_cell = self.cells[cc_a[0]][cc_a[1]]
             b_cell = self.cells[cc_b[0]][cc_b[1]]
 
-            # steepest decent
+            # steepest descent
             if about_equal(a_epsilon, b_epsilon):
-                # do steepest decent from A and B
+                # do steepest descent from A and B
                 (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
-                 a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
+                 a_hyperbola_ver) = a_cell.steepest_descent(a, 1)
                 (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
-                 b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
+                 b_hyperbola_ver) = b_cell.steepest_descent(b, -1)
                 a2_cm = self.cm_point_a(a2)
                 b2_cm = self.cm_point_b(b2)
             elif a_epsilon > b_epsilon:
-                # do steepest decent from A
+                # do steepest descent from A
                 (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
-                 a_hyperbola_ver) = a_cell.steepest_decent(a, 1)
+                 a_hyperbola_ver) = a_cell.steepest_descent(a, 1)
                 (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
                  b_hyperbola_ver) = (b, b_epsilon, Hyperbola.nan(),
                                      Hyperbola.nan(), Hyperbola.nan())
                 a2_cm = self.cm_point_a(a2)
                 b2_cm = b_cm
             else:
-                # do steepest decent from B
+                # do steepest descent from B
                 (a2, a2_epsilon, a_hyperbola, a_hyperbola_hor,
                  a_hyperbola_ver) = (a, a_epsilon, Hyperbola.nan(),
                                      Hyperbola.nan(), Hyperbola.nan())
                 (b2, b2_epsilon, b_hyperbola, b_hyperbola_hor,
-                 b_hyperbola_ver) = b_cell.steepest_decent(b, -1)
+                 b_hyperbola_ver) = b_cell.steepest_descent(b, -1)
                 a2_cm = a_cm
                 b2_cm = self.cm_point_b(b2)
 
@@ -1756,10 +1759,10 @@ class CellMatrix:
             b_bounds_hor = Bounds1D(min(b.x, b2.x), max(b.x, b2.x))
             b_bounds_ver = Bounds1D(min(b.y, b2.y), max(b.y, b2.y))
 
-            # if possible decent to equal height
+            # if possible descent to equal height
             if (not about_equal(a2_epsilon, b2_epsilon) and
                     b2_epsilon > a2_epsilon):
-                a2 = steepest_decent_helper_point_for_epsilon(
+                a2 = steepest_descent_helper_point_for_epsilon(
                     a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
                     a_bounds_ver, a, b2_epsilon)
                 a2_cm = self.cm_point_a(a2)
@@ -1768,7 +1771,7 @@ class CellMatrix:
                 a_bounds_ver = Bounds1D(min(a.y, a2.y), max(a.y, a2.y))
             elif (not about_equal(a2_epsilon, b2_epsilon) and
                   a2_epsilon > b2_epsilon):
-                b2 = steepest_decent_helper_point_for_epsilon(
+                b2 = steepest_descent_helper_point_for_epsilon(
                     b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
                     b_bounds_ver, b, a2_epsilon)
                 b2_cm = self.cm_point_b(b2)
@@ -1776,7 +1779,7 @@ class CellMatrix:
                 b_bounds_hor = Bounds1D(min(b.x, b2.x), max(b.x, b2.x))
                 b_bounds_ver = Bounds1D(min(b.y, b2.y), max(b.y, b2.y))
 
-            # if steepest decent paths cut hor. or ver. do not go further
+            # if steepest descent paths cut hor. or ver. do not go further
             ls_a_a2 = LineSegment.nan
             ls_b_b2 = LineSegment.nan
             if a != a2:
@@ -1842,7 +1845,7 @@ class CellMatrix:
                         self, a_cm, a2_cm, [a, a2], max(a_epsilon, a2_epsilon),
                         [a_epsilon, a2_epsilon])
                     traversal_a.set_sqslopes([a_hyperbola.f2ax(0),
-                                              a_hyperbola.f2ax(a.d(a2))])
+                                              a_hyperbola.f2ax(max(abs(a.x-a2.x), abs(a.y-a2.y)))])
                     traversal_a.set_sqslopes2([a_hyperbola.f2aax(),
                                                a_hyperbola.f2aax()])
                 if b != b2:
@@ -1850,7 +1853,7 @@ class CellMatrix:
                         self, b2_cm, b_cm, [b2, b], max(b_epsilon, b2_epsilon),
                         [b2_epsilon, b_epsilon])
                     traversal_a.set_sqslopes([b_hyperbola.f2ax(0),
-                                              b_hyperbola.f2ax(b2.d(b))])
+                                              b_hyperbola.f2ax(max(abs(b.x-b2.x), abs(b.y-b2.y)))])
                     traversal_a.set_sqslopes2([b_hyperbola.f2aax(),
                                                b_hyperbola.f2aax()])
                 if a == a2 and b == b2:
@@ -1879,7 +1882,7 @@ class CellMatrix:
                 for i in range(cc_a[1], cc_b[1] + 1):
                     border_hyperbolas.append(self.cells[cc_a[0]][i].hyperbola_top)
                 if not about_equal(a.x, a2.x):
-                    criticals = steepest_decent_helper_new_type_critical_1(
+                    criticals = steepest_descent_helper_new_type_critical_1(
                         a_bounds_hor, a_hyperbola_hor, border_hyperbolas, 1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
@@ -1891,7 +1894,7 @@ class CellMatrix:
                             new_type_critical_events_a.append(
                                 self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(
+                    criticals = steepest_descent_helper_new_type_critical_2(
                         a_bounds_ver, a_hyperbola_ver, border_hyperbolas, a.x,
                         1)
                     for critical in criticals:
@@ -1910,7 +1913,7 @@ class CellMatrix:
                     border_hyperbolas.append(self.cells[i][cc_a[1]]
                                              .hyperbola_right)
                 if not about_equal(a.y, a2.y):
-                    criticals = steepest_decent_helper_new_type_critical_1(
+                    criticals = steepest_descent_helper_new_type_critical_1(
                         a_bounds_ver, a_hyperbola_ver, border_hyperbolas, 1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
@@ -1922,7 +1925,7 @@ class CellMatrix:
                             new_type_critical_events_a.append(
                                 self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(
+                    criticals = steepest_descent_helper_new_type_critical_2(
                         a_bounds_hor, a_hyperbola_hor, border_hyperbolas, a.y,
                         1)
                     for critical in criticals:
@@ -1942,7 +1945,7 @@ class CellMatrix:
                 for i in range(cc_b[1], cc_a[1] - 1, -1):
                     border_hyperbolas.append(self.cells[cc_b[0]][i].hyperbola_bottom)
                 if not about_equal(b.x, b2.x):
-                    criticals = steepest_decent_helper_new_type_critical_1(
+                    criticals = steepest_descent_helper_new_type_critical_1(
                         b_bounds_hor, b_hyperbola_hor, border_hyperbolas, -1)
                     for critical in criticals:
                         x, epsilon, d_i = critical
@@ -1955,7 +1958,7 @@ class CellMatrix:
                             new_type_critical_events_b.append(
                                 self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(
+                    criticals = steepest_descent_helper_new_type_critical_2(
                         b_bounds_ver, b_hyperbola_ver, border_hyperbolas, b.x,
                         -1)
                     for critical in criticals:
@@ -1974,7 +1977,7 @@ class CellMatrix:
                     border_hyperbolas.append(self.cells[i][cc_b[1]]
                                              .hyperbola_left)
                 if not about_equal(b.y, b2.y):
-                    criticals = steepest_decent_helper_new_type_critical_1(
+                    criticals = steepest_descent_helper_new_type_critical_1(
                         b_bounds_ver, b_hyperbola_ver, border_hyperbolas, -1)
                     for critical in criticals:
                         y, epsilon, d_i = critical
@@ -1987,7 +1990,7 @@ class CellMatrix:
                             new_type_critical_events_b.append(
                                 self.traversal_from_points(points))
                 else:
-                    criticals = steepest_decent_helper_new_type_critical_2(
+                    criticals = steepest_descent_helper_new_type_critical_2(
                         b_bounds_hor, b_hyperbola_hor, border_hyperbolas, b.y,
                         -1)
                     for critical in criticals:
@@ -2007,15 +2010,15 @@ class CellMatrix:
                                         new_type_critical_events_b)
             print("===3===possible_critical_events=== ", possible_critical_events)
             possible_critical_epsilons = possible_critical_events.epsilons()
-            i_epsilon = 0
+
             for i_epsilon in range(len(possible_critical_epsilons)):
                 critical_epsilon = possible_critical_epsilons[i_epsilon]
 
                 # traverse to critical epsilon (points a3 and b3)
-                a3 = steepest_decent_helper_point_for_epsilon(
+                a3 = steepest_descent_helper_point_for_epsilon(
                     a_hyperbola_hor, a_bounds_hor, a_hyperbola_ver,
                     a_bounds_ver, a2, critical_epsilon)
-                b3 = steepest_decent_helper_point_for_epsilon(
+                b3 = steepest_descent_helper_point_for_epsilon(
                     b_hyperbola_hor, b_bounds_hor, b_hyperbola_ver,
                     b_bounds_ver, b2, critical_epsilon)
                 a3_cm = (a3, cc_a)
@@ -2027,21 +2030,10 @@ class CellMatrix:
                     traversal_a_a3 = Traversal(
                         self, a_cm, a3_cm, [a, a3],
                         max(a_epsilon, critical_epsilon), [a_epsilon, critical_epsilon])
-                    traversal_a_a3.set_sqslopes(
-                        [a_hyperbola.f2ax(0), a_hyperbola.f2ax(a.d(a3))])
-                    traversal_a_a3.set_sqslopes2([
-                        a_hyperbola.f2aax(),
-                        a_hyperbola.f2aax()])
                 if b != b3:
                     traversal_b3_b = Traversal(
                         self, b3_cm, b_cm, [b3, b],
                         max(b_epsilon, critical_epsilon), [critical_epsilon, b_epsilon])
-                    traversal_b3_b.set_sqslopes([
-                        a_hyperbola.f2ax(b2.d(b3)),
-                        a_hyperbola.f2ax(b2.d(b))])
-                    traversal_b3_b.set_sqslopes2([
-                        a_hyperbola.f2aax(),
-                        a_hyperbola.f2aax()])
 
                 critical_events_in_bounds = critical_events.in_bounds(a3, b3)
                 critical_traversals = possible_critical_events.in_and_on_bounds_1(a3, b3)[critical_epsilon]
