@@ -1391,11 +1391,11 @@ class CellMatrix:
         d_q = len(reachable_ver[0])
 
         # which critical events can directly (w/o other ce) reach cell
-        cell_ces_reach = [[[] for _ in range(d_q + 1)] for _ in range(d_p + 1)]
+        cell_ces_reach = [[set() for _ in range(d_q + 1)] for _ in range(d_p + 1)]
         for i, traversal in enumerate(traversals):
             i_p = traversal.cell_b[0] - cell_a[0]
             i_q = traversal.cell_b[1] - cell_a[1]
-            cell_ces_reach[i_p][i_q].append(i)
+            cell_ces_reach[i_p][i_q].add(i)
 
         for i_p in range(d_p):
             for i_q in range(d_q):
@@ -1426,18 +1426,18 @@ class CellMatrix:
                     # if there is a traversal outgoing, on which border is traversal
                     # checking cell is not enough for traversals on border crossings
                     trav_a = out_traversal.a
-                    if about_equal(trav_a.y, self.q.offsets[i_q+1]):
-                        ce_top = True
-                    if about_equal(trav_a.x, self.p.offsets[i_p+1]):
+                    if about_equal(trav_a.x, self.p.offsets[cell_a[0]+i_p+1]):
                         ce_right = True
+                    if about_equal(trav_a.y, self.q.offsets[cell_a[1]+i_q+1]):
+                        ce_top = True
 
                 # update cell_ces_reach for neighbors
                 if (not reachable_top.is_nan() and
                         not (reachable_top.is_point() and ce_top)):
-                    cell_ces_reach[i_p][i_q + 1].extend(ces_reach)
+                    cell_ces_reach[i_p][i_q + 1].update(ces_reach)
                 if (not reachable_right.is_nan() and
                         not (reachable_right.is_point() and ce_right)):
-                    cell_ces_reach[i_p + 1][i_q].extend(ces_reach)
+                    cell_ces_reach[i_p + 1][i_q].update(ces_reach)
 
 
         # DEBUG
