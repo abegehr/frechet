@@ -32,6 +32,12 @@ function color(i) {
 class Results extends Component {
   constructor(props) {
     super(props);
+
+    let freespace_epsilon = 0;
+    if (props.data.traversals.length > 0) {
+      freespace_epsilon = props.data.traversals[0].epsilon[0];
+    }
+
     this.state = {
       settings: {
         show_l_lines: true,
@@ -41,7 +47,7 @@ class Results extends Component {
         show_traversals: true,
         show_freespace: false
       },
-      freespace_epsilon: this.props.data.traversals[0].epsilon[0]
+      freespace_epsilon: freespace_epsilon
     };
 
     this.toggleSetting = this.toggleSetting.bind(this);
@@ -83,7 +89,10 @@ class Results extends Component {
     const contour_lines = 10;
     const contour_size = delta_epsilon/contour_lines;
     // slider
-    const frechet_epsilon = this.props.data.traversals[0].epsilon[0];
+    let frechet_epsilon = 0;
+    if (this.props.data.traversals.length > 0) {
+      frechet_epsilon = this.props.data.traversals[0].epsilon[0];
+    }
     const slider_ticks = 1000;
     const slider_step = delta_epsilon/slider_ticks;
     const slider_marks = {};
