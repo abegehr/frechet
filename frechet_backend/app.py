@@ -103,8 +103,6 @@ def index():
                 profile_ts.append(profile_ts[-1] + ddt)
                 profile_zs.append(z)
                 ddt = 0
-        print("profile_ts", profile_ts)
-        print("profile_zs", profile_zs)
 
         traversal_dict = {
             'x': xs,
