@@ -345,6 +345,7 @@ class Results extends Component {
         name: "#"+i+" profile",
         line: {
           shape: 'linear',
+          dash: 'dash',
           color:  color(i)
         }
       });
