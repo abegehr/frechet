@@ -1325,7 +1325,8 @@ class CellMatrix:
 
         # calculate reciprocals of slopes and second derivative of squared
         # steepest descent hyperbolas
-        traversal_slopes = [(0, 0) for _ in traversals]
+        traversals_slopes = [(0, 0) for _ in traversals]
+        traversals_hyperbolas = [(Hyperbola.nan(), Hyperbola.nan()) for _ in traversals]
         for i, traversal in enumerate(traversals):
             if i == 0 or i == len(traversals) - 1:
                 continue  # skip start and end
@@ -1365,7 +1366,8 @@ class CellMatrix:
             print("---out_sqslope2: ", out_sqslope2)
             '''
 
-            traversal_slopes[i] = (reci_sqslope, sqslope2)
+            traversals_slopes[i] = (reci_sqslope, sqslope2)
+            traversals_hyperbolas[i] = (in_hyperbola, out_hyperbola)
 
         # init graph nodes
         graph = {}
@@ -1419,7 +1421,7 @@ class CellMatrix:
                             # if out_traversal is reachable from in_traversal,
                             if in_traversal.b < out_traversal.a:
                                 # connect graph
-                                graph[ce_reach].add((trav_i, traversal_slopes[trav_i]))
+                                graph[ce_reach].add((trav_i, traversals_slopes[trav_i]))
 
                     # if there is a traversal outgoing, on which border is traversal
                     # checking cell is not enough for traversals on border crossings
@@ -1443,7 +1445,8 @@ class CellMatrix:
         print("traversals: ", [str(traversal.a) + '->' + str(traversal.b) for traversal in traversals])
         print("cell_ces_reach: ", cell_ces_reach)
         print("graph: ", graph)
-        print("traversal_slopes: ", traversal_slopes)
+        print("traversals_slopes: ", traversals_slopes)
+        print("traversals_hyperbolas: ", [(str(t[0]), str(t[1])) for t in traversals_hyperbolas])
         print("==============")
 
 
