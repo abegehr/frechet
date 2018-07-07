@@ -95,7 +95,7 @@ def index():
         # profiles
         profile_data = sorted(zip(dts, zs), key=lambda t: t[1], reverse=True)
         profile_ts = [0]
-        profile_zs = [profile_data[0][1]]
+        profile_zs = [profile_data.pop(0)[1]]
         ddt = 0
         for _, (dt, z) in enumerate(profile_data):
             ddt += dt
