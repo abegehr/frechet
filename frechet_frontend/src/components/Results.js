@@ -56,7 +56,7 @@ class Results extends Component {
   componentWillReceiveProps(nextProps) {
     let new_freespace_epsilon = 0;
     if (nextProps.data.traversals.length > 0) {
-      let new_freespace_epsilon = nextProps.data.traversals[0].epsilon[0];
+      new_freespace_epsilon = nextProps.data.traversals[0].epsilon[0];
     }
     if (this.state.freespace_epsilon !== new_freespace_epsilon) {
       this.setState({freespace_epsilon: new_freespace_epsilon});
