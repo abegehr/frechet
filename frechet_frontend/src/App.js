@@ -87,7 +87,7 @@ class App extends Component {
         style={{width: width}}>
 
         <div className="header">
-          <a href="" className="heading">Lexicographic Fréchet Matchings</a>
+          <a href="#" className="heading">Lexicographic Fréchet Matchings</a>
         </div>
 
         {/* Input */}
