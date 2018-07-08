@@ -53,7 +53,8 @@ class App extends Component {
       console.log("An error occured: "+error+"\nPlease send a quick email to a.begehr@fu-berlin.de");
       const send_email = window.confirm("An error occured.\n"+error+"\nPlease send a quick email to a.begehr@fu-berlin.de");
       if (send_email) {
-        window.location.href = "mailto:a.begehr@fu-berlin.de?subject=FréchetWebappError&body="+encodeURI(error);
+        const body = window.location.href + "\n" + error;
+        window.location.href = "mailto:a.begehr@fu-berlin.de?subject=FréchetWebappError&body="+encodeURI(body);
       }
     });
   };
