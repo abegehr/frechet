@@ -82,6 +82,17 @@ class Bounds1D:
     def is_point(self):
         return about_equal(self.start, self.end)
 
+    def top_off(self, other: 'Bounds1D') -> 'Bounds1D':
+        """
+        Used to get monotonically reachable on right border.
+        Input is reachable left and free right.
+        """
+
+        if self.start > other.end and not about_equal(self.start, other.end):
+            return Bounds1D.nan()
+
+        return Bounds1D(max(self.start, other.start), other.end)
+
 
 class Vector:
     def __init__(self, x: float, y: float):

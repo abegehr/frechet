@@ -1173,7 +1173,7 @@ class CellMatrix:
                     cell.free_bounds_horizontal(offsets_ver[0], epsilon))
                 if reachable_bottom.start in reachable_hor[i_p - 1][0]:
                     reachable_hor[i_p][0] = reachable_bottom
-        # left row
+        # left column
         if d_q > 0:
             reachable_left = bounds_ver[0].cut(
                 start_cell.free_bounds_vertical(offsets_hor[0], epsilon))
@@ -1185,7 +1185,7 @@ class CellMatrix:
                     cell.free_bounds_vertical(offsets_hor[0], epsilon))
                 if reachable_left.start in reachable_ver[0][i_q - 1]:
                     reachable_ver[0][i_q] = reachable_left
-        # all other rows
+        # all other rows and columns
         for i_p in range(d_p):
             for i_q in range(d_q):
                 cell = cells[start_i_p + i_p][start_i_q + i_q]
@@ -1252,9 +1252,9 @@ class CellMatrix:
             .generate_reachable_freespace(a_cm, b_cm, epsilon)
 
         if len(reachable_hor) == 0:
-            return (b.y in reachable_ver[-1][-1])
+            return b.y in reachable_ver[-1][-1]
         if len(reachable_ver[0]) == 0:
-            return (b.x in reachable_hor[-1][-1])
+            return b.x in reachable_hor[-1][-1]
 
         return (b.x in reachable_hor[-1][-1]) or (b.y in reachable_ver[-1][-1])
 
@@ -1390,72 +1390,138 @@ class CellMatrix:
         d_p = len(reachable_hor)
         d_q = len(reachable_ver[0])
 
-        # which critical events can directly (w/o other ce) reach cell
-        cell_ces_reach = [[set() for _ in range(d_q + 1)] for _ in range(d_p + 1)]
-        for i, traversal in enumerate(traversals):
-            i_p = traversal.cell_b[0] - cell_a[0]
-            i_q = traversal.cell_b[1] - cell_a[1]
-            cell_ces_reach[i_p][i_q].add(i)
+        # ces vertical and horizontal reachability
+        ces_reach_hor = [[set() for _ in range(d_q + 1)] for _ in range(d_p)]
+        ces_reach_ver = [[set() for _ in range(d_q)] for _ in range(d_p + 1)]
 
+        # add incoming ces
+        for trav_i, trav in enumerate(traversals[:-1]):
+            i_p = trav.cell_b[0] - cell_a[0]
+            i_q = trav.cell_b[1] - cell_a[1]
+
+            offset_x = self.p.offsets[cell_a[0] + i_p]
+            offset_y = self.q.offsets[cell_a[1] + i_q]
+
+            if about_equal(trav.b.x, offset_x):
+                ces_reach_ver[i_p][i_q].add(trav_i)
+            if about_equal(trav.b.y, offset_y):
+                ces_reach_hor[i_p][i_q].add(trav_i)
+
+        # build up reachable freespace on borders for given epsilon
+        # bottom row
+        if d_p > 0:
+            for i_p in range(1, d_p):
+                if reachable_hor[i_p - 1][0].end in reachable_hor[i_p][0]:
+                    ces_reach_hor[i_p][0].update(ces_reach_hor[i_p - 1][0])
+        # left column
+        if d_q > 0:
+            for i_q in range(1, d_q):
+                if reachable_ver[0][i_q - 1].end in reachable_ver[0][i_q]:
+                    ces_reach_ver[0][i_q].update(ces_reach_ver[0][i_q - 1])
+        # all other rows and columns
         for i_p in range(d_p):
             for i_q in range(d_q):
 
-                # border reachability
-                reachable_top = reachable_hor[i_p][i_q + 1]
+                reachable_left = reachable_ver[i_p][i_q]
+                reachable_bottom = reachable_hor[i_p][i_q]
                 reachable_right = reachable_ver[i_p + 1][i_q]
+                reachable_top = reachable_hor[i_p][i_q + 1]
 
-                # critical events that directly reach this cell
-                ces_reach = cell_ces_reach[i_p][i_q]
+                ces_reach_left = ces_reach_ver[i_p][i_q]
+                ces_reach_bottom = ces_reach_hor[i_p][i_q]
 
-                # is there a ce on border
-                ce_top = False
-                ce_right = False
+                out_offset_p = self.p.offsets[cell_a[0] + i_p + 1]
+                out_offset_q = self.q.offsets[cell_a[1] + i_q + 1]
 
-                # find traversals on top and right border
-                for trav_i, out_traversal in enumerate(traversals):
-                    trav_cell_a = out_traversal.cell_a
-                    if i_p == (trav_cell_a[0] - cell_a[0]) and i_q == (trav_cell_a[1] - cell_a[1]):
-                        # traversal is on top/right border
-                        for ce_reach in ces_reach:
-                            in_traversal = traversals[ce_reach]
-                            # if out_traversal is reachable from in_traversal,
-                            if in_traversal.b < out_traversal.a:
-                                # connect graph
-                                graph[ce_reach].add((trav_i, traversals_slopes[trav_i]))
+                bounds_p = Bounds1D(self.p.offsets[cell_a[0] + i_p], out_offset_p)
+                bounds_q = Bounds1D(self.q.offsets[cell_a[1] + i_q], out_offset_q)
 
-                    # if there is a traversal incoming or outgoing, on which border is traversal
-                    # checking cell is not enough for traversals on border crossings
-                    trav_a = out_traversal.a
-                    trav_b = out_traversal.b
-                    if about_equal(trav_a.x, self.p.offsets[cell_a[0]+i_p+1]) or \
-                            about_equal(trav_b.x, self.p.offsets[cell_a[0] + i_p + 1]):
-                        ce_right = True
-                    if about_equal(trav_a.y, self.q.offsets[cell_a[1]+i_q+1]) or \
-                            about_equal(trav_b.y, self.q.offsets[cell_a[1] + i_q + 1]):
-                        ce_top = True
+                # is there a ce on top or right border?
+                is_ce_right = False
+                is_ce_top = False
+                for _, trav in enumerate(traversals):
+                    if (about_equal(trav.a.x, out_offset_p) and trav.a.y in bounds_q) or \
+                            (about_equal(trav.b.x, out_offset_p) and trav.b.y in bounds_q):
+                        is_ce_right = True
+                    if (about_equal(trav.a.y, out_offset_q) and trav.a.x in bounds_p) or \
+                            (about_equal(trav.b.y,  out_offset_q) and trav.b.x in bounds_p):
+                        is_ce_top = True
 
-                # update cell_ces_reach for neighbors
-                if (not reachable_top.is_nan() and
-                        not (reachable_top.is_point() and ce_top)):
-                    cell_ces_reach[i_p][i_q + 1].update(ces_reach)
-                if (not reachable_right.is_nan() and
-                        not (reachable_right.is_point() and ce_right)):
-                    cell_ces_reach[i_p + 1][i_q].update(ces_reach)
+                # horizontal and vertical reachability
+                reach_right_from_left = reachable_left.top_off(reachable_right)
+                reach_top_from_bottom = reachable_bottom.top_off(reachable_top)
+                if (not reach_right_from_left.is_nan() and
+                        not (is_ce_right and reach_right_from_left.is_point())):
+                    ces_reach_ver[i_p + 1][i_q].update(ces_reach_left)
+                if (not reach_top_from_bottom.is_nan() and
+                        not (is_ce_top and reach_top_from_bottom.is_point())):
+                    ces_reach_hor[i_p][i_q + 1].update(ces_reach_bottom)
 
+                # diagonal reachability
+                reach_right_from_bottom = reachable_right if not reachable_bottom.is_nan() else Bounds1D.nan()
+                reach_top_from_left = reachable_top if not reachable_left.is_nan() else Bounds1D.nan()
+                if (not reach_right_from_bottom.is_nan() and
+                        not (is_ce_right and reach_right_from_bottom.is_point())):
+                    ces_reach_ver[i_p + 1][i_q].update(ces_reach_bottom)
+                if (not reach_top_from_left.is_nan() and
+                        not (is_ce_top and reach_top_from_left.is_point())):
+                    ces_reach_hor[i_p][i_q + 1].update(ces_reach_left)
+
+                # does a ce start on top or right border?
+                starts_ce_right = False
+                ce_right_i = -1
+                starts_ce_top = False
+                ce_top_i = -1
+                for trav_i, trav in enumerate(traversals):
+                    if about_equal(trav.a.x, out_offset_p) and trav.a.y in bounds_q:
+                        starts_ce_right = True
+                        ce_right_i = trav_i
+                    if about_equal(trav.a.y, out_offset_q) and trav.a.x in bounds_p:
+                        starts_ce_top = True
+                        ce_top_i = trav_i
+
+                # connect ces graph
+                # right
+                if starts_ce_right:
+                    ce_right = traversals[ce_right_i]
+                    if not reach_right_from_left.is_nan():
+                        for ce_left_i in ces_reach_left:
+                            ce_left = traversals[ce_left_i]
+                            if ce_left.b < ce_right.a:
+                                graph[ce_left_i].add((ce_right_i, traversals_slopes[ce_right_i]))
+                    if not reach_right_from_bottom.is_nan():
+                        for ce_bottom_i in ces_reach_bottom:
+                            ce_bottom = traversals[ce_bottom_i]
+                            if ce_bottom.b < ce_right.a:
+                                graph[ce_bottom_i].add((ce_right_i, traversals_slopes[ce_right_i]))
+                # top
+                if starts_ce_top:
+                    ce_top = traversals[ce_top_i]
+                    if not reach_top_from_left.is_nan():
+                        for ce_left_i in ces_reach_left:
+                            ce_left = traversals[ce_left_i]
+                            if ce_left.b < ce_top.a:
+                                graph[ce_left_i].add((ce_top_i, traversals_slopes[ce_top_i]))
+                    if not reach_top_from_bottom.is_nan():
+                        for ce_bottom_i in ces_reach_bottom:
+                            ce_bottom = traversals[ce_bottom_i]
+                            if ce_bottom.b < ce_top.a:
+                                graph[ce_bottom_i].add((ce_top_i, traversals_slopes[ce_top_i]))
 
         # DEBUG
         print("===generate_traversal_graph===")
         print("traversals: ", [str(traversal.a) + '->' + str(traversal.b) for traversal in traversals])
-        print("cell_ces_reach: ", cell_ces_reach)
+        print("ces_reach_hor: ", ces_reach_hor)
+        print("ces_reach_ver: ", ces_reach_ver)
         print("graph: ", graph)
         print("traversals_slopes: ", traversals_slopes)
         print("traversals_hyperbolas: ", [(str(t[0]), str(t[1])) for t in traversals_hyperbolas])
         print("==============")
 
-
         return graph, traversals
 
-    def paths_through_graph(self, graph: {}) -> [([int], (float, float))]:
+    @staticmethod
+    def paths_through_graph(graph: {}) -> [([int], (float, float))]:
         """
         Uses graph and traversals from generate_traversal_graph
         to determine all possible traversals and their slopes.
@@ -1502,7 +1568,8 @@ class CellMatrix:
 
         return paths
 
-    def best_paths(self, paths):
+    @staticmethod
+    def best_paths(paths):
         """
         Taking paths generated by paths_through_graph.
         Path: ([trav_is], (reci_sqslope, sqslope))
