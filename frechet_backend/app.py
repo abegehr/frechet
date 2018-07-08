@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from math import sqrt
 from numbers import Number
 from frechet_alg.Algorithm import CellMatrix
 from frechet_alg.Geometry import Vector, about_equal
