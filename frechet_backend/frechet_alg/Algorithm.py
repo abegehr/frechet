@@ -1423,12 +1423,15 @@ class CellMatrix:
                                 # connect graph
                                 graph[ce_reach].add((trav_i, traversals_slopes[trav_i]))
 
-                    # if there is a traversal outgoing, on which border is traversal
+                    # if there is a traversal incoming or outgoing, on which border is traversal
                     # checking cell is not enough for traversals on border crossings
                     trav_a = out_traversal.a
-                    if about_equal(trav_a.x, self.p.offsets[cell_a[0]+i_p+1]):
+                    trav_b = out_traversal.b
+                    if about_equal(trav_a.x, self.p.offsets[cell_a[0]+i_p+1]) or \
+                            about_equal(trav_b.x, self.p.offsets[cell_a[0] + i_p + 1]):
                         ce_right = True
-                    if about_equal(trav_a.y, self.q.offsets[cell_a[1]+i_q+1]):
+                    if about_equal(trav_a.y, self.q.offsets[cell_a[1]+i_q+1]) or \
+                            about_equal(trav_b.y, self.q.offsets[cell_a[1] + i_q + 1]):
                         ce_top = True
 
                 # update cell_ces_reach for neighbors
