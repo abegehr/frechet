@@ -82,7 +82,7 @@ The possible paths through multiple critical events can be represented as a grap
 
 To generate this graph of critical traversals, we make use of the free-space diagram and the technique used in the decision algorithm. Fist we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate for each vertical and horizontal cell-border, which subset of critical events $C$ can reach the border. We call the subset of $C$, that reaches the left and bottom border of cell $(i,j)$, $L_{ij}^C$ and $B_{ij}^C$ respectively. After computing each $L_{ij}^C$ and $B_{ij}^C$, we then connect critical events in $L_{ij}^C$ and $B_{ij}^C$ to reachable critical events starting on the top and right border.
 
-See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the starting-point $A$ and the end-point $b$.
+See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the starting-point $A$ and the ending-point $b$.
 
 
 \begin{algorithm}[H]
@@ -90,7 +90,7 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 \begin{algorithmic}[1]
 
 \Function{GenerateTraversalGraph($A, B, C, \epsilon_0$)}{}
-	\State\Comment{$A$ is start-point of traversal. $B$ is end-point of traversal. $C$ holds all critical events $C_k$.}
+	\State\Comment{$A$ is start-point of traversal. $B$ is ending-point of traversal. $C$ holds all critical events $C_k$.}
 	
 	\State {Add $A$ and $B$ as critical events to $C$.}
 
@@ -99,7 +99,7 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 	\State $L^R, B^R \gets$ \Call{DecisionAlgorithm'}{$A, B, \epsilon_0$}
 
 	\For {$C_k \in C$}
-		\State {Add $C_k.B$ (end-points) to $L_{ij}^C$ or $B_{ij}^C$ where $C_k.B$ lies.}
+		\State {Add $C_k.B$ (ending-points) to $L_{ij}^C$ or $B_{ij}^C$ where $C_k.B$ lies.}
 	\EndFor
 
 	\For {$i := 0$ to $p$} {determine $L_{i, 0}^C$} \EndFor
@@ -130,31 +130,113 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 \end{algorithmic}
 \end{algorithm}
 
+\subsubsection{Can $C_{k1}$ reach $C_{k2}$}
+
 In the above algorithm \ref{alg:gengraph} on line \ref{alg:gengraph_reach}, we seek to determine if the critical event $C_{k1}$ can reach the critical event $C_{k2}$. It is known that $C_{k1}$ can reach the left or bottom border of the current cell $(i, j)$, because $C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$. It also is know that $C_{k2}$ starts at the top or right border of the current cell.
 
-To determine if $C_{k2}$ is reachable from $C_{k1}$, it is important to know if $C_{k1}$ comes the left or bottom border and if $C_{k2}$ is on the right or top border, because the origin of $C_{k1}$ influences the right and top reachability interval. There are four cases to consider:
+We discard the potential edge $(C_{k1}, C_{k2})$ in the trivial case where $C_{k2}$ is not monotonically reachable from $C_{k1}$: $\neg(C_{k1}.B.x \leq C_{k2}.A.x \wedge C_{k1}.B.y \leq C_{k2}.A.y)$.
+
+To determine if $C_{k2}$ is reachable from $C_{k1}$, we first look at if $C_{k1}$ comes the left or bottom border and if $C_{k2}$ is on the right or top border. There are four cases to consider:
 
 \begin{enumerate}
-	\item $C_{k1} \in L_{i, j}^C$ is on left border and $C_{k2}$ starts on right border.
-	\item $C_{k1} \in L_{i, j}^C$ is on left border and $C_{k2}$ starts on top border.
-	\item $C_{k1} \in B_{i, j}^C$ is on bottom border and $C_{k2}$ starts on right border.
-	\item $C_{k1} \in B_{i, j}^C$ is on bottom border and $C_{k2}$ starts on top border.
+	\item $C_{k1} \in L_{i, j}^C$ enters on left border and $C_{k2}$ starts on right border.
+	\item $C_{k1} \in L_{i, j}^C$ enters on left border and $C_{k2}$ starts on top border.
+	\item $C_{k1} \in B_{i, j}^C$ enters on bottom border and $C_{k2}$ starts on right border.
+	\item $C_{k1} \in B_{i, j}^C$ enters on bottom border and $C_{k2}$ starts on top border.
 \end{enumerate}
 
-The needed reachability intervals of right and top border are as follows:
+Reachability intervals $I_{ij}$ of right and top borders can be computed as follows:
 
 \begin{enumerate}
-	\item From left to right: $L_{i, j}^R \cap L_{i+1, j}^R$
-	\item From left to top: If $L_{i, j}^R$ is open: $B_{i, j+1}^R$. Otherwise closed.
-	\item From bottom to right: If $B_{i, j}^R$ is open: $L_{i+1, j}^R$. Otherwise closed.
-	\item From bottom to top: $B_{i, j}^R \cap B_{i, j+1}^R$
+	\item From left to right: $I_{ij}^{l \rightarrow r} = L_{i, j}^R \cap L_{i+1, j}^R$
+	\item From left to top: If $L_{i, j}^R$ is open: $I_{ij}^{l \rightarrow t} = B_{i, j+1}^R$. Otherwise closed.
+	\item From bottom to right: If $B_{i, j}^R$ is open: $I_{ij}^{b \rightarrow r} = L_{i+1, j}^R$. Otherwise closed.
+	\item From bottom to top: $I_{ij}^{b \rightarrow t} = B_{i, j}^R \cap B_{i, j+1}^R$
 \end{enumerate}
 
-If $C_{k1}$ does not lie in or on the reachability interval, we discard this potential edge ($C_{k1}$, $C_{k2}$). We also discard the potential edge, if $C_{k2}$ is not monotonically reachable from $C_{k1}$: $\neg(C_{k1}.B.x \leq C_{k2}.A.x \wedge C_{k1}.B.y \leq C_{k2}.A.y)$.
+The superscript denotes the sides of the cell. $I_{ij}^{b \rightarrow t}$ for example represents the reachability interval of the top border for traversals coming from the bottom border.
 
-This check is not enough as figure \cite{fig:gengraph_ex} shows.
+It can be considered to use solely these reachability intervals $I_{ij}$ to decide if $C_{k2}$ can be reached from $C_{k1}$. One would simply check if $C_{k2}$ lies in the reachability intervals from the side on which $C_{k1}$ lies. This is not sufficient, as the example visualized in figure \ref{fig:gengraph_ex1} shows.
 
+\begin{figure}[H]
+    \centering
+    
+    \includegraphics[width=0.8\textwidth]{gengraph_ex1.png}
+		
+	\caption{Considering solely reachability intervals is not sufficient\protect\footnotemark}
+    \label{fig:gengraph_ex1}
+\end{figure}
+\footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(5_5)(5_7.8)(4_6)(4_8)(6_6)&q=(6_6)(3_6)(6_6)}}
 
+In figure \ref{fig:gengraph_ex1} the decision algorithm tells us, that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon = 2$ that we consider: $C_1(3, 1)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
+
+To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorize for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
+
+We can now define two algorithm in more detail. First, the algorithm for determining if $C_{k1}$ can reach $C_{k2}$. And second, the algorithm that constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$.
+
+\begin{algorithm}[H]
+\caption{Generate Traversability Graph Helper Functions}\label{alg:gengraph_help}
+\begin{algorithmic}[1]
+
+\Function{CanReach($C_{k1}, min_{x}, min_{y}, C_{k2}, I_{ij}^{l \rightarrow r}, I_{ij}^{l \rightarrow t}, I_{ij}^{b \rightarrow r}, I_{ij}^{b \rightarrow t}$)}{}
+	\State\Comment{Determines if $C_{k1}$ can reach $C_{k2}$.}
+	
+	\If {$C_{k1}$ is on left border and $C_{k2}$ is on right border}
+		\State\Return {$C_{k2}.A.y \in I_{ij}^{l \rightarrow r} \wedge C_{k2}.A.y \geq min_{y}$}
+	\EndIf
+	\If {$C_{k1}$ is on left border and $C_{k2}$ is on top border}
+		\State\Return {$C_{k2}.A.x \in I_{ij}^{l \rightarrow t} \wedge C_{k2}.A.x \geq min_{x}$}
+	\EndIf
+	\If {$C_{k1}$ is on bottom border and $C_{k2}$ is on right border}
+		\State\Return {$C_{k2}.A.y \in I_{ij}^{b \rightarrow r} \wedge C_{k2}.A.y \geq min_{y}$}
+	\EndIf
+	\If {$C_{k1}$ is on bottom border and $C_{k2}$ is on top border}
+		\State\Return {$C_{k2}.A.x \in I_{ij}^{b \rightarrow t} \wedge C_{k2}.A.x \geq min_{x}$}
+	\EndIf
+\EndFunction
+
+\State
+
+\Function{ConstructCriticalReach($L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$)}{}
+	\State\Comment{Constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$}
+	
+	\State {$L_{i+1, j}^C := \{\}$}
+	\State {$B_{i, j+1}^C := \{\}$}
+	
+	\If {$L_{i+1, j}^R$ is not closed}
+		\For {$(C_k, min_{x}) \in B_{ij}^C$}
+			\State {Add $(C_k, L_{i+1, j}^R.min)$ to $L_{i+1, j}^C$}
+		\EndFor
+		\For {$(C_k, min_{y}) \in L_{ij}^C$}
+			\If {$min_{y} \leq L_{i+1, j}^R.max$}
+				\State {$min_{y} \gets max(min_{y}, L_{i+1, j}^R.min$)}
+				\State {Add $(C_k, min_{y})$ to $L_{i+1, j}^C$}
+			\EndIf
+		\EndFor
+	\EndIf
+	
+	\If {$B_{i, j+1}^R$ is not closed}
+		\For {$(C_k, min_{y}) \in L_{ij}^C$}
+			\State {Add $(C_k, B_{i, j+1}^R.min)$ to $B_{i, j+1}^C$}
+		\EndFor
+		\For {$(C_k, min_{x}) \in B_{ij}^C$}
+			\If {$min_{x} \leq B_{i, j+1}^R.max$}
+				\State {$min_{x} \gets max(min_{x}, B_{i, j+1}^R.min$)}
+				\State {Add $(C_k, min_{x})$ to $B_{i, j+1}^C$}
+			\EndIf
+		\EndFor
+	\EndIf
+	
+	\State\Return {$L_{i+1, j}^C, B_{i, j+1}^C$}
+	
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+The two functions defined in algorithm \ref{alg:gengraph_help} are necessary for algorithm \ref{alg:gengraph} to generate the correct traversability graph for a set of critical events at the same height $\epsilon_0$.
+
+It might be that it is superfluous to check if $C_{k2}.A$ lies in the respective reachability interval, because we are checking for the minimum $x$- or $y$-coordinate. Nevertheless, also checking the reachability interval $I_{ij}$ does not hurt the valid functioning.
 
 
 \subsection{Whut}
@@ -200,7 +282,7 @@ In case option B holds true, we need to decide which of the critical events $C_{
 
 \subsubsection{Traversing multiple critical events with same $\epsilon$}
 
-For each subset of critical events at $\epsilon_0$, $C'_{\epsilon_0} \subseteq C_{\epsilon_0}$ we compute if the critical events can be traversed monotonic. This can be done easily by applying the following procedure. For each critical event $C'_{\epsilon_0}(i)$, test if the start- and end-points of all other critical events in $C'_{\epsilon_0}$ are either lower-left of the starting point of $C'_{\epsilon_0}(i)$ or upper-right of the ending point of $C'_{\epsilon_0}(i)$.
+For each subset of critical events at $\epsilon_0$, $C'_{\epsilon_0} \subseteq C_{\epsilon_0}$ we compute if the critical events can be traversed monotonic. This can be done easily by applying the following procedure. For each critical event $C'_{\epsilon_0}(i)$, test if the start- and ending-points of all other critical events in $C'_{\epsilon_0}$ are either lower-left of the starting point of $C'_{\epsilon_0}(i)$ or upper-right of the ending point of $C'_{\epsilon_0}(i)$.
 
 See the a pseudocode for the function here. The function will return $True$ if the critical events $C'_{\epsilon_0}$ are traversable monotonically and $False$ if they are not.
 \begin{algorithm}[H]
@@ -215,7 +297,7 @@ See the a pseudocode for the function here. The function will return $True$ if t
 \State {}
 
 \Function{MonotonicTraversable($C'_{\epsilon_0}$)}{}
-	\State \Comment{determines if a set of critical events $C'_{\epsilon_0}$ are monotonically traversable}
+	\State \Comment{Determines if a set of critical events $C'_{\epsilon_0}$ are monotonically traversable.}
 	
 	\For {i in len($C'_{\epsilon_0}$)}
 		\State $c_{i} \gets C'_{\epsilon_0}(i)$
@@ -264,6 +346,7 @@ $$ C''_{\epsilon_0} \coloneqq \{ C'_{\epsilon_0} \mid MonotonicTraversable(C'_{\
 \subsubsection{Runtime analysis}
 \subsection{Real world application}
 	Can you think of one?
+	
 	
 	
 	

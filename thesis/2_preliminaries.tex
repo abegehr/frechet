@@ -160,6 +160,9 @@ In Figure \ref{fig:classical_critical_events} example free-space diagrams for ea
 \stepcounter{footnote}\footnotetext{Classical critical event of type b at height $\epsilon_F$ is at vertical border connecting the left to the right cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(1_2)(4_5)(7_2)&q=(1_3)(7_3)}}
 \stepcounter{footnote}\footnotetext{Classical critical event of type c at height $\epsilon_F$ is at vertical border connecting the left to the right cell over the middle cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(4_3)(7_4)(1_4)(4_3)&q=(1_3)(7_3)}}
 
+Critical events will be denoted with $C_k$, where $C_k.A$ is the starting-point and $C_k.B$ is the ending-point. For classical critical events of types a and b the starting-point and ending-point are the same.
+
+
 \subsection{Computing the Classical Fréchet Distance}
 
 We now have the tools to compute the classical Fréchet distance. To compute the classical Fréchet distance, we can apply \textit{Algorithm 2} of \citeauthor*{altgodau}'s paper.\cite{altgodau} The algorithm first determines all classical critical events of type a, b, and c, including their critical $\epsilon$ and then using a binary search and the decision algorithm, finds the smallest critical $\epsilon$ for which the height function $\delta$ is traversable.
