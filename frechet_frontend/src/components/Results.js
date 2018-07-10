@@ -10,7 +10,7 @@ function roundTo(num, size) {
 }
 
 function round(num) {
-  return roundTo(num, 100);
+  return roundTo(num, 1000000);
 }
 
 function color(i) {
