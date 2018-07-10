@@ -78,88 +78,82 @@ Figure \ref{fig:ces_com} shows a more complex example of multiple critical event
 
 We have seen in the examples, that in some cases we need to traverse a path through multiple of the critical events at equal height $\epsilon_0$, while in other cases a path through one critical events is sufficient. To decide which path to traverse, first, we need to find all possible paths through the critical events.
 
-The possible paths through multiple critical events can be represented as a graph. The start node represents the lower left corner $A$ and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_i \in C$ of height $\epsilon_0$ is a node. Edges are directional and denote traversability without another critical event of height $\epsilon_0$ in between.
+The possible paths through multiple critical events can be represented as a graph. The start node represents the lower left corner $A$ and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_k \in C$ of height $\epsilon_0$ is a node. Edges are directional and denote traversability without another critical event of height $\epsilon_0$ in between.
 
-To generate this graph of critical traversals, we make use of the free-space diagram and the technique used in the decision algorithm. Fist we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate the graph.
+To generate this graph of critical traversals, we make use of the free-space diagram and the technique used in the decision algorithm. Fist we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate for each vertical and horizontal cell-border, which subset of critical events $C$ can reach the border. We call the subset of $C$, that reaches the left and bottom border of cell $(i,j)$, $L_{ij}^C$ and $B_{ij}^C$ respectively. After computing each $L_{ij}^C$ and $B_{ij}^C$, we then connect critical events in $L_{ij}^C$ and $B_{ij}^C$ to reachable critical events starting on the top and right border.
 
-See the algorithm \ref{alg:generategraph} for more detail on how we generate the traversability graph of multiple critical traversals at equal height $\epsilon_0$.
+See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the starting-point $A$ and the end-point $b$.
 
 
 \begin{algorithm}[H]
-\caption{Generate Traversability Graph of multiple critical events at $\epsilon_0$}\label{alg:generategraph}
+\caption{Generate Traversability Graph of multiple critical events at $\epsilon_0$}\label{alg:gengraph}
 \begin{algorithmic}[1]
 
 \Function{GenerateTraversalGraph($A, B, C, \epsilon_0$)}{}
-
-\State $L_{ij}^R, B_{ij}^R \gets$ \Call{DecisionAlgorithm'}{$A, B, \epsilon_0$}
-
-
+	\State\Comment{$A$ is start-point of traversal. $B$ is end-point of traversal. $C$ holds all critical events $C_k$.}
 	
+	\State {Add $A$ and $B$ as critical events to $C$.}
+
+	\State {$\forall i,j: L_{ij}^C := \{\} \wedge B_{ij}^C := \{\}$}
+	
+	\State $L^R, B^R \gets$ \Call{DecisionAlgorithm'}{$A, B, \epsilon_0$}
+
+	\For {$C_k \in C$}
+		\State {Add $C_k.B$ (end-points) to $L_{ij}^C$ or $B_{ij}^C$ where $C_k.B$ lies.}
+	\EndFor
+
+	\For {$i := 0$ to $p$} {determine $L_{i, 0}^C$} \EndFor
+	\For {$j := 0$ to $q$} {determine $B_{0,j}^C$} \EndFor
+	 
+	\For {$i := 0$ to $p$}
+		\For {$j := 0$ to $q$}
+			
+			\For {$C_{k2}$ that starts on right or top border}
+				\For {$C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$}
+					
+					\If {$C_{k1}$ can reach $C_{k2}$} \label{alg:gengraph_reach}
+						\State {Add edge $(C_k1$, $C_k2)$ to graph.}
+					\EndIf
+					
+				\EndFor
+			\EndFor
+			
+			\State {construct $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$}
+		
+		\EndFor
+	\EndFor
+	
+	\Return {graph}
 
 \EndFunction
-
 
 \end{algorithmic}
 \end{algorithm}
 
+In the above algorithm \ref{alg:gengraph} on line \ref{alg:gengraph_reach}, we seek to determine if the critical event $C_{k1}$ can reach the critical event $C_{k2}$. It is known that $C_{k1}$ can reach the left or bottom border of the current cell $(i, j)$, because $C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$. It also is know that $C_{k2}$ starts at the top or right border of the current cell.
 
+To determine if $C_{k2}$ is reachable from $C_{k1}$, it is important to know if $C_{k1}$ comes the left or bottom border and if $C_{k2}$ is on the right or top border, because the origin of $C_{k1}$ influences the right and top reachability interval. There are four cases to consider:
 
-\begin{algorithm}[H]
-\caption{Lexicographic Fréchet Matching Algorithm}\label{alg:lex_frechet_alg}
-\begin{algorithmic}[1]
+\begin{enumerate}
+	\item $C_{k1} \in L_{i, j}^C$ is on left border and $C_{k2}$ starts on right border.
+	\item $C_{k1} \in L_{i, j}^C$ is on left border and $C_{k2}$ starts on top border.
+	\item $C_{k1} \in B_{i, j}^C$ is on bottom border and $C_{k2}$ starts on right border.
+	\item $C_{k1} \in B_{i, j}^C$ is on bottom border and $C_{k2}$ starts on top border.
+\end{enumerate}
 
-\Function{TraverseRecursive($\delta, A, B, \epsilon_A, \epsilon_B$)}{}
+The needed reachability intervals of right and top border are as follows:
 
-	\If {$A = B$ \textbf{or} $B.x \leq A.x$ \textbf{or} $B.y \leq A.y$ }
-		\State \Comment{Traversal done. Connect A and B.}
-		\State \Return \Call{Connect}{$A, B$}
-	\EndIf
-	
-	\State {$\epsilon \gets \max(\epsilon_A, \epsilon_B)$}
-	
-	\If {\Call{DecisionAlgorithm}{$\delta, A, B, \epsilon$}}
-	
-		\State $A', B', \epsilon_{A'}, \epsilon_{B'} \gets$ \Call{SteepestDescent}{$\delta, A, B, \epsilon_A, \epsilon_B$}
-		
-		\State {$\epsilon' \gets \max(\epsilon_{A'}, \epsilon_{B'})$}
-		
-		\If {\Call{DecisionAlgorithm}{$\delta, A', B', \epsilon'$}}
-			\State \Comment{Traversable after steepest descent.}
-			
-			\State \Return \Call{TraverseRecursive}{$\delta, A', B', \epsilon_{A'}, \epsilon_{B'}$}
-		
-		\Else \Comment{Not traversable. The descent passes a critical event.}
-		
-		\While {$A \neq A'$ \textbf{or} $B \neq B'$}
-		
-			\State {$A', B', \epsilon_{A'}, \epsilon_{B'}, c \gets$ \Call{ReverseDescent}{$\delta, A', B', \epsilon_{A'}, \epsilon_{B'}$}}
-			\State {$\epsilon' \gets \max(\epsilon_{A'}, \epsilon_{B'})$}
-			
-			\If {\Call{DecisionAlgorithm}{$\delta, A', B', \epsilon'$}}
-				\State \Comment{Traversable with the critical event $c$.}
-			
-				\State \Return \Call{TraverseRecursive}{$\delta, A', c.B, \epsilon_{A'}, \epsilon_{c}$} $+$ $c$ $+$ \Call{TraverseRecursive}{$\delta, c.A, B', \epsilon_{c}, \epsilon_{B'}$}
-			\EndIf
-		
-		\EndWhile
-		
-		
-		
-		\EndIf 
-		
-	\Else \Comment{A critical event with $\epsilon_c > \epsilon$ is needed to traverse.}
-		
-		\State $\epsilon_F, c \gets$ \Call{ClassicalFréchet}{$\delta, A, B, \epsilon_A, \epsilon_B$}
-		
-		\State \Return \Call{TraverseRecursive}{$\delta, A', c.B, \epsilon_{A'}, \epsilon_{c}$} $+$ $c$ $+$ \Call{TraverseRecursive}{$\delta, c.A, B', \epsilon_{c}, \epsilon_{B'}$}
-	
-	\EndIf
-	
-\EndFunction
+\begin{enumerate}
+	\item From left to right: $L_{i, j}^R \cap L_{i+1, j}^R$
+	\item From left to top: If $L_{i, j}^R$ is open: $B_{i, j+1}^R$. Otherwise closed.
+	\item From bottom to right: If $B_{i, j}^R$ is open: $L_{i+1, j}^R$. Otherwise closed.
+	\item From bottom to top: $B_{i, j}^R \cap B_{i, j+1}^R$
+\end{enumerate}
 
+If $C_{k1}$ does not lie in or on the reachability interval, we discard this potential edge ($C_{k1}$, $C_{k2}$). We also discard the potential edge, if $C_{k2}$ is not monotonically reachable from $C_{k1}$: $\neg(C_{k1}.B.x \leq C_{k2}.A.x \wedge C_{k1}.B.y \leq C_{k2}.A.y)$.
 
-\end{algorithmic}
-\end{algorithm}
+This check is not enough as figure \cite{fig:gengraph_ex} shows.
+
 
 
 
