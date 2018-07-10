@@ -68,9 +68,6 @@ class Results extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    console.log("this: ", this);
-    console.log("this.state: ", this.state);
-
     var newSettings = this.state.settings;
     newSettings[name] = value;
 
