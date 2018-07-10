@@ -12,7 +12,7 @@ This section aims to answer the question of how to handle multiple critical even
 
 \subsection{Examples}
 
-In this subsection, four examples will be discussed, for which multiple critical events for the same critical $\epsilon$ require a decision on which of them should be traversed to result in a lexicographic traversal.
+In this subsection, four examples will be discussed, for which multiple critical events for the same critical $\epsilon$ require a decision on which of them should be traversed to result in a lexicographic traversal. Instead of providing in-depth detail on solutions, this subsection aims to illustrate the problem through examples.
 
 
 \subsubsection{Minimal Example: Traverse Both}
@@ -23,15 +23,15 @@ In this subsection, four examples will be discussed, for which multiple critical
     
     \includegraphics[width=0.8\textwidth]{ces_min_1_tra.png}
 		
-	\caption{Multiple critical events with same $\epsilon$. Traverse both.\protect\footnotemark}
+	\caption{One Path Over Two Critical Events\protect\footnotemark}
     \label{fig:ces_min_1}
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(5_5)(8_5)(2_5)(5_5)&q=(5.5_3)(4.5_7)}}
 
-Figure \ref{fig:ces_min_1} shows a minimal example of multiple critical events for the same $\epsilon$. There are two classical critical events of type b with equal $\epsilon \approx 2.91$ at the two vertical cell-borders. It can be easily seen, that both need to be traversed.
+Figure \ref{fig:ces_min_1} shows a minimal example with two critical events with the same $\epsilon$. There are two classical critical events of type b at $\epsilon \approx 2.91$ at the two vertical cell-borders. Both critical events need to be traversed.
 
 
-\subsubsection{Minimal Example: Traverse Either One}
+\subsubsection{Minimal Example: Traverse Either}
 % https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)
 
 \begin{figure}[H]
@@ -39,12 +39,12 @@ Figure \ref{fig:ces_min_1} shows a minimal example of multiple critical events f
     
     \includegraphics[width=0.8\textwidth]{ces_min_2_tra.png}
 		
-	\caption{Multiple critical events with same $\epsilon$. Traverse either one.\protect\footnotemark}
+	\caption{Two Equivalent Paths\protect\footnotemark}
     \label{fig:ces_min_2}
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}}
 
-Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events for the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this $\delta$. It can be easily seen, that either one of the critical events at $\epsilon = 3$ need to be traversed.
+Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events for the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this height function $\delta$. Either one of the critical events at $\epsilon = 3$ need to be traversed.
 
 
 
@@ -56,18 +56,120 @@ Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events f
     
     \includegraphics[width=0.8\textwidth]{ces_min_3_tra.png}
 		
-	\caption{Multiple critical events with same $\epsilon$. Traverse one.\protect\footnotemark}
+	\caption{Two Inequivalent Paths\protect\footnotemark}
     \label{fig:ces_min_3}
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(3_2)(3_8)(6_4)&q=(2_3)(8_3)(2_3)}}
 
-Figure \ref{fig:ces_min_3} shows a minimal example of multiple critical events for the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this $\delta$. It can be easily seen, that either one of the critical events at $\epsilon = 3$ need to be traversed. !!!TODO!!!
+Figure \ref{fig:ces_min_3} shows three classical critical events of type b at $\epsilon = 5$ to consider: $C_1(6|1)$, $C_2(1|6)$, and $C_3(6|11)$. There are two possible paths through these three critical events: traversing just $C_1$ or traversing $C_2$ and $C_3$. Since the ascends to and descends from $C_1$, $C_2$, and $C_3$ are similar, we choose the path over only $C_1$.
 
 
-\subsubsection{More Complex Example}
+
+\subsubsection{Complex Example}
 
 Figure \ref{fig:ces_com} shows a more complex example of multiple critical events for the same $\epsilon$. 
 
+
+
+
+
+
+\subsection{Possible Paths}
+
+We have seen in the examples, that in some cases we need to traverse a path through multiple of the critical events at equal height $\epsilon_0$, while in other cases a path through one critical events is sufficient. To decide which path to traverse, first, we need to find all possible paths through the critical events.
+
+The possible paths through multiple critical events can be represented as a graph. The start node represents the lower left corner $A$ and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_i \in C$ of height $\epsilon_0$ is a node. Edges are directional and denote traversability without another critical event of height $\epsilon_0$ in between.
+
+To generate this graph of critical traversals, we make use of the free-space diagram and the technique used in the decision algorithm. Fist we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate the graph.
+
+See the algorithm \ref{alg:generategraph} for more detail on how we generate the traversability graph of multiple critical traversals at equal height $\epsilon_0$.
+
+
+\begin{algorithm}[H]
+\caption{Generate Traversability Graph of multiple critical events at $\epsilon_0$}\label{alg:generategraph}
+\begin{algorithmic}[1]
+
+\Function{GenerateTraversalGraph($A, B, C, \epsilon_0$)}{}
+
+\State $L_{ij}^R, B_{ij}^R \gets$ \Call{DecisionAlgorithm'}{$A, B, \epsilon_0$}
+
+
+	
+
+\EndFunction
+
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}[H]
+\caption{Lexicographic Fréchet Matching Algorithm}\label{alg:lex_frechet_alg}
+\begin{algorithmic}[1]
+
+\Function{TraverseRecursive($\delta, A, B, \epsilon_A, \epsilon_B$)}{}
+
+	\If {$A = B$ \textbf{or} $B.x \leq A.x$ \textbf{or} $B.y \leq A.y$ }
+		\State \Comment{Traversal done. Connect A and B.}
+		\State \Return \Call{Connect}{$A, B$}
+	\EndIf
+	
+	\State {$\epsilon \gets \max(\epsilon_A, \epsilon_B)$}
+	
+	\If {\Call{DecisionAlgorithm}{$\delta, A, B, \epsilon$}}
+	
+		\State $A', B', \epsilon_{A'}, \epsilon_{B'} \gets$ \Call{SteepestDescent}{$\delta, A, B, \epsilon_A, \epsilon_B$}
+		
+		\State {$\epsilon' \gets \max(\epsilon_{A'}, \epsilon_{B'})$}
+		
+		\If {\Call{DecisionAlgorithm}{$\delta, A', B', \epsilon'$}}
+			\State \Comment{Traversable after steepest descent.}
+			
+			\State \Return \Call{TraverseRecursive}{$\delta, A', B', \epsilon_{A'}, \epsilon_{B'}$}
+		
+		\Else \Comment{Not traversable. The descent passes a critical event.}
+		
+		\While {$A \neq A'$ \textbf{or} $B \neq B'$}
+		
+			\State {$A', B', \epsilon_{A'}, \epsilon_{B'}, c \gets$ \Call{ReverseDescent}{$\delta, A', B', \epsilon_{A'}, \epsilon_{B'}$}}
+			\State {$\epsilon' \gets \max(\epsilon_{A'}, \epsilon_{B'})$}
+			
+			\If {\Call{DecisionAlgorithm}{$\delta, A', B', \epsilon'$}}
+				\State \Comment{Traversable with the critical event $c$.}
+			
+				\State \Return \Call{TraverseRecursive}{$\delta, A', c.B, \epsilon_{A'}, \epsilon_{c}$} $+$ $c$ $+$ \Call{TraverseRecursive}{$\delta, c.A, B', \epsilon_{c}, \epsilon_{B'}$}
+			\EndIf
+		
+		\EndWhile
+		
+		
+		
+		\EndIf 
+		
+	\Else \Comment{A critical event with $\epsilon_c > \epsilon$ is needed to traverse.}
+		
+		\State $\epsilon_F, c \gets$ \Call{ClassicalFréchet}{$\delta, A, B, \epsilon_A, \epsilon_B$}
+		
+		\State \Return \Call{TraverseRecursive}{$\delta, A', c.B, \epsilon_{A'}, \epsilon_{c}$} $+$ $c$ $+$ \Call{TraverseRecursive}{$\delta, c.A, B', \epsilon_{c}, \epsilon_{B'}$}
+	
+	\EndIf
+	
+\EndFunction
+
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsection{Whut}
+
+To fulfill our goal of a lexicographic traversal, we want to minimize the time during which the height $\epsilon$ exceeds a threshold.\cite{rotelex} Concerning our example, we want to minimize the time needed to ascend to and descend from our critical height $\epsilon = 5$. 
+
+For a critical event $C_i$, we will denote the ascent with $C_i^\uparrow$ and descent with $C_i^\downarrow$.
+
+We will now calculate the ascents $C_1^\uparrow$, $C_2^\uparrow$, and $C_3^\uparrow$ as well as the descents $C_1^\downarrow$, $C_2^\downarrow$, and $C_3^\downarrow$, taking the steepest (monotonic) descent in all six cases.
 
 
 \subsection{Postulate Algorithm}

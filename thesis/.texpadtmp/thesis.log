@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  6 JUL 2018 13:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  10 JUL 2018 09:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -536,7 +536,11 @@ File: english.lbx 2018/03/04 v3.11 biblatex localization (PK/MW)
 )
 \@quotelevel=\count320
 \@quotereset=\count321
- (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.aux (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./title.aux) (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./declaration.aux))
+ (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.aux (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./title.aux) (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./declaration.aux)
+
+LaTeX Warning: Label `alg:lex_frechet_alg' multiply defined.
+
+)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -611,7 +615,7 @@ LaTeX Info: Redefining \nameref on input line 47.
 \openout2 = `./title.aux'.
 
  (./title.tex
-<./graphics/fu_logo.pdf, id=156, 144.54pt x 144.54pt>
+<./graphics/fu_logo.pdf, id=164, 144.54pt x 144.54pt>
 File: ./graphics/fu_logo.pdf Graphic file (type pdf)
 <use ./graphics/fu_logo.pdf>
 Package pdftex.def Info: ./graphics/fu_logo.pdf  used on input line 14.
@@ -672,33 +676,33 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 65.
 
 [3] [4]
-<./graphics/freespace_lower.png, id=260, 1003.75pt x 668.4975pt>
+<./graphics/freespace_lower.png, id=270, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_lower.png Graphic file (type png)
 <use ./graphics/freespace_lower.png>
 Package pdftex.def Info: ./graphics/freespace_lower.png  used on input line 109.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_eq.png, id=262, 1003.75pt x 668.4975pt>
+<./graphics/freespace_eq.png, id=272, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_eq.png Graphic file (type png)
 <use ./graphics/freespace_eq.png>
 Package pdftex.def Info: ./graphics/freespace_eq.png  used on input line 112.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_higher.png, id=263, 1003.75pt x 668.4975pt>
+<./graphics/freespace_higher.png, id=273, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_higher.png Graphic file (type png)
 <use ./graphics/freespace_higher.png>
 Package pdftex.def Info: ./graphics/freespace_higher.png  used on input line 115.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
  [5 <./graphics/freespace_lower.png> <./graphics/freespace_eq.png> <./graphics/freespace_higher.png>]
-<./graphics/classical_critical_event_a.png, id=287, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_a.png, id=297, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_a.png Graphic file (type png)
 <use ./graphics/classical_critical_event_a.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_a.png  used on input line 146.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_b.png, id=290, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_b.png, id=300, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_b.png Graphic file (type png)
 <use ./graphics/classical_critical_event_b.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_b.png  used on input line 149.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_c.png, id=293, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_c.png, id=303, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_c.png Graphic file (type png)
 <use ./graphics/classical_critical_event_c.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_c.png  used on input line 152.
@@ -714,49 +718,49 @@ l.166
                                                   \fi \fi 
 l.166 
        <./graphics/classical_critical_event_a.png> <./graphics/classical_critical_event_b.png> <./graphics/classical_critical_event_c.png>] [7]
-<./graphics/new_critical_event.png, id=333, 1003.75pt x 668.4975pt>
+<./graphics/new_critical_event.png, id=343, 1003.75pt x 668.4975pt>
 File: ./graphics/new_critical_event.png Graphic file (type png)
 <use ./graphics/new_critical_event.png>
 Package pdftex.def Info: ./graphics/new_critical_event.png  used on input line 199.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 212.
  [8 <./graphics/new_critical_event.png>] [9]) (./3_main.tex [10]
-<./graphics/ces_min_1_tra.png, id=362, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_1_tra.png, id=373, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_1_tra.png Graphic file (type png)
 <use ./graphics/ces_min_1_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_1_tra.png  used on input line 24.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
-<./graphics/ces_min_2_tra.png, id=367, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_2_tra.png, id=378, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_2_tra.png Graphic file (type png)
 <use ./graphics/ces_min_2_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_2_tra.png  used on input line 40.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [11 <./graphics/ces_min_1_tra.png>]
-<./graphics/ces_min_3_tra.png, id=380, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_3_tra.png, id=391, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_3_tra.png Graphic file (type png)
 <use ./graphics/ces_min_3_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_3_tra.png  used on input line 57.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [12 <./graphics/ces_min_2_tra.png>]
 
-LaTeX Warning: Reference `fig:ces_com' on page 13 undefined on input line 69.
+LaTeX Warning: Reference `fig:ces_com' on page 13 undefined on input line 70.
 
-[13 <./graphics/ces_min_3_tra.png>] [14]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 105.
-
+[13 <./graphics/ces_min_3_tra.png>] [14] [15] [16]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\epsilon' on input line 105.
+(hyperref)                removing `math shift' on input line 207.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 105.
+(hyperref)                removing `\epsilon' on input line 207.
 
-[15]) (./4_conclusion.tex [16])
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 207.
+
+[17]) (./4_conclusion.tex [18])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 75.
- [17]
+ [19]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 75.
  (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.aux (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./title.aux) (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./declaration.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 75.
@@ -767,27 +771,30 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15122 strings out of 492649
- 256592 string characters out of 6129623
- 710143 words of memory out of 5000000
- 18695 multiletter control sequences out of 15000+600000
+ 15131 strings out of 492649
+ 256707 string characters out of 6129623
+ 709209 words of memory out of 5000000
+ 18698 multiletter control sequences out of 15000+600000
  11584 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,13n,49p,826b,1205s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,13n,49p,826b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (21 pages, 726344 bytes).
+Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (23 pages, 732989 bytes).
 PDF statistics:
- 526 PDF objects out of 1000 (max. 8388607)
- 449 compressed objects within 5 object streams
- 109 named destinations out of 1000 (max. 500000)
- 360 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 550 PDF objects out of 1000 (max. 8388607)
+ 471 compressed objects within 5 object streams
+ 115 named destinations out of 1000 (max. 500000)
+ 376 words of extra memory for PDF output out of 10000 (max. 10000000)
 

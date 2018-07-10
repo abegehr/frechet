@@ -169,7 +169,7 @@ We now have the tools to compute the classical Fréchet distance. To compute the
 
 In his \citeyear{rotelex} paper \citetitle{rotelex}, \citeauthor{rotelex} extended upon the findings from \citeauthor*{altgodau} in their paper \citetitle{altgodau} to establish an algorithm that produces a lexicographic Fréchet matching.
 
-Taking a lexicographic approach roughly means that we want to minimize the time T(s) during which the height exceeds a threshold s.\cite{rotelex} We want to spend as little time as possible at the current height and want to descend as quickly as possible.
+Taking a lexicographic approach roughly means that we want to minimize the time $T(s)$ during which the height exceeds a threshold $s$.\cite{rotelex} We want to spend as little time as possible at the current height and want to descend as quickly as possible.
 
 \subsection{Steepest Descent}
 
@@ -241,6 +241,8 @@ We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for 
 \end{algorithmic}
 \end{algorithm}
 
+
+
 \begin{algorithm}[H]
 \caption{Lexicographic Fréchet Matching Algorithm}\label{alg:lex_frechet_alg}
 \begin{algorithmic}[1]
@@ -280,8 +282,6 @@ We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for 
 		
 		\EndWhile
 		
-		
-		
 		\EndIf 
 		
 	\Else \Comment{A critical event with $\epsilon_c > \epsilon$ is needed to traverse.}
@@ -289,8 +289,6 @@ We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for 
 		\State $\epsilon_F, c \gets$ \Call{ClassicalFréchet}{$\delta, A, B, \epsilon_A, \epsilon_B$}
 		
 		\State \Return \Call{TraverseRecursive}{$\delta, A', c.B, \epsilon_{A'}, \epsilon_{c}$} $+$ $c$ $+$ \Call{TraverseRecursive}{$\delta, c.A, B', \epsilon_{c}, \epsilon_{B'}$}
-	
-	
 	
 	\EndIf
 	
