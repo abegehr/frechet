@@ -236,14 +236,39 @@ We can now define two algorithm in more detail. First, the algorithm for determi
 
 The two functions defined in algorithm \ref{alg:gengraph_help} are necessary for algorithm \ref{alg:gengraph} to generate the correct traversability graph for a set of critical events at the same height $\epsilon_0$.
 
-It might be that it is superfluous to check if $C_{k2}.A$ lies in the respective reachability interval, because we are checking for the minimum $x$- or $y$-coordinate. Nevertheless, also checking the reachability interval $I_{ij}$ does not hurt the valid functioning.
+Checking if $C_{k2}.A$ lies in the respective reachability interval might be superfluous, because we are already checking for the minimum $x$- or $y$-coordinate. Nevertheless, also checking the reachability interval $I_{ij}$ does not hurt the valid functioning.
 
 
-\subsection{Whut}
+\subsection{Ascents and Descents}
 
-To fulfill our goal of a lexicographic traversal, we want to minimize the time during which the height $\epsilon$ exceeds a threshold.\cite{rotelex} Concerning our example, we want to minimize the time needed to ascend to and descend from our critical height $\epsilon = 5$. 
+To fulfill our goal of a lexicographic traversal, we want to minimize the time during which the height $\epsilon$ exceeds a threshold.\cite{rotelex} Concerning our examples, we want to minimize the time needed to ascend to and descend from our critical height $\epsilon_0$. 
 
-For a critical event $C_i$, we will denote the ascent with $C_i^\uparrow$ and descent with $C_i^\downarrow$.
+For a critical event $C_k$, we will denote the ascent with $H_{Ck}^\uparrow$ and descent with $H_{Ck}^\downarrow$. Due to our input being two paths consisting of connected straight line-segments, every straight cross-section through our height function$\delta$ is a continuous composition of hyperbolas. We use the following function to denote these hyperbolas $H$:
+
+$$H: \epsilon(t) = \sqrt{u^2 + a(t - v)^2}$$
+
+To attain a cross-section $f(t)$ of an entire traversal, we simply create a composite function of the $n$ hyperbolas:
+
+\[ f(t) =
+\begin{cases} 
+	\sqrt{u_1^2 + a_1(t - v_1)^2} & 0 \leq t \leq dt_1 \\
+	\sqrt{u_2^2 + a_2(t - v_2)^2} & dt_1 \leq t \leq dt_2 \\
+	\dots \\
+	\sqrt{u_2^n + a_n(t - v_n)^2} & dt_{n-1} \leq t \leq dt_n \\
+\end{cases}
+\]
+
+For the example in figure \ref{fig:ces_min_2} the cross-sections $f_1(t)$ and $f_2(t)$ are shown in figure \ref{fig:ces_min_2_cs}.
+
+ \begin{figure}[H]
+    \centering
+    
+    \includegraphics[width=0.8\textwidth]{ces_min_2_cs.png}
+		
+	\caption{Traversal cross section for example in figure \ref{fig:ces_min_2}\protect\footnotemark}
+    \label{fig:ces_min_2_cs}
+\end{figure}
+\footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}}
 
 We will now calculate the ascents $C_1^\uparrow$, $C_2^\uparrow$, and $C_3^\uparrow$ as well as the descents $C_1^\downarrow$, $C_2^\downarrow$, and $C_3^\downarrow$, taking the steepest (monotonic) descent in all six cases.
 
@@ -282,7 +307,7 @@ In case option B holds true, we need to decide which of the critical events $C_{
 
 \subsubsection{Traversing multiple critical events with same $\epsilon$}
 
-For each subset of critical events at $\epsilon_0$, $C'_{\epsilon_0} \subseteq C_{\epsilon_0}$ we compute if the critical events can be traversed monotonic. This can be done easily by applying the following procedure. For each critical event $C'_{\epsilon_0}(i)$, test if the start- and ending-points of all other critical events in $C'_{\epsilon_0}$ are either lower-left of the starting point of $C'_{\epsilon_0}(i)$ or upper-right of the ending point of $C'_{\epsilon_0}(i)$.
+For each subset of critical events at $\epsilon_0$, $C'_{\epsilon_0} \subseteq C_{\epsilon_0}$ we compute if the critical events can be traversed monotonically. This can be done easily by applying the following procedure. For each critical event $C'_{\epsilon_0}(i)$, test if the start- and ending-points of all other critical events in $C'_{\epsilon_0}$ are either lower-left of the starting point of $C'_{\epsilon_0}(i)$ or upper-right of the ending point of $C'_{\epsilon_0}(i)$.
 
 See the a pseudocode for the function here. The function will return $True$ if the critical events $C'_{\epsilon_0}$ are traversable monotonically and $False$ if they are not.
 \begin{algorithm}[H]
