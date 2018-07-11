@@ -354,31 +354,49 @@ Due to it's form, the derivative of $h_k^{-1}$ is not trivial. $h_k^{-1}$ is a c
 
 For a critical event $C_k$ at $\epsilon_0$, we will denote the ascent hyperbola with $h_{k\uparrow}$ and the descent hyperbola with $h_{k\downarrow}$.  For simplicity we define the hyperbolas so that $t = 0$ for the critical height $\epsilon$: $h_k(0) = \epsilon_0$. This means that $h_{k\uparrow}(t)$ is defined for the interval $-( {\Delta t}_k - {\Delta t}_{k-1} ) \leq t \leq 0)$ and $h_{k\downarrow}(t)$ are defined for the interval $0 \leq t \leq {\Delta t}_k - {\Delta t}_{k-1}$.
 
-The hyperbolas are vertically symmetric at $t_v=v$, $h_k(t_v+t) = h_k(t_v-t)$; therefore, the inverse hyperbolas are horizontally symmetric at $t_v = v$. This means that we can use the following inverse functions for ascending and descending hyperbolas to get rid of the $\pm$ in the inverse and get only positive slopes:
-
-\begin{align*}
-	h_{\uparrow}^{-1}(\epsilon) = v + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u^2}{a}}}
-	\qquad
-	h_{\downarrow}^{-1}(\epsilon) = v - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u^2}{a}}}
-\end{align*}
-	
-We now determine the derivatives of $H_{\uparrow}^{-1}$ and $H_{\downarrow}^{-1}$:
+The hyperbolas are vertically symmetric at $t_v=v$, $h(t_v+t) = h(t_v-t)$; therefore, the inverse hyperbolas are horizontally symmetric at $t_v = v$. This means that to get rid of the $\pm$ in the inverse and get only positive slopes, we can simply use a $+$:
 
 \begin{equation*}
 	\begin{aligned}[c]
-		[h_{\uparrow}^{-1}]' &= \left[ v + \sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= \left[ v + \sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= v + \left[\sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= v + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u^2}{a}} }
+		h_{\uparrow}^{-1}(\epsilon) &= v_{\uparrow} + \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}
 	\end{aligned}
 	\qquad
 	\begin{aligned}[c]
-		[h_{\uparrow}^{-1}]' &= \left[ v + \sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= \left[ v + \sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= v + \left[\sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\\
-		[h_{\uparrow}^{-1}]' &= v + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u^2}{a}} }
+	h_{\downarrow}^{-1}(\epsilon) &= v_{\downarrow} - \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}
 	\end{aligned}
 \end{equation*}
+	
+We now determine the derivatives of $h_{\uparrow}^{-1}(\epsilon)$ and $h_{\downarrow}^{-1}(\epsilon)$:
+
+\begin{equation*}
+	\begin{aligned}[c]
+		[h_{\uparrow}^{-1}]'(\epsilon) &= \left[ v_{\uparrow} + \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} \right]'\\
+		[h_{\uparrow}^{-1}]'(\epsilon) &= \left[\sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} \right]'\\
+		[h_{\uparrow}^{-1}]'(\epsilon) &= \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} }
+	\end{aligned}
+	\qquad
+	\begin{aligned}[c]
+		[h_{\downarrow}^{-1}]'(\epsilon) &= \left[ v_{\downarrow} - \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} \right]'\\
+		[h_{\downarrow}^{-1}]'(\epsilon) &= - \left[\sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} \right]'\\
+		[h_{\downarrow}^{-1}]'(\epsilon) &= - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} }
+	\end{aligned}
+\end{equation*}
+
+We have defined the hyperbolas so that $h(0) = \epsilon_0$; therefore, $h^{-1}(\epsilon_0) = 0$.
+
+\begin{align*}
+	\begin{aligned}[c]
+		h_{\uparrow}^{-1}(\epsilon_0) &= v_{\uparrow} + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}\\
+		0 &= v_{\uparrow} + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}\\
+		v_{\uparrow} &= - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}
+	\end{aligned}
+	\qquad
+	\begin{aligned}[c]
+		h_{\downarrow}^{-1}(\epsilon_0) &= v_{\downarrow} - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}\\
+		0 &= v_{\downarrow} - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}\\
+		v_{\downarrow} &= \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}
+	\end{aligned}
+\end{align*}
 	
 
 There are three cases to consider:
