@@ -3,11 +3,11 @@
 
 \subsection{Problem}
 
-As \citeauthor{rotelex} describes in Section 7 of his paper \citetitle{rotelex} and as we hinted to in Section \ref{sec:lex_frechet_alg} of this paper, multiple critical events can occur for the same $\epsilon$.
+As \citeauthor{rotelex} describes in section 7 of his paper \citetitle{rotelex} and as we hinted to in section \ref{sec:lex_frechet_alg} of this paper, multiple critical events can occur for the same $\epsilon$.
 
-Multiple critical events for the same $\epsilon$ turn out to be problematic, because as can be seen in Algorithm \ref{alg:lex_frechet_alg}, we assume the functions defined in Algorithm \ref{alg:lex_frechet_alg_req} return only one critical event, which will be traversed.
+Multiple critical events for the same $\epsilon$ turn out to be problematic, because as can be seen in algorithm \ref{alg:lex_frechet_alg}, we assume the functions defined in algorithm \ref{alg:lex_frechet_alg_req} return only one critical event which then will be traversed. This assumption does not hold in all cases.
 
-This section aims to answer the question of how to handle multiple critical events with the same critical $\epsilon$ by visualizing the problem and postulating an algorithm that decides which combination of critical events result in a lexicographic traversal. The basis of this section is Section 7 of \citeauthor{rotelex}'s paper \citetitle{rotelex}\cite{rotelex}.
+This section aims to answer the question of how to handle multiple critical events with the same critical $\epsilon$ by visualizing the problem and postulating an algorithm that decides which combination of critical events result in a lexicographic traversal. The basis of this section is section 7 of \citeauthor{rotelex}'s paper \citetitle{rotelex}\cite{rotelex}.
 
 
 \subsection{Examples}
@@ -15,7 +15,7 @@ This section aims to answer the question of how to handle multiple critical even
 In this subsection, four examples will be discussed, for which multiple critical events for the same critical $\epsilon$ require a decision on which of them should be traversed to result in a lexicographic traversal. Instead of providing in-depth detail on solutions, this subsection aims to illustrate the problem through examples.
 
 
-\subsubsection{Minimal Example: Traverse Both}
+\subsubsection{Minimal Example: Traverse Both}\label{sec:ces_min_1}
 % https://abegehr.github.io/frechet/?p=(5_5)(8_5)(2_5)(5_5)&q=(5.5_3)(4.5_7)
 
 \begin{figure}[H]
@@ -44,7 +44,7 @@ Figure \ref{fig:ces_min_1} shows a minimal example with two critical events with
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}}
 
-Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events for the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this height function $\delta$. Either one of the critical events at $\epsilon = 3$ need to be traversed.
+Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events for the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this height function $\delta$. Either one of the critical events at $\epsilon = 3$ needs to be traversed.
 
 
 
@@ -71,16 +71,13 @@ Figure \ref{fig:ces_com} shows a more complex example of multiple critical event
 
 
 
-
-
-
 \subsection{Possible Paths} \label{sec:gengraph}
 
-We have seen in the examples that in some cases we need to traverse a path through multiple of the critical events at equal height $\epsilon_0$, while in other cases a path through one critical events is sufficient. To decide which path to traverse, first, we need to find all possible paths through the critical events.
+We have seen in the examples that in some cases we need to traverse a path through multiple of the critical events at equal height $\epsilon_0$, while in other cases a path through one critical event is sufficient. To decide which path to traverse, first, we need to find all possible paths through the critical events.
 
 The possible paths through multiple critical events can be represented as a graph. The start node represents the lower left corner $A$ and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_k \in C$ of height $\epsilon_0$ is a node. Edges are directional and denote traversability without another critical event of height $\epsilon_0$ in between.
 
-To generate this graph of critical traversals, we make use of the free-space diagram and the technique used in the decision algorithm. Fist we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate for each vertical and horizontal cell-border, which subset of critical events $C$ can reach the border. We call the subset of $C$ that reaches the left and bottom border of cell $(i,j)$, $L_{ij}^C$ and $B_{ij}^C$ respectively. After computing each $L_{ij}^C$ and $B_{ij}^C$, we then connect critical events in $L_{ij}^C$ and $B_{ij}^C$ to reachable critical events starting on the top and right border.
+To generate this graph, first, we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate for each vertical and horizontal cell-border which subset of critical events $C$ can reach the border. We call the subset of $C$ that reaches the left and bottom border of cell $(i,j)$: $L_{ij}^C$ and $B_{ij}^C$ respectively. After computing each $L_{ij}^C$ and $B_{ij}^C$, we then connect critical events in $L_{ij}^C$ and $B_{ij}^C$ to reachable critical events starting on the top and right border.
 
 See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the starting-point $A$ and the ending-point $b$.
 
@@ -130,13 +127,13 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Can $C_{k1}$ reach $C_{k2}$}
+\subsubsection{Can $C_{k1}$ reach $C_{k2}$?}
 
-In the above algorithm \ref{alg:gengraph} on line \ref{alg:gengraph_reach}, we seek to determine if the critical event $C_{k1}$ can reach the critical event $C_{k2}$. It is known that $C_{k1}$ can reach the left or bottom border of the current cell $(i, j)$, because $C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$. It also is know that $C_{k2}$ starts at the top or right border of the current cell.
+In the above algorithm \ref{alg:gengraph} on line \ref{alg:gengraph_reach}, we seek to determine if the critical event $C_{k1}$ can reach the critical event $C_{k2}$. It is known that $C_{k1}$ can reach the left or bottom border of the current cell $(i, j)$, because $C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$. It is also know that $C_{k2}$ starts at the top or right border of the current cell.
 
-We discard the potential edge $(C_{k1}, C_{k2})$ in the trivial case where $C_{k2}$ is not monotonically reachable from $C_{k1}$: $\neg(C_{k1}.B.x \leq C_{k2}.A.x \wedge C_{k1}.B.y \leq C_{k2}.A.y)$.
+We discard the potential edge $(C_{k1}, C_{k2})$ in the trivial case, where $C_{k2}$ is not monotonically reachable from $C_{k1}$: $\neg(C_{k1}.B.x \leq C_{k2}.A.x \wedge C_{k1}.B.y \leq C_{k2}.A.y)$.
 
-To determine if $C_{k2}$ is reachable from $C_{k1}$, we first look at if $C_{k1}$ comes the left or bottom border and if $C_{k2}$ is on the right or top border. There are four cases to consider:
+To determine if $C_{k2}$ is reachable from $C_{k1}$, we first look at if $C_{k1}$ comes from the left or bottom border and if $C_{k2}$ starts on the right or top border. There are four cases to consider:
 
 \begin{enumerate}
 	\item $C_{k1} \in L_{i, j}^C$ enters on left border and $C_{k2}$ starts on right border.
@@ -170,9 +167,9 @@ It can be considered to use solely these reachability intervals $I_{ij}$ to deci
 
 In figure \ref{fig:gengraph_ex1} the decision algorithm tells us that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon = 2$ that we consider: $C_1(3, 1)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
 
-To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorize for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
+To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorize for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then, when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
 
-We can now define two algorithm in more detail. First, the algorithm for determining if $C_{k1}$ can reach $C_{k2}$. And second, the algorithm that constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$.
+We can now define two helper algorithms in more detail. First, the algorithm for determining if $C_{k1}$ can reach $C_{k2}$. And second, the algorithm that constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$.
 
 \begin{algorithm}[H]
 \caption{Generate Traversability Graph Helper Functions}\label{alg:gengraph_help}
@@ -245,7 +242,7 @@ In this section we will define a traversals cross-section $f(t)$ and its profile
 
 \subsubsection{Hyperbolas}
 
-Due to our input being two paths consisting of connected straight line-segments, every straight cross-section through our height function$\delta$ is a continuous composition of hyperbolas. We use the following function to denote these hyperbolas $h$:
+Due to our input being two paths consisting of connected straight line-segments, every straight cross-section through our height function $\delta$ is a continuous composition of hyperbolas. We use the following function to denote these hyperbolas $h$:
 
 $$h: \epsilon(t) = \sqrt{u^2 + a(t - v)^2}$$
 
@@ -272,14 +269,14 @@ To attain a cross-section $f(t)$ of an entire traversal, we simply create a comp
 \end{cases}
 \]
 
-For the example in figure \ref{fig:ces_min_1}, the cross-section $f(t)$ is shown in figure \ref{fig:ces_min_1_cs}. The $x$-axis shows the time and the $y$-axis shows the current $\epsilon$. Notice that when the traversal moves on the $l$-lines, the cross-section is linear. This is because the addend $u^2$ inside the square root equals zero for this case. Therefore, the square and the square root cancel and we are left with the absolute value of a linear function: $\left| \sqrt{a}(t - v) \right|$.
+For the example in figure \ref{fig:ces_min_1}, the cross-section $f(t)$ is shown in figure \ref{fig:ces_min_1_cs}. The $x$-axis shows the time and the $y$-axis shows the current $\epsilon$. Notice that when the traversal moves on the $l$-lines the cross-section is linear. This is because the addend $u^2$ inside the square root equals zero for this case. Therefore, the square and the square root cancel and we are left with the absolute value of a linear function: $\left| \sqrt{a}(t - v) \right|$.
 
  \begin{figure}[H]
     \centering
     
     \includegraphics[width=0.8\textwidth]{ces_min_1_cs.png}
 		
-	\caption{Traversal cross section $f(t)$ for example in figure \ref{fig:ces_min_1}\protect\footnotemark}
+	\caption{Cross-section $f(t)$ for example from section \ref{sec:ces_min_1}\protect\footnotemark}
     \label{fig:ces_min_1_cs}
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}\label{ftn:ces_min_1}}
@@ -300,11 +297,11 @@ Figure \ref{fig:ces_min_1_csp} shows the profile function $\hat{f}(s)$ in additi
     
     \includegraphics[width=0.8\textwidth]{ces_min_1_csp.png}
 		
-	\caption{Traversal cross section $f(t)$ and profile $\hat{f}(s)$ for example in figure \ref{fig:ces_min_1}\textsuperscript{\ref{ftn:ces_min_1}}}
+	\caption{Cross-section $f(t)$ and profile $\hat{f}(s)$ for example from section \ref{sec:ces_min_1}\textsuperscript{\ref{ftn:ces_min_1}}}
     \label{fig:ces_min_1_csp}
 \end{figure}
 
-Next the profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that each hyperbola function $h_j(t)$ is defined so that $0 \leq t \leq t_j - t_{j-1}$; therefore, we can simply sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
+The profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that each hyperbola function $h_j(t)$ is defined so that $0 \leq t \leq t_j - t_{j-1}$; therefore, we can simply sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
 
 \begin{enumerate}
 	\item Compute the inverse function of a hyperbolas function $h^{-1}(\epsilon)$. First solve $\epsilon(t)$ for $t$:
@@ -448,7 +445,7 @@ Let us consider an example where we can decide from looking at the first derivat
 
 In the example depicted in figure \ref{fig:ces_ad_1}, there are two classical critical events of type b at critical height $\epsilon_0 = 3$ to consider: $C_1(1, 4)$ and $C_2(4, 1)$.
 
-The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in \ref{sec:gengraph}, returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$, this will be path $f$, or over $C_2$, that will be path $g$.
+The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$, this will be path $f$, or over $C_2$, that will be path $g$.
 
 We will now look at the ascent to and descent from hyperbolas of $C_1$ and $C_2$.
 
@@ -512,7 +509,7 @@ In case option A holds true, this critical event will need to be traversed. The 
 In case option B holds true, we need to decide which of the critical events $C_{\epsilon_0}$ need to be traversed and which are not needed for an optimal solution. We will consider all subsets $C'_{\epsilon_0}$ of $C_{\epsilon_0}$ with size $n>0$.
 
 
-\subsection{Example of Algorithm visualised (visual example!)}
+\subsection{Example of Algorithm visualized (visual example!)}
 
 \subsection{Analysing postulated algorithm for handling degenerate inputs}
 \subsubsection{Runtime analysis}

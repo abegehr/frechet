@@ -16,7 +16,7 @@ For simplification we assume all points $P_{i}$ of $P$ and $Q_{j}$ of $Q$ lie in
 
 \subsection{Parametrisation}
 
-We will use an arc-length parametrisation to define the polygonal curves $P$ and $Q$ going forward. We are using the arc-length parametrisation, instead of an unit-length parameter, to achieve visualisations with proportional scaled cells in the further course of this examination.
+We will use an arc-length parametrisation to define the polygonal curves $P$ and $Q$ going forward. We are using the arc-length parametrisation, instead of an unit-length parameter, to achieve visualizations with proportional scaled cells in the further course of this examination.
 
 First we calculate the Euclidean distances between the points of $P$ and $Q$ in the order they appear:
 
@@ -60,14 +60,14 @@ $$\delta(x, y) := \left\| P(x) - Q(y) \right\|$$
 
 \section{Classical Fréchet Distance}
 
-This section introduces the Fréchet distance and gives an overview of the main  findings in the \citeyear{altgodau} paper \citetitle{altgodau} by \citeauthor*{altgodau}\cite{altgodau}, which later will be essential for computing the lexicographic Fréchet distance.
+This section introduces the Fréchet distance and gives an overview of the main  findings in the \citeyear{altgodau} paper \citetitle{altgodau} by \citeauthor*{altgodau}\cite{altgodau} which later will be essential for computing the lexicographic Fréchet distance.
 
 \subsection{Traversal of $P$ and $Q$}
 
-Let us revisit the "dog walking"-metaphor (Section \ref{dogwalking}) of the man and his dog walking along, or in other words traversing, their paths. The Fréchet distance is a dissimilarity measure that considers the traversal of both polygonal chains $P$ and $Q$ with following conditions:
+Let us revisit the ``dog walking"-metaphor from section \ref{dogwalking} of the man and his dog walking along or in other words traversing their paths. The Fréchet distance is a dissimilarity measure that considers the traversal of both polygonal chains $P$ and $Q$ with following conditions:
 \begin{enumerate}[label=(\Alph*)]
 	\item Both $P$ and $Q$ are traversed completely.
-	\item Both $P$ and $Q$ are traversed monotonically ascending in the direction of $P$ and $Q$ respectively. Meaning a traverser on either $P$ or $Q$ can stand idle and go forwards, but may never go backwards.\label{travcondb}
+	\item Both $P$ and $Q$ are traversed monotonically ascending in the direction of $P$ and $Q$ respectively. Meaning, a traverser on either $P$ or $Q$ can stand idle and go forwards, but may never go backwards.\label{travcondb}
 \end{enumerate}
 
 We traverse both $P$ and $Q$ together. This means that at every point in time one of the following cases holds true:
@@ -82,7 +82,7 @@ The last case is identical to the end of both traversals. Both traverses have re
 
 We define a traversal of both $P$ and $Q$ together as a joint parametrisation $(\alpha(t), \beta(t))$. This joint parametrisation represents a continuous curve in the parameter area $R$. The curve represented by $(\alpha(t), \beta(t))$ is a monotonic curve, because of above condition \ref{travcondb} which states that both $P$ and $Q$ are traversed only forwards and never backwards.
 
-Revisiting the "dog walking"-metaphor from Section \ref{dogwalking}, the Fréchet distance is the length of the shortest leash, with which it is possible for the man and his dog to traverse their paths completely by only travelling forward. In other words, the Fréchet distance is defined as the largest distance between the traverser on path $P$ and the traverser on path $Q$ of the traversal with the smallest maximum distance between the respective traversers.
+Revisiting the ``dog walking"-metaphor from Section \ref{dogwalking}, the Fréchet distance is the length of the shortest leash with which it is possible for the man and his dog to traverse their paths completely by only travelling forward. In other words, the Fréchet distance is defined as the largest distance between the traverser on path $P$ and the traverser on path $Q$ of the traversal with the smallest maximum distance between the respective traversers.
 
 Using the joint parametrisation $(\alpha(t), \beta(t))$ as representative for a traversal, next the distance function $f(t)$ for the joint parametrisation needs to be defined to determine the Fréchet distance. The height function defined in Section \ref{heightfunc} will be used to define the distance function $f(t)$ for a joint parametrisation $(\alpha(t), \beta(t))$:
 
@@ -98,7 +98,7 @@ The fundamental insight of Alt and Godau\cite{altgodau} is that the Fréchet dis
 
 \subsection{Decision Problem}
 
-The decision problem asks if a height function $\delta$ can be traversed monotonically while not exceeding the height of a given $\epsilon$. In their paper, Alt and Godau\cite{altgodau} define the decision algorithm, which solves the decision problem by using the free-space diagram $F_{\epsilon}$.
+The decision problem asks, if a height function $\delta$ can be traversed monotonically while not exceeding the height of a given $\epsilon$. In their paper, Alt and Godau\cite{altgodau} define the decision algorithm which solves the decision problem by using the free-space diagram $F_{\epsilon}$.
 
 In the following example we will see three free-space diagrams $F_\epsilon$ for the same height function with different $\epsilon$. $\epsilon_F$ denotes the Fréchet distance.
 
@@ -129,11 +129,11 @@ The following cases are depicted in Figure \ref{fig:freespace_decision} above:
 
 \subsection{Classical Critical Events}
 
-Alt and Godau also identified, that the critical height $\epsilon_F$, where a critical pathway in the free-space diagram closes, occurs in one of three cases. These are the three types of classical critical events:
+Alt and Godau also identified that the critical height $\epsilon_F$ where a critical pathway in the free-space diagram closes occurs in one of three cases. These are the three types of classical critical events:
 
 \begin{enumerate}[label=(\alph*)]
 	\item $\epsilon_F$ at $(0, 0) \in F_\epsilon$ or $(L_P, L_Q) \in F_\epsilon$
-	\item A new passage with height $\epsilon_F$ opens at border between two cells.
+	\item A new passage with height $\epsilon_F$ opens on the border between two cells.
 	\item A new horizontal or vertical passage with height $\epsilon_F$ opens on borders with cells in between.
 \end{enumerate}
 
@@ -160,12 +160,12 @@ In Figure \ref{fig:classical_critical_events} example free-space diagrams for ea
 \stepcounter{footnote}\footnotetext{Classical critical event of type b at height $\epsilon_F$ is at vertical border connecting the left to the right cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(1_2)(4_5)(7_2)&q=(1_3)(7_3)}}
 \stepcounter{footnote}\footnotetext{Classical critical event of type c at height $\epsilon_F$ is at vertical border connecting the left to the right cell over the middle cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(4_3)(7_4)(1_4)(4_3)&q=(1_3)(7_3)}}
 
-Critical events will be denoted with $C_k$, where $C_k.A$ is the starting-point and $C_k.B$ is the ending-point. For classical critical events of types a and b the starting-point and ending-point are the same.
+Critical events will be denoted with $C_k$, where $C_k.A$ is the starting-point and $C_k.B$ is the end-point. For classical critical events of type a or b the starting-point and end-point are the same.
 
 
 \subsection{Computing the Classical Fréchet Distance}
 
-We now have the tools to compute the classical Fréchet distance. To compute the classical Fréchet distance, we can apply \textit{Algorithm 2} of \citeauthor*{altgodau}'s paper.\cite{altgodau} The algorithm first determines all classical critical events of type a, b, and c, including their critical $\epsilon$ and then using a binary search and the decision algorithm, finds the smallest critical $\epsilon$ for which the height function $\delta$ is traversable.
+We now have the tools to compute the classical Fréchet distance. To compute the classical Fréchet distance, we can apply \textit{Algorithm 2} of \citeauthor*{altgodau}'s paper.\cite{altgodau} The algorithm first determines all classical critical events of type a, b, and c, including their critical $\epsilon$. Then using a binary search and the decision algorithm \textit{Algorithm 2} finds the smallest critical $\epsilon$ for which the height function $\delta$ is traversable.
 
 
 \section{Lexicographic Fréchet Matchings}
@@ -185,12 +185,12 @@ Because we chose our input to be two paths consisting of straight line segments,
 	\item [($l'$)] The points where the ellipses have horizontal tangents and $\delta$ has a linear vertical gradient lie on line $l$ through the common center.\cite{rotelex}
 \end{itemize}
 
-Depending on whether we are descending from a point on one of the lines or from in between one of the quadrants they span up, the direction of the steepest descent is affected. Consult \citeauthor{rotelex}'s paper \citetitle{rotelex}\cite{rotelex} (Figure 5) for more detail. It is important to note at this point, that the steepest descent for a point is unique.
+Depending on whether we are descending from a point on one of the lines or from in between one of the quadrants they span up, the direction of the steepest descent is affected. Consult \citeauthor{rotelex}'s paper \citetitle{rotelex}\cite{rotelex} (Figure 5) for more detail. It is important to note at this point that the steepest descent for a point is unique.
 
 
 \subsection{New Lexicographic Type of Critical Event}
 
-\citeauthor{rotelex} also identifies a new lexicographic type of critical event, which does not influence the global Fréchet distance $\epsilon_F$, but is essential for achieving a lexicographically correct traversal.
+\citeauthor{rotelex} also identifies a new lexicographic type of critical event which does not influence the global Fréchet distance $\epsilon_F$, but is essential for achieving a lexicographically correct traversal.
 
 The new lexicographic type of critical event occurs while descending on a steepest descent path. It occurs when we would horizontally or vertically surpass a critical opening of the height at which we currently are.
 
@@ -209,21 +209,21 @@ Figure \ref{fig:new_critical_event} shows a minimal example of these new lexicog
 
 \subsection{Lexicographic Fréchet Matching Algorithm}\label{sec:lex_frechet_alg}
 
-We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for lexicographic Fréchet matchings\cite{rotelex} under \textit{general inputs} (not yet regarding degenerate inputs, as described in Section \ref{lex_frechet_deg}). In contrary to the algorithm for computing the classical Fréchet distance, the algorithm for lexicographic Fréchet matching utilizes recursion to allow for a locally correct lexicographic traversal. The algorithm as described here is aligned to the implementation of the online visualization.
+We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for lexicographic Fréchet matchings\cite{rotelex} under \textit{general inputs} (not yet regarding degenerate inputs, as we'll discuss in section \ref{lex_frechet_deg}). In contrary to the algorithm for computing the classical Fréchet distance, the algorithm for lexicographic Fréchet matching utilizes recursion to result in a local traversal that is lexicographically optimized. The algorithm as described here is aligned to the implementation of the online visualization.
 
 \begin{algorithm}[H]
 \caption{Requirements for Lexicographic Fréchet Matching Algorithm}\label{alg:lex_frechet_alg_req}
 \begin{algorithmic}[1]
 
 \Function{DecisionAlgorithm($\delta, A, B, \epsilon$)}{}
-	\State \Comment{Implementation of the decision algorithm, that decides if $\delta$ is traversable from $A$ to $B$ with $\epsilon$.}
+	\State \Comment{Implementation of the decision algorithm that decides if $\delta$ is traversable from $A$ to $B$ with $\epsilon$.}
 	\State \Return {$true$ or $false$}
 \EndFunction
 
 \State {}
 
 \Function{SteepestDescent($\delta, A, B, \epsilon_A, \epsilon_B$)}{}
-	\State \Comment{Attempts a steepest descent as far as possible for the higher of $A$ and $B$, or both if they reside at equal height. Attempt the steepest descent to $A'$ and $B'$ until $A'$ or $B'$ reach a cell border or a line $l$ or $l'$, they would pass each other vertically or horizontally, or they meet each other. Descend to an equal height if possible.}
+	\State \Comment{Attempts a steepest descent as far as possible for the higher of $A$ and $B$, or both in case they reside at equal height. Attempt the steepest descent to $A'$ and $B'$ until $A'$ or $B'$ reaches a cell border or a line $l$ or $l'$, they would pass each other vertically or horizontally, or they meet each other. Descend to an equal height if possible.}
 	\State \Return {$A', B', \epsilon_{A'}, \epsilon_{B'}$}
 \EndFunction
 

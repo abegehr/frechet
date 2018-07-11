@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  11 JUL 2018 22:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  11 JUL 2018 23:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -744,101 +744,101 @@ LaTeX Warning: Reference `fig:ces_com' on page 13 undefined on input line 70.
 [13 <./graphics/ces_min_3_tra.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 133.
+(hyperref)                removing `math shift' on input line 130.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 133.
+(hyperref)                removing `subscript' on input line 130.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 133.
+(hyperref)                removing `math shift' on input line 130.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 133.
+(hyperref)                removing `math shift' on input line 130.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 133.
+(hyperref)                removing `subscript' on input line 130.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 133.
+(hyperref)                removing `math shift' on input line 130.
 
 [14]
 <./graphics/gengraph_ex1.png, id=457, 1003.75pt x 668.4975pt>
 File: ./graphics/gengraph_ex1.png Graphic file (type png)
 <use ./graphics/gengraph_ex1.png>
-Package pdftex.def Info: ./graphics/gengraph_ex1.png  used on input line 164.
+Package pdftex.def Info: ./graphics/gengraph_ex1.png  used on input line 161.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [15] [16 <./graphics/gengraph_ex1.png>] [17]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 242.
+(hyperref)                removing `math shift' on input line 239.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 242.
+(hyperref)                removing `math shift' on input line 239.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 242.
+(hyperref)                removing `math shift' on input line 239.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 242.
+(hyperref)                removing `math shift' on input line 239.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 262.
+(hyperref)                removing `math shift' on input line 259.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 262.
+(hyperref)                removing `math shift' on input line 259.
 
 [18]
 <./graphics/ces_min_1_cs.png, id=498, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_cs.png Graphic file (type png)
 <use ./graphics/ces_min_1_cs.png>
-Package pdftex.def Info: ./graphics/ces_min_1_cs.png  used on input line 280.
+Package pdftex.def Info: ./graphics/ces_min_1_cs.png  used on input line 277.
 (pdftex.def)             Requested size: 312.00119pt x 103.89655pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 288.
+(hyperref)                removing `math shift' on input line 285.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 288.
+(hyperref)                removing `math shift' on input line 285.
 
 <./graphics/ces_min_1_csp.png, id=508, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_csp.png Graphic file (type png)
 <use ./graphics/ces_min_1_csp.png>
-Package pdftex.def Info: ./graphics/ces_min_1_csp.png  used on input line 301.
+Package pdftex.def Info: ./graphics/ces_min_1_csp.png  used on input line 298.
 (pdftex.def)             Requested size: 312.00119pt x 103.89655pt.
 [19 <./graphics/ces_min_1_cs.png>] [20 <./graphics/ces_min_1_csp.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 341.
+(hyperref)                removing `math shift' on input line 338.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\epsilon' on input line 341.
+(hyperref)                removing `\epsilon' on input line 338.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 341.
+(hyperref)                removing `subscript' on input line 338.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 341.
+(hyperref)                removing `math shift' on input line 338.
 
 [21] [22] [23] [24]
 <./graphics/ces_ad_1.png, id=566, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_ad_1.png Graphic file (type png)
 <use ./graphics/ces_ad_1.png>
-Package pdftex.def Info: ./graphics/ces_ad_1.png  used on input line 442.
+Package pdftex.def Info: ./graphics/ces_ad_1.png  used on input line 439.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [25 <./graphics/ces_ad_1.png>] [26]) (./4_conclusion.tex [27])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 75.
@@ -858,19 +858,19 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15220 strings out of 492649
- 258159 string characters out of 6129623
- 715262 words of memory out of 5000000
- 18740 multiletter control sequences out of 15000+600000
+ 15221 strings out of 492649
+ 258174 string characters out of 6129623
+ 715316 words of memory out of 5000000
+ 18741 multiletter control sequences out of 15000+600000
  11584 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,16n,49p,922b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,16n,49p,876b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (32 pages, 1024145 bytes).
+Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (32 pages, 1024350 bytes).
 PDF statistics:
  714 PDF objects out of 1000 (max. 8388607)
  609 compressed objects within 7 object streams

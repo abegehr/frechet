@@ -29,7 +29,7 @@
 \BOOKMARK [3][-]{subsubsection.5.2.3}{Minimal Example: Traverse One}{subsection.5.2}% 29
 \BOOKMARK [3][-]{subsubsection.5.2.4}{Complex Example}{subsection.5.2}% 30
 \BOOKMARK [2][-]{subsection.5.3}{Possible Paths}{section.5}% 31
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Can Ck1 reach Ck2}{subsection.5.3}% 32
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Can Ck1 reach Ck2?}{subsection.5.3}% 32
 \BOOKMARK [2][-]{subsection.5.4}{Traversal cross-section f\(t\) and profile \(s\)}{section.5}% 33
 \BOOKMARK [3][-]{subsubsection.5.4.1}{Hyperbolas}{subsection.5.4}% 34
 \BOOKMARK [3][-]{subsubsection.5.4.2}{Cross-Section f\(t\)}{subsection.5.4}% 35
@@ -40,7 +40,7 @@
 \BOOKMARK [3][-]{subsubsection.5.5.3}{Example: First Derivative}{subsection.5.5}% 40
 \BOOKMARK [2][-]{subsection.5.6}{Postulate Algorithm}{section.5}% 41
 \BOOKMARK [2][-]{subsection.5.7}{Traversing critical events}{section.5}% 42
-\BOOKMARK [2][-]{subsection.5.8}{Example of Algorithm visualised \(visual example!\)}{section.5}% 43
+\BOOKMARK [2][-]{subsection.5.8}{Example of Algorithm visualized \(visual example!\)}{section.5}% 43
 \BOOKMARK [2][-]{subsection.5.9}{Analysing postulated algorithm for handling degenerate inputs}{section.5}% 44
 \BOOKMARK [3][-]{subsubsection.5.9.1}{Runtime analysis}{subsection.5.9}% 45
 \BOOKMARK [2][-]{subsection.5.10}{Real world application}{section.5}% 46
