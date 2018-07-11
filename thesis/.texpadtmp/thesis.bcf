@@ -2008,7 +2008,9 @@
     <bcf:citekey order="32">altgodau</bcf:citekey>
     <bcf:citekey order="33">altgodau</bcf:citekey>
     <bcf:citekey order="34">rotelex</bcf:citekey>
-    <bcf:citekey order="35">altgodau</bcf:citekey>
+    <bcf:citekey order="35">rotelex</bcf:citekey>
+    <bcf:citekey order="36">rotelex</bcf:citekey>
+    <bcf:citekey order="37">altgodau</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">

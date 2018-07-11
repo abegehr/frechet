@@ -64,18 +64,20 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {5.3.1}Can $C_{k1}$ reach $C_{k2}$}{15}{subsubsection.5.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Ascents and Descents}{18}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.4}Traversal cross-section $f(t)$ and profile $\mathaccentV {hat}05E{f}(s)$}{18}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.5}Postulate Algorithm}{19}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.5}Ascents and Descents}{21}{subsection.5.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.6}Traversing critical events}{20}{subsection.5.6}
+\contentsline {subsection}{\numberline {5.6}Postulate Algorithm}{23}{subsection.5.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7}Example of Algorithm visualised (visual example!)}{20}{subsection.5.7}
+\contentsline {subsection}{\numberline {5.7}Traversing critical events}{24}{subsection.5.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.8}Analysing postulated algorithm for handling degenerate inputs}{20}{subsection.5.8}
+\contentsline {subsection}{\numberline {5.8}Example of Algorithm visualised (visual example!)}{24}{subsection.5.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.8.1}Runtime analysis}{20}{subsubsection.5.8.1}
+\contentsline {subsection}{\numberline {5.9}Analysing postulated algorithm for handling degenerate inputs}{24}{subsection.5.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.9}Real world application}{20}{subsection.5.9}
+\contentsline {subsubsection}{\numberline {5.9.1}Runtime analysis}{24}{subsubsection.5.9.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Concluding Perspective}{20}{section.6}
+\contentsline {subsection}{\numberline {5.10}Real world application}{24}{subsection.5.10}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6}Concluding Perspective}{25}{section.6}
