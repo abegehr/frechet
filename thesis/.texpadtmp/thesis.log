@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  11 JUL 2018 16:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  11 JUL 2018 18:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -611,7 +611,7 @@ LaTeX Info: Redefining \nameref on input line 47.
 \openout2 = `./title.aux'.
 
  (./title.tex
-<./graphics/fu_logo.pdf, id=168, 144.54pt x 144.54pt>
+<./graphics/fu_logo.pdf, id=172, 144.54pt x 144.54pt>
 File: ./graphics/fu_logo.pdf Graphic file (type pdf)
 <use ./graphics/fu_logo.pdf>
 Package pdftex.def Info: ./graphics/fu_logo.pdf  used on input line 14.
@@ -672,33 +672,33 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 65.
 
 [3] [4]
-<./graphics/freespace_lower.png, id=275, 1003.75pt x 668.4975pt>
+<./graphics/freespace_lower.png, id=280, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_lower.png Graphic file (type png)
 <use ./graphics/freespace_lower.png>
 Package pdftex.def Info: ./graphics/freespace_lower.png  used on input line 109.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_eq.png, id=277, 1003.75pt x 668.4975pt>
+<./graphics/freespace_eq.png, id=282, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_eq.png Graphic file (type png)
 <use ./graphics/freespace_eq.png>
 Package pdftex.def Info: ./graphics/freespace_eq.png  used on input line 112.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_higher.png, id=278, 1003.75pt x 668.4975pt>
+<./graphics/freespace_higher.png, id=283, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_higher.png Graphic file (type png)
 <use ./graphics/freespace_higher.png>
 Package pdftex.def Info: ./graphics/freespace_higher.png  used on input line 115.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
  [5 <./graphics/freespace_lower.png> <./graphics/freespace_eq.png> <./graphics/freespace_higher.png>]
-<./graphics/classical_critical_event_a.png, id=302, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_a.png, id=307, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_a.png Graphic file (type png)
 <use ./graphics/classical_critical_event_a.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_a.png  used on input line 146.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_b.png, id=305, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_b.png, id=310, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_b.png Graphic file (type png)
 <use ./graphics/classical_critical_event_b.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_b.png  used on input line 149.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_c.png, id=308, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_c.png, id=313, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_c.png Graphic file (type png)
 <use ./graphics/classical_critical_event_c.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_c.png  used on input line 152.
@@ -714,25 +714,25 @@ l.169
                                                   \fi \fi 
 l.169 
        <./graphics/classical_critical_event_a.png> <./graphics/classical_critical_event_b.png> <./graphics/classical_critical_event_c.png>] [7]
-<./graphics/new_critical_event.png, id=348, 1003.75pt x 668.4975pt>
+<./graphics/new_critical_event.png, id=353, 1003.75pt x 668.4975pt>
 File: ./graphics/new_critical_event.png Graphic file (type png)
 <use ./graphics/new_critical_event.png>
 Package pdftex.def Info: ./graphics/new_critical_event.png  used on input line 202.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 215.
  [8 <./graphics/new_critical_event.png>] [9]) (./3_main.tex [10]
-<./graphics/ces_min_1_tra.png, id=377, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_1_tra.png, id=382, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_1_tra.png Graphic file (type png)
 <use ./graphics/ces_min_1_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_1_tra.png  used on input line 24.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
-<./graphics/ces_min_2_tra.png, id=382, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_2_tra.png, id=387, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_2_tra.png Graphic file (type png)
 <use ./graphics/ces_min_2_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_2_tra.png  used on input line 40.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [11 <./graphics/ces_min_1_tra.png>]
-<./graphics/ces_min_3_tra.png, id=395, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_3_tra.png, id=400, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_3_tra.png Graphic file (type png)
 <use ./graphics/ces_min_3_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_3_tra.png  used on input line 57.
@@ -767,7 +767,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 133.
 
 [14]
-<./graphics/gengraph_ex1.png, id=426, 1003.75pt x 668.4975pt>
+<./graphics/gengraph_ex1.png, id=431, 1003.75pt x 668.4975pt>
 File: ./graphics/gengraph_ex1.png Graphic file (type png)
 <use ./graphics/gengraph_ex1.png>
 Package pdftex.def Info: ./graphics/gengraph_ex1.png  used on input line 164.
@@ -790,25 +790,25 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 242.
 
 [18]
-<./graphics/ces_min_1_cs.png, id=469, 1003.75pt x 334.24875pt>
+<./graphics/ces_min_1_cs.png, id=474, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_cs.png Graphic file (type png)
 <use ./graphics/ces_min_1_cs.png>
 Package pdftex.def Info: ./graphics/ces_min_1_cs.png  used on input line 273.
 (pdftex.def)             Requested size: 312.00119pt x 103.89655pt.
-<./graphics/ces_min_1_csp.png, id=479, 1003.75pt x 334.24875pt>
+<./graphics/ces_min_1_csp.png, id=484, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_csp.png Graphic file (type png)
 <use ./graphics/ces_min_1_csp.png>
 Package pdftex.def Info: ./graphics/ces_min_1_csp.png  used on input line 291.
 (pdftex.def)             Requested size: 312.00119pt x 103.89655pt.
  [19 <./graphics/ces_min_1_cs.png> <./graphics/ces_min_1_csp.png>] [20] [21]
-<./graphics/ces_ad_1.png, id=508, 1003.75pt x 668.4975pt>
+<./graphics/ces_ad_1.png, id=512, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_ad_1.png Graphic file (type png)
 <use ./graphics/ces_ad_1.png>
-Package pdftex.def Info: ./graphics/ces_ad_1.png  used on input line 367.
+Package pdftex.def Info: ./graphics/ces_ad_1.png  used on input line 399.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
- [22 <./graphics/ces_ad_1.png>] [23]) (./4_conclusion.tex) [24]
+ [22] [23 <./graphics/ces_ad_1.png>] [24]) (./4_conclusion.tex) [25]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 75.
- [25]
+ [26]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 75.
  (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.aux (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./title.aux) (/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/./declaration.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 75.
@@ -824,10 +824,10 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15196 strings out of 492649
- 257761 string characters out of 6129623
+ 15195 strings out of 492649
+ 257780 string characters out of 6129623
  714870 words of memory out of 5000000
- 18727 multiletter control sequences out of 15000+600000
+ 18728 multiletter control sequences out of 15000+600000
  11584 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,13n,49p,922b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -836,10 +836,10 @@ pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist,
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (29 pages, 1004915 bytes).
+Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (30 pages, 1006054 bytes).
 PDF statistics:
- 655 PDF objects out of 1000 (max. 8388607)
- 555 compressed objects within 6 object streams
- 147 named destinations out of 1000 (max. 500000)
- 404 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 661 PDF objects out of 1000 (max. 8388607)
+ 560 compressed objects within 6 object streams
+ 145 named destinations out of 1000 (max. 500000)
+ 412 words of extra memory for PDF output out of 10000 (max. 10000000)
 

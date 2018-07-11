@@ -1,15 +1,15 @@
 [0] Config.pm:302> INFO - This is Biber 2.11
-[0] Config.pm:305> INFO - Logfile is '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.blg'
-[50] biber-darwin:313> INFO - === Wed Jul 11, 2018, 16:04:50
-[81] Biber.pm:371> INFO - Reading '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bcf'
-[198] Biber.pm:857> INFO - Found 2 citekeys in bib section 0
-[212] Biber.pm:3976> INFO - Processing section 0
-[228] Biber.pm:4136> INFO - Looking for bibtex format file '/Users/anton/Documents/Studium/BA/frechet/thesis/bibliography.bib' for section 0
-[229] bibtex.pm:1500> INFO - LaTeX decoding ...
-[234] bibtex.pm:1316> INFO - Found BibTeX data source '/Users/anton/Documents/Studium/BA/frechet/thesis/bibliography.bib'
-[268] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[268] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[268] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[268] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
-[272] bbl.pm:617> INFO - Writing '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bbl' with encoding 'UTF-8'
-[273] bbl.pm:720> INFO - Output to /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bbl
+[1] Config.pm:305> INFO - Logfile is '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.blg'
+[66] biber-darwin:313> INFO - === Wed Jul 11, 2018, 17:53:55
+[96] Biber.pm:371> INFO - Reading '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bcf'
+[196] Biber.pm:857> INFO - Found 2 citekeys in bib section 0
+[210] Biber.pm:3976> INFO - Processing section 0
+[221] Biber.pm:4136> INFO - Looking for bibtex format file '/Users/anton/Documents/Studium/BA/frechet/thesis/bibliography.bib' for section 0
+[223] bibtex.pm:1500> INFO - LaTeX decoding ...
+[230] bibtex.pm:1316> INFO - Found BibTeX data source '/Users/anton/Documents/Studium/BA/frechet/thesis/bibliography.bib'
+[254] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[255] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[255] Biber.pm:3804> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[255] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
+[258] bbl.pm:617> INFO - Writing '/Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bbl' with encoding 'UTF-8'
+[260] bbl.pm:720> INFO - Output to /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.bbl
