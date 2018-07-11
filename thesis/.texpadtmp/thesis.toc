@@ -66,20 +66,30 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {5.4}Traversal cross-section $f(t)$ and profile $\mathaccentV {hat}05E{f}(s)$}{18}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.5}Ascents and Descents}{21}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.4.1}Hyperbolas}{18}{subsubsection.5.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.5.1}Example: First Derivative}{22}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.4.2}Cross-Section $f(t)$}{18}{subsubsection.5.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.6}Postulate Algorithm}{24}{subsection.5.6}
+\contentsline {subsubsection}{\numberline {5.4.3}Profile $\mathaccentV {hat}05E{f}$}{19}{subsubsection.5.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7}Traversing critical events}{25}{subsection.5.7}
+\contentsline {subsection}{\numberline {5.5}Multiple Ascents to and Descents from $\epsilon _0$}{21}{subsection.5.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.8}Example of Algorithm visualised (visual example!)}{25}{subsection.5.8}
+\contentsline {subsubsection}{\numberline {5.5.1}Simplifications and First Derivative}{21}{subsubsection.5.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.9}Analysing postulated algorithm for handling degenerate inputs}{25}{subsection.5.9}
+\contentsline {subsubsection}{\numberline {5.5.2}Second Derivative}{24}{subsubsection.5.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.9.1}Runtime analysis}{25}{subsubsection.5.9.1}
+\contentsline {subsubsection}{\numberline {5.5.3}Example: First Derivative}{25}{subsubsection.5.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.10}Real world application}{25}{subsection.5.10}
+\contentsline {subsection}{\numberline {5.6}Postulate Algorithm}{26}{subsection.5.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Concluding Perspective}{25}{section.6}
+\contentsline {subsection}{\numberline {5.7}Traversing critical events}{27}{subsection.5.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.8}Example of Algorithm visualised (visual example!)}{28}{subsection.5.8}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.9}Analysing postulated algorithm for handling degenerate inputs}{28}{subsection.5.9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {5.9.1}Runtime analysis}{28}{subsubsection.5.9.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.10}Real world application}{28}{subsection.5.10}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6}Concluding Perspective}{28}{section.6}

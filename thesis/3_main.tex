@@ -241,6 +241,10 @@ Checking if $C_{k2}.A$ lies in the respective reachability interval might be sup
 
 \subsection{Traversal cross-section $f(t)$ and profile $\hat{f}(s)$}\label{sec:trav_csp}
 
+In this section we will define a traversals cross-section $f(t)$ and its profile $\hat{f}(s)$.
+
+\subsubsection{Hyperbolas}
+
 Due to our input being two paths consisting of connected straight line-segments, every straight cross-section through our height function$\delta$ is a continuous composition of hyperbolas. We use the following function to denote these hyperbolas $h$:
 
 $$h: \epsilon(t) = \sqrt{u^2 + a(t - v)^2}$$
@@ -254,14 +258,17 @@ Each hyperbola has three parameters $u$, $a$, and $v$. A hyperbola is always a c
 
 For simplicity, we define the hyperbolas all as starting at $t=0$. This can be done by adjusting the parameter $v$.
 
-To attain a cross-section $f(t)$ of an entire traversal, we simply create a composite function of the $N$ hyperbolas and move them along the $t$-axis to the correct position. This yields $f(t)$. ${\Delta t}_k$ is the time interval in which the $k^{th}$ hyperbola is traversed.
+
+\subsubsection{Cross-Section $f(t)$}
+
+To attain a cross-section $f(t)$ of an entire traversal, we simply create a composite function of the $N$ hyperbolas and move them along the $t$-axis to the correct position. This yields $f(t)$. $t_k$ is the time interval in which the $k^{th}$ hyperbola is traversed.
 
 \[ f(t) =
 \begin{cases} 
-	\sqrt{u_1^2 + a_1(t - v_1)^2} & 0 \leq t \leq {\Delta t}_1 \\
-	\sqrt{u_2^2 + a_2(t - v_2 - {\Delta t}_1)^2} & {\Delta t}_1 \leq t \leq {\Delta t}_2 \\
+	\sqrt{u_1^2 + a_1(t - v_1)^2} & 0 \leq t \leq t_1 \\
+	\sqrt{u_2^2 + a_2(t - v_2 - t_1)^2} & t_1 \leq t \leq t_2 \\
 	\dots \\
-	\sqrt{u_N^2 + a_N(t - v_N - {\Delta t}_{N-1})^2} & {\Delta t}_{N-1} \leq t \leq {\Delta t}_N \\
+	\sqrt{u_N^2 + a_N(t - v_N - t_{N-1})^2} & t_{N-1} \leq t \leq t_N \\
 \end{cases}
 \]
 
@@ -276,6 +283,9 @@ For the example in figure \ref{fig:ces_min_1}, the cross-section $f(t)$ is shown
     \label{fig:ces_min_1_cs}
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}\label{ftn:ces_min_1}}
+
+
+\subsubsection{Profile $\hat{f}$}
 
 In addition to the cross-section $f(t)$, we can also look at the profile $\hat{f}(s)$. \citeauthor{rotelex} defines the profile function $\hat{f}(s)$ as the time that $\epsilon$ exceeds a threshold $s$:
 
@@ -294,7 +304,7 @@ Figure \ref{fig:ces_min_1_csp} shows the profile function $\hat{f}(s)$ in additi
     \label{fig:ces_min_1_csp}
 \end{figure}
 
-Next the profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that each hyperbola function $H_k(t)$ is defined so that $0 \leq t \leq {\Delta t}_k - {\Delta t}_{k-1}$; therefore, we can simply sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
+Next the profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that each hyperbola function $h_j(t)$ is defined so that $0 \leq t \leq t_j - t_{j-1}$; therefore, we can simply sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
 
 \begin{enumerate}
 	\item Compute the inverse function of a hyperbolas function $h^{-1}(\epsilon)$. First solve $\epsilon(t)$ for $t$:
@@ -310,102 +320,117 @@ Next the profile function $\hat{f}(s)$ is defined using the cross-section hyperb
 	
 	This results in the following definition for $h^{-1}(\epsilon)$:
 	
-	\[
-	h_k^{-1}: t_k(\epsilon) = 
-	\begin{cases}
-   		{v_k \pm \sqrt{\frac{\epsilon^2 - u_k^2}{a_k}}}	& \text{if } {h_k(0) \leq \epsilon \leq h_k({\Delta t}_k - {\Delta t}_{k-1})}\\
-   		0        										& \text{otherwise}
-  	\end{cases}
-  	\]
+	\begin{align}
+		h_j^{-1}: t_j(\epsilon) = 
+		\begin{cases}
+   			{v_j \pm \sqrt{\frac{\epsilon^2 - u_j^2}{a_j}}}	& \text{if } {h_j(0) \leq \epsilon \leq h_j(t_j - t_{j-1})}\\
+   			0        										& \text{otherwise}
+  		\end{cases} \label{eq:hinv}
+  	\end{align}
 	
-	Note that $h_k$ is valid in the interval $0 \leq t \leq {\Delta t}_k - {\Delta t}_{k-1}$; therefore, $h_k^{-1}$ is defined for $h_k(0) \leq \epsilon \leq h_k({\Delta t}_k - {\Delta t}_{k-1})$. This is important to yield the correct profile function $\hat{f}(s)$. Also notice that each hyperbola $h_k$ has its own three parameters: $u_k$, $a_k$, and $v_k$.
+	Note that $h_j$ is valid in the interval $0 \leq t \leq t_j - t_{j-1}$; therefore, $h_j^{-1}$ is defined for $h_j(0) \leq \epsilon \leq h_j(t_j - t_{j-1})$. This is important to yield the correct profile function $\hat{f}(s)$. Also notice that each hyperbola $h_j$ has its own three parameters: $u_j$, $a_j$, and $v_j$.
 	
 	\item Sum up the inverses to yield the profile function $\hat{f}(s)$.
 	
-	$$\hat{f}(s) = \sum_{k=0}^N {h_k^{-1}(s)}$$
+	$$\hat{f}(s) = \sum_{j=0}^N {h_j^{-1}(s)}$$
 	
 \end{enumerate} 
 
 Now we have defined the profile function $\hat{f}(s)$ for a traversal with cross-section $f(t)$ that allows us to calculate the amount of time a traverser traversing this traversal spends above the threshold $s$.
 
-\subsection{Ascents and Descents}
+\subsection{Multiple Ascents to and Descents from $\epsilon_0$}
 
 To fulfill our goal of a lexicographic traversal, we want to minimize the time during which the height $\epsilon$ exceeds a threshold $s$.\cite{rotelex} Concerning our examples, we want to minimize the time needed to ascend to and descend from our critical height $\epsilon_0$.
 
-If we have multiple critical events at the critical height $\epsilon_0$, we need to decide which to choose while fulfilling our goal of a lexicographic traversal. The profile function $\hat{f}(s)$, introduced in section \ref{sec:trav_csp}, defines the time that a traversals exceeds a threshold $s$. Our goal of a lexicographic traversal is to minimize this time. This means that for two profile functions $\hat{f}(s)$ and $\hat{g}(s)$ that both are critical at $\epsilon_0$, we need to compare the derivatives. Note that we only derive the hyperbola inverses that are defined for $s$.
+If we have multiple critical events at the critical height $\epsilon_0$, we need to decide which to choose while fulfilling our goal of a lexicographic traversal. The profile function $\hat{f}(s)$, introduced in section \ref{sec:trav_csp}, defines the time that a traversals exceeds a threshold $s$. Our goal of a lexicographic traversal is to minimize this time. This means that for two profile functions $\hat{f}(s)$ and $\hat{g}(s)$ that both are critical at $\epsilon_0$, we need to compare the derivatives.
 
-$$\hat{f'}(s) = \left[ \sum_{k=0}^N {h_k^{-1}(s)} \right]'$$
+$$\hat{f'}(s) = \left[ \sum_{j=0}^N {h_j^{-1}(s)} \right]'$$
 
-Because of the sum rule, we can apply the derivative to each $H_k^{-1}$.
+Because of the sum rule, we can apply the derivative to each $h_j^{-1}$.
 
-$$\hat{f'}(s) = \sum_{k=0}^N {[h_k^{-1}]'(s)}$$
+$$\hat{f'}(s) = \sum_{j=0}^N {[h_j^{-1}]'(s)}$$
 
-Lets look at $h_k^{-1}$ again:
 
-\[
-h_k^{-1}: t_k(\epsilon) = 
-\begin{cases}
-	{v_k \pm \sqrt{\frac{\epsilon^2 - u_k^2}{a_k}}}	& \text{if } {H_k(0) \leq \epsilon \leq H_k({\Delta t}_k - {\Delta t}_{k-1})}\\
-	0        										& \text{otherwise}
-\end{cases}
-\]
+\subsubsection{Simplifications and First Derivative}\label{sec:first_derivative}
 
-Due to it's form, the derivative of $h_k^{-1}$ is not trivial. $h_k^{-1}$ is a composite function and has a $\pm$. We circumvent this problem by only looking at hyperbolas that ascend to and descend from the critical height $\epsilon_0$.
+Due to the form of $h_j^{-1}$ (see equation \ref{eq:hinv}), the derivative of $h_j^{-1}$ is not trivial. $h_j^{-1}$ is a composite function and has a $\pm$. We circumvent this problem by only looking at hyperbolas that ascend to and descend from the critical height $\epsilon_0$.
 
-For a critical event $C_k$ at $\epsilon_0$, we will denote the ascent hyperbola with $h_{k\uparrow}$ and the descent hyperbola with $h_{k\downarrow}$.  For simplicity we define the hyperbolas so that $t = 0$ for the critical height $\epsilon$: $h_k(0) = \epsilon_0$. This means that $h_{k\uparrow}(t)$ is defined for the interval $-( {\Delta t}_k - {\Delta t}_{k-1} ) \leq t \leq 0)$ and $h_{k\downarrow}(t)$ are defined for the interval $0 \leq t \leq {\Delta t}_k - {\Delta t}_{k-1}$.
+For a critical event $C_k$ at $\epsilon_0$, we will denote the ascent hyperbola with $h_{k\uparrow}$ and the descent hyperbola with $h_{k\downarrow}$.
 
-The hyperbolas are vertically symmetric at $t_v=v$, $h(t_v+t) = h(t_v-t)$; therefore, the inverse hyperbolas are horizontally symmetric at $t_v = v$. This means that to get rid of the $\pm$ in the inverse and get only positive slopes, we can simply use a $+$:
+We will only consider critical events with one ascent and one descent hyperbola, analogous to classical critical events of type b. Classical critical events of type c can easily be modeled by multiple critical events of type b. Classical critical events of type a and new type of lexicographic critical events consist of only one ascent or descent hyperbola.
 
-\begin{equation*}
-	\begin{aligned}[c]
-		h_{\uparrow}^{-1}(\epsilon) &= v_{\uparrow} + \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}
-	\end{aligned}
-	\qquad
-	\begin{aligned}[c]
-	h_{\downarrow}^{-1}(\epsilon) &= v_{\downarrow} - \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}
-	\end{aligned}
-\end{equation*}
-	
-We now determine the derivatives of $h_{\uparrow}^{-1}(\epsilon)$ and $h_{\downarrow}^{-1}(\epsilon)$:
+Because of simplicity we move the hyperbolas so that $t = 0$ for the critical height $\epsilon$: $h(0) = \epsilon_0$.
 
-\begin{equation*}
-	\begin{aligned}[c]
-		[h_{\uparrow}^{-1}]'(\epsilon) &= \left[ v_{\uparrow} + \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} \right]'\\
-		[h_{\uparrow}^{-1}]'(\epsilon) &= \left[\sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} \right]'\\
-		[h_{\uparrow}^{-1}]'(\epsilon) &= \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}} }
-	\end{aligned}
-	\qquad
-	\begin{aligned}[c]
-		[h_{\downarrow}^{-1}]'(\epsilon) &= \left[ v_{\downarrow} - \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} \right]'\\
-		[h_{\downarrow}^{-1}]'(\epsilon) &= - \left[\sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} \right]'\\
-		[h_{\downarrow}^{-1}]'(\epsilon) &= - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}} }
-	\end{aligned}
-\end{equation*}
+The hyperbolas are vertically symmetric at $t_v=v$, $h(t_v+t) = h(t_v-t)$; therefore, the inverse hyperbolas are horizontally symmetric at $t_v = v$. This means that to get rid of the $\pm$ in the inverse and get only positive slopes, we can simply use a $+$ when we calculate the derivative:
 
-We have defined the hyperbolas so that $h(0) = \epsilon_0$; therefore, $h^{-1}(\epsilon_0) = 0$.
+\begin{align}
+	[h^{-1}]'(\epsilon)  &= \left[ v + \sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\nonumber\\
+	[h^{-1}]'(\epsilon) &= \left[\sqrt{\frac{\epsilon^2 - u^2}{a}} \right]'\nonumber\\
+	[h^{-1}]'(\epsilon) &= \frac{ \left[ \frac{\epsilon^2 - u^2}{a} \right]' }{ 2\sqrt{\frac{\epsilon^2 - u^2}{a}} }\nonumber\\
+	[h^{-1}]'(\epsilon) &= \frac{ \left[ \epsilon^2 - u^2 \right]' }{ 2a\sqrt{\frac{\epsilon^2 - u^2}{a}} }\nonumber\\
+	[h^{-1}]'(\epsilon) &= \frac{ 2\epsilon }{ 2a\sqrt{\frac{\epsilon^2 - u^2}{a}} }\nonumber\\
+	[h^{-1}]'(\epsilon)  &= \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} }\label{eq:hinvd1}
+\end{align}
+
+The hyperbolas are defined so that: $h(0) = \epsilon_0$; therefore, $h^{-1}(\epsilon_0) = 0$.
+
+\begin{align}
+	h^{-1}(\epsilon_0) &= v \pm \sqrt{\frac{\epsilon_0^2 - u^2}{a}}\nonumber\\
+	0 &= v \pm \sqrt{\frac{\epsilon_0^2 - u^2}{a}}\nonumber\\
+	-v &= \pm \sqrt{\frac{\epsilon_0^2 - u^2}{a}}\nonumber\\
+	\left| -v \right| &= \left| \pm \sqrt{\frac{\epsilon_0^2 - u^2}{a}} \right|\nonumber\\
+	\left| v \right| &= \sqrt{\frac{\epsilon_0^2 - u^2}{a}} \label{eq:veps0}
+\end{align}
+
+We can write a simple equation for $[h^{-1}]'(\epsilon_0)$ by using the equations \ref{eq:hinvd1} and \ref{eq:veps0}:
+
+\begin{align}
+	[h^{-1}]'(\epsilon_0)  &= \frac{ \epsilon_0 }{ a\sqrt{\frac{\epsilon_0^2 - u^2}{a}} }\nonumber\\
+	[h^{-1}]'(\epsilon_0)  &= \frac{ \epsilon_0 }{ a \left| v \right| }\label{eq:hinvd1eps0}
+\end{align}
+
+Having an equation for $[h^{-1}]'(\epsilon_0)$, we will now determine the slope at $\hat{f}_{\epsilon_0}(\epsilon_0)$ by adding the ascending and descending slopes of all critical events $C$ at critical height $\epsilon_0$:
 
 \begin{align*}
-	\begin{aligned}[c]
-		h_{\uparrow}^{-1}(\epsilon_0) &= v_{\uparrow} + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}\\
-		0 &= v_{\uparrow} + \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}\\
-		v_{\uparrow} &= - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\uparrow}^2}{a_{\uparrow}}}}
-	\end{aligned}
-	\qquad
-	\begin{aligned}[c]
-		h_{\downarrow}^{-1}(\epsilon_0) &= v_{\downarrow} - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}\\
-		0 &= v_{\downarrow} - \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}\\
-		v_{\downarrow} &= \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u_{\downarrow}^2}{a_{\downarrow}}}}
-	\end{aligned}
+	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { [h_{k\downarrow}^{-1}]'(\epsilon_0) + [h_{k\uparrow}^{-1}]'(\epsilon_0)}\\
+	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { \frac{\epsilon_0}{a_{k\downarrow} \left| v_{k\downarrow} \right|} + \frac{\epsilon_0}{a_{k\uparrow} \left| v_{k\uparrow} \right|}}
 \end{align*}
-	
 
 There are three cases to consider:
 
 \begin{enumerate}
-	\item $\hat{f}'(s) > \hat{g}'(s)$: Choose traversal $f$.
-	\item $\hat{f}'(s) < \hat{g}'(s)$: Choose traversal $g$.
-	\item $\hat{f}'(s) = \hat{g}'(s)$: Cannot decide.
+	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) > \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $f$.
+	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) < \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $g$.
+	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) = \hat{g}'_{\epsilon_0}(\epsilon_0)$: Cannot decide.
 \end{enumerate}
+
+Cases one and two are clear. Case three on the other hand, when the slope of both profiles at $\epsilon_0$ is the same, no decision can be made at that point. We would have to look at further derivatives.
+
+
+\subsubsection{Second Derivative}
+
+The the calculation of $h^{-1}$'s the second derivative:
+
+\begin{align}
+	[h^{-1}]''(\epsilon)  &= \left[ \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} } \right]'\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \frac {\left[ \frac{ \epsilon }{ \sqrt{\frac{\epsilon^2 - u^2}{a}} } \right]'}{ a }\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \frac { \frac{ \left[ \epsilon \right]' }{ \sqrt{\frac{\epsilon^2 - u^2}{a}} } + \epsilon \left[ \frac{1}{ \sqrt{\frac{\epsilon^2 - u^2}{a}} } \right]' }{ a }\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \frac { \frac{1}{ \sqrt{\frac{\epsilon^2 - u^2}{a}}}  - \frac{\epsilon \left[ \frac{\epsilon^2 - u^2}{a} \right]' }{ 2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}} } }{a}\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \frac { \frac{1}{ \sqrt{\frac{\epsilon^2 - u^2}{a}}}  - \frac{2\epsilon^2 }{ 2a\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}} } }{a}\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \frac{1}{ a\sqrt{\frac{\epsilon^2 - u^2}{a}}}  - \frac{\epsilon^2 }{ a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}} }\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \left( \frac{1}{ a\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{1}{2}}} - \frac{\epsilon^2 }{ a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}} } \right) \frac{\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}{\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \left( \frac{ \epsilon^2 - u^2 }{a^2}  - \frac{\epsilon^2 }{a^2} \right) \frac{1}{\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\nonumber\\
+	[h^{-1}]''(\epsilon)  &= \left( \frac{-u^2}{a^2} \right) \frac{1}{\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\nonumber\\
+	[h^{-1}]''(\epsilon)  &= - \frac{u^2}{a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\label{eq:hinvd2}
+\end{align}
+
+We can write a simple equation for $[h^{-1}]'(\epsilon_0)$ by using the equations \ref{eq:hinvd2} and \ref{eq:veps0}:
+
+\begin{align}
+	[h^{-1}]''(\epsilon_0)  &= - \frac{u^2}{a^2 \left| v \right|^3}\label{eq:hinvd2eps0}
+\end{align}
+
+Again, we sum up all $[h^{-1}]''(\epsilon_0)$ and compare the sums of each traversal analogous to the description in section \ref{sec:first_derivative}. We choose the traversal with the larger $\sum\nolimits_{C_k \in C(\epsilon_0)}[h_{k\uparrow}^{-1}]''(\epsilon_0) + [h_{k\downarrow}^{-1}]''(\epsilon_0)$.
 
 \subsubsection{Example: First Derivative}
 
@@ -423,26 +448,35 @@ Let us consider an example where we can decide from looking at the first derivat
 
 In the example depicted in figure \ref{fig:ces_ad_1}, there are two classical critical events of type b at critical height $\epsilon_0 = 3$ to consider: $C_1(1, 4)$ and $C_2(4, 1)$.
 
-The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in \ref{sec:gengraph}, returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$ or over $C_2$.
+The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in \ref{sec:gengraph}, returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$, this will be path $f$, or over $C_2$, that will be path $g$.
 
-We will now look at the ascent to and descent from $C_1$ and $C_2$.
+We will now look at the ascent to and descent from hyperbolas of $C_1$ and $C_2$.
 
-
-\begin{align*}
-	H_{1\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-3))^2} = \left| t + 3 \right|\\
-	H_{1\downarrow}(t) &= \sqrt{0^2 + 0.8\cdot(t - 3.354)^2} = \left| \sqrt{0.8}(t - 3.354) \right|\\
-	H_{2\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-3))^2} = \left| t + 3 \right|\\
-	H_{2\downarrow}(t) &= \sqrt{0^2 + 0.2\cdot(t - 6.708)^2} = \left| \sqrt{0.2}(t - 6.708) \right|
-\end{align*}
-
-We now determine the specific derivatives of the inverse hyperbolas for the example above in figure \ref{fig:ces_ad_1}.
 
 \begin{align*}
-	H_{1\uparrow}'(\epsilon_0) &= -3 + \frac{ \epsilon_0 }{ \sqrt{\frac{\epsilon_0^2 - 0^2}{1}}} = -3 + \frac{3}{ \sqrt{3^2} }\\
-	H_{1\downarrow}'(\epsilon_0) &= 3.354 + \frac{ \epsilon_0 }{ \sqrt{\frac{\epsilon_0^2 - 0^2}{0.8}}}\\
-	H_{2\uparrow}'(\epsilon_0) &= -3 - \frac{ \epsilon_0 }{ \sqrt{\frac{\epsilon_0^2 - 0^2}{1}}}\\
-	H_{2\downarrow}'(\epsilon_0) &= 6.708 + \frac{ \epsilon_0 }{ \sqrt{\frac{\epsilon_0^2 - 0^2}{0.2}}}
+	h_{f1\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-3))^2} = \left| t + 3 \right|\\
+	h_{f1\downarrow}(t) &= \sqrt{0^2 + 0.8\cdot(t - 3.354)^2} = \left| \sqrt{0.8}(t - 3.354) \right|\\
+	h_{g1\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-3))^2} = \left| t + 3 \right|\\
+	h_{g1\downarrow}(t) &= \sqrt{0^2 + 0.2\cdot(t - 6.708)^2} = \left| \sqrt{0.2}(t - 6.708) \right|
 \end{align*}
+
+Next, we calculate the specific slopes of the inverse hyperbolas at $\epsilon_0 = 3$ by using equation \ref{eq:hinvd1eps0}.
+
+\begin{align*}
+	h_{f1\uparrow}'(\epsilon_0) &= \frac{3}{1\cdot\left|-3\right|} = 1\\
+	h_{f1\downarrow}'(\epsilon_0) &= \frac{3}{0.8\cdot\left|3.354\right|} \approx 1.118\\
+	h_{g1\uparrow}'(\epsilon_0) &= \frac{3}{1\cdot\left|-3\right|} = 1\\
+	h_{g1\downarrow}'(\epsilon_0) &= \frac{3}{0.2\cdot\left|6.708\right|} \approx 2.236 
+\end{align*}
+
+From the slopes, $\hat{f}'_{\epsilon_0}(\epsilon_0)$ and $\hat{g}'_{\epsilon_0}(\epsilon_0)$ can now be calculate:
+
+\begin{align*}
+	\hat{f}'_{\epsilon_0}(\epsilon_0) &= h_{f1\uparrow}'(\epsilon_0) + h_{f1\downarrow}'(\epsilon_0) \approx 2.118\\
+	\hat{g}'_{\epsilon_0}(\epsilon_0) &= h_{g1\uparrow}'(\epsilon_0) + h_{g1\downarrow}'(\epsilon_0) \approx 3.236\\
+\end{align*}
+
+!!!TODO: g for the win!!!
 
 
 \subsection{Postulate Algorithm}
@@ -484,7 +518,6 @@ In case option B holds true, we need to decide which of the critical events $C_{
 \subsubsection{Runtime analysis}
 \subsection{Real world application}
 	Can you think of one?
-	
 	
 	
 	
