@@ -58,38 +58,36 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {5.2.3}Minimal Example: Traverse One}{13}{subsubsection.5.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.2.4}Complex Example}{13}{subsubsection.5.2.4}
+\contentsline {subsubsection}{\numberline {5.2.4}More Complex Example 1}{14}{subsubsection.5.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3}Possible Paths}{13}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.2.5}More Complex Example 2}{15}{subsubsection.5.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.3.1}Can $C_{k1}$ reach $C_{k2}$?}{15}{subsubsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3}Possible Paths Through Critical Events}{15}{subsection.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Traversal cross-section $f(t)$ and profile $\mathaccentV {hat}05E{f}(s)$}{18}{subsection.5.4}
+\contentsline {subsubsection}{\numberline {5.3.1}Generate Traversability Graph}{15}{subsubsection.5.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.4.1}Hyperbolas}{18}{subsubsection.5.4.1}
+\contentsline {subsubsection}{\numberline {5.3.2}Can $C_{k1}$ reach $C_{k2}$? \IeC {\textendash } Reachability Intervals}{16}{subsubsection.5.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.4.2}Cross-Section $f(t)$}{18}{subsubsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.3.3}Can $C_{k1}$ reach $C_{k2}$? \IeC {\textendash } Minimum $x$-/$y$-Coordinates}{18}{subsubsection.5.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.4.3}Profile $\mathaccentV {hat}05E{f}$}{19}{subsubsection.5.4.3}
+\contentsline {subsection}{\numberline {5.4}Traversal Cross-Section $f(t)$ and Profile $\mathaccentV {hat}05E{f}(s)$}{20}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.5}Multiple Ascents to and Descents from $\epsilon _0$}{21}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.4.1}Hyperbolas}{20}{subsubsection.5.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.5.1}Simplifications and First Derivative}{21}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.4.2}Cross-Section $f(t)$}{21}{subsubsection.5.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.5.2}Second Derivative}{24}{subsubsection.5.5.2}
+\contentsline {subsubsection}{\numberline {5.4.3}Profile $\mathaccentV {hat}05E{f}$}{21}{subsubsection.5.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.5.3}Example: First Derivative}{25}{subsubsection.5.5.3}
+\contentsline {subsection}{\numberline {5.5}Multiple Ascents to and Descents from $\epsilon _0$}{23}{subsection.5.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.6}Postulate Algorithm}{26}{subsection.5.6}
+\contentsline {subsubsection}{\numberline {5.5.1}Simplifications and First Derivative}{23}{subsubsection.5.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7}Traversing critical events}{27}{subsection.5.7}
+\contentsline {subsubsection}{\numberline {5.5.2}Second Derivative}{26}{subsubsection.5.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.8}Example of Algorithm visualized (visual example!)}{28}{subsection.5.8}
+\contentsline {subsubsection}{\numberline {5.5.3}Example: First Derivative}{27}{subsubsection.5.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.9}Analysing postulated algorithm for handling degenerate inputs}{28}{subsection.5.9}
+\contentsline {subsubsection}{\numberline {5.5.4}Example: Second Derivative}{28}{subsubsection.5.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {5.9.1}Runtime analysis}{28}{subsubsection.5.9.1}
+\contentsline {section}{\numberline {6}Concluding Perspective}{32}{section.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.10}Real world application}{28}{subsection.5.10}
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Concluding Perspective}{28}{section.6}
+\contentsline {subsection}{\numberline {6.1}Third, Fourth, Fifth, etc. Derivative}{33}{subsection.6.1}

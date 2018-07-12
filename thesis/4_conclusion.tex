@@ -1,2 +1,22 @@
 \section{Concluding Perspective}
-	Concluding, all is great! :)
+	This Bachelor thesis with the title ``Lexicographic Fréchet Matchings with Degenerate Inputs" discussed three main topics from the Fréchet distance spectrum that build on each other.
+	
+	First, the classical Fréchet distance as researched by \citeauthor{altgodau} in their \citeyear{altgodau} paper \citetitle{altgodau}\cite{altgodau} is explored. We discussed the free-space diagram, classical critical events of types a, b, and c, and the decision problem.
+	
+	Second, \citeauthor{rotelex}'s \citeyear{rotelex} paper \citetitle{rotelex}\cite{rotelex} guides us to extend the Fréchet distance to accomplish a lexicographic matching based on the classical Fréchet distance. \citeauthor{rotelex} introduced the steepest descent, a new lexicographic type of critical events, and of course the algorithm for traversing a height function $\delta$ lexicograohically.
+	
+	Third, we investigate lexicographic Fréchet matchings with degenerate inputs based on section 7 of \citeauthor{rotelex}'s paper\cite{rotelex}. The problem of multiple critical events at the same critical height $\epsilon$ is defined and visualized by numerous examples. Through the examples we discover that two procedures need to be defined. First we need to know which paths through the critical events are possible and second we need to know which of the paths results in the lexicographically optimal profile to fulfill the goal of a lexicographic traversal.
+	
+	The problem of degenerate inputs in terms of lexicographic Fréchet matchings is by no mean solved at this point. The next sections showcase mayor questions that still exist.
+	
+\subsection{Third, Fourth, Fifth, etc. Derivative}
+
+Equation \ref{eq:hinvd1} defines $[h^{-1}]'(\epsilon)$:
+
+$$[h^{-1}]'(\epsilon) = \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} }$$
+
+Due to the square root in the denominator of $[h^{-1}]'(\epsilon)$, $[h^{-1}]'(\epsilon)$ potentially has infinite derivatives.
+
+After taking three derivatives, the values of these three derivatives can be used in an equation system to calculate the three parameters $u$, $a$, and $v$. If we compare two hyperbola inverses, it is enough to compare three derivatives, because if the first three derivatives are the same for two hyperbola inverses, the two hyperbola inverses have the same parameters $u$, $a$, and $v$. This can be extrapolated to multiple hyperbola inverses: If we are comparing $N$ hyperbola inverses to $N$ other hyperbola inverses, we need to compare at most $3\cdot N$ derivatives, because with $3\cdot N$ derivatives an equation system can be established from which the parameters $u$, $a$, and $v$ can be calculated for each one of the $N$ hyperbola inverses.
+
+It would be interesting to try to find or construct examples where higher derivatives are needed, if this is possible. On the other hand one might be able to prove that only a finite number of derivatives is needed. 

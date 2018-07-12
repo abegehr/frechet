@@ -27,21 +27,20 @@
 \BOOKMARK [3][-]{subsubsection.5.2.1}{Minimal Example: Traverse Both}{subsection.5.2}% 27
 \BOOKMARK [3][-]{subsubsection.5.2.2}{Minimal Example: Traverse Either}{subsection.5.2}% 28
 \BOOKMARK [3][-]{subsubsection.5.2.3}{Minimal Example: Traverse One}{subsection.5.2}% 29
-\BOOKMARK [3][-]{subsubsection.5.2.4}{Complex Example}{subsection.5.2}% 30
-\BOOKMARK [2][-]{subsection.5.3}{Possible Paths}{section.5}% 31
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Can Ck1 reach Ck2?}{subsection.5.3}% 32
-\BOOKMARK [2][-]{subsection.5.4}{Traversal cross-section f\(t\) and profile \(s\)}{section.5}% 33
-\BOOKMARK [3][-]{subsubsection.5.4.1}{Hyperbolas}{subsection.5.4}% 34
-\BOOKMARK [3][-]{subsubsection.5.4.2}{Cross-Section f\(t\)}{subsection.5.4}% 35
-\BOOKMARK [3][-]{subsubsection.5.4.3}{Profile }{subsection.5.4}% 36
-\BOOKMARK [2][-]{subsection.5.5}{Multiple Ascents to and Descents from 0}{section.5}% 37
-\BOOKMARK [3][-]{subsubsection.5.5.1}{Simplifications and First Derivative}{subsection.5.5}% 38
-\BOOKMARK [3][-]{subsubsection.5.5.2}{Second Derivative}{subsection.5.5}% 39
-\BOOKMARK [3][-]{subsubsection.5.5.3}{Example: First Derivative}{subsection.5.5}% 40
-\BOOKMARK [2][-]{subsection.5.6}{Postulate Algorithm}{section.5}% 41
-\BOOKMARK [2][-]{subsection.5.7}{Traversing critical events}{section.5}% 42
-\BOOKMARK [2][-]{subsection.5.8}{Example of Algorithm visualized \(visual example!\)}{section.5}% 43
-\BOOKMARK [2][-]{subsection.5.9}{Analysing postulated algorithm for handling degenerate inputs}{section.5}% 44
-\BOOKMARK [3][-]{subsubsection.5.9.1}{Runtime analysis}{subsection.5.9}% 45
-\BOOKMARK [2][-]{subsection.5.10}{Real world application}{section.5}% 46
-\BOOKMARK [1][-]{section.6}{Concluding Perspective}{}% 47
+\BOOKMARK [3][-]{subsubsection.5.2.4}{More Complex Example 1}{subsection.5.2}% 30
+\BOOKMARK [3][-]{subsubsection.5.2.5}{More Complex Example 2}{subsection.5.2}% 31
+\BOOKMARK [2][-]{subsection.5.3}{Possible Paths Through Critical Events}{section.5}% 32
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Generate Traversability Graph}{subsection.5.3}% 33
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Can Ck1 reach Ck2? \205 Reachability Intervals}{subsection.5.3}% 34
+\BOOKMARK [3][-]{subsubsection.5.3.3}{Can Ck1 reach Ck2? \205 Minimum x-/y-Coordinates}{subsection.5.3}% 35
+\BOOKMARK [2][-]{subsection.5.4}{Traversal Cross-Section f\(t\) and Profile \(s\)}{section.5}% 36
+\BOOKMARK [3][-]{subsubsection.5.4.1}{Hyperbolas}{subsection.5.4}% 37
+\BOOKMARK [3][-]{subsubsection.5.4.2}{Cross-Section f\(t\)}{subsection.5.4}% 38
+\BOOKMARK [3][-]{subsubsection.5.4.3}{Profile }{subsection.5.4}% 39
+\BOOKMARK [2][-]{subsection.5.5}{Multiple Ascents to and Descents from 0}{section.5}% 40
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Simplifications and First Derivative}{subsection.5.5}% 41
+\BOOKMARK [3][-]{subsubsection.5.5.2}{Second Derivative}{subsection.5.5}% 42
+\BOOKMARK [3][-]{subsubsection.5.5.3}{Example: First Derivative}{subsection.5.5}% 43
+\BOOKMARK [3][-]{subsubsection.5.5.4}{Example: Second Derivative}{subsection.5.5}% 44
+\BOOKMARK [1][-]{section.6}{Concluding Perspective}{}% 45
+\BOOKMARK [2][-]{subsection.6.1}{Third, Fourth, Fifth, etc. Derivative}{section.6}% 46
