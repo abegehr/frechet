@@ -3,16 +3,16 @@
 
 \subsection{Problem}
 
-As \citeauthor{rotelex} describes in section 7 of his paper \citetitle{rotelex} and as we hinted to in section \ref{sec:lex_frechet_alg} of this paper, multiple critical events can occur for the same $\epsilon$.
+As \citeauthor{rotelex} describes in section 7 of his paper \citetitle{rotelex} and as was hinted to in section \ref{sec:lex_frechet_alg} of this paper, multiple critical events can occur for the same $\epsilon$.
 
-Multiple critical events for the same $\epsilon$ turn out to be problematic, because as can be seen in algorithm \ref{alg:lex_frechet_alg}, we assume the functions defined in algorithm \ref{alg:lex_frechet_alg_req} return only one critical event which then will be traversed. This assumption does not hold in all cases.
+Multiple critical events for the same $\epsilon$ turn out to be problematic, because as can be seen in algorithm \ref{alg:lex_frechet_alg}, we assume the functions defined in algorithm \ref{alg:lex_frechet_alg_req} return only one critical event which then is traversed. This assumption does not hold in all cases.
 
-This section aims to answer the question of how to handle multiple critical events with the same critical $\epsilon$ by visualizing the problem and postulating an algorithm that decides which combination of critical events result in a lexicographic traversal. The basis of this section is section 7 of \citeauthor{rotelex}'s paper \citetitle{rotelex}\cite{rotelex}.
+This section aims to answer the question of how to handle multiple critical events with the same critical $\epsilon$ by visualising the problem and postulating an algorithm that decides which combination of critical events result in a lexicographic traversal. The basis of this section comes from \citeauthor{rotelex}'s paper section 7\cite{rotelex}.
 
 
 \subsection{Examples}
 
-In this subsection, four examples will be discussed, for which multiple critical events with the same critical $\epsilon$ require a decision on which of them should be traversed to result in a lexicographic traversal. Instead of providing in-depth detail on solutions, this subsection aims to illustrate the problem through examples.
+In this subsection, four examples are discussed, for which multiple critical events with the same critical $\epsilon$ require a decision on which of them should be traversed to result in a lexicographic traversal. Instead of providing in-depth detail on solutions, this subsection aims to illustrate the problem through examples.
 
 
 \subsubsection{Minimal Example: Traverse Both}\label{sec:ces_min_1}
@@ -27,7 +27,7 @@ In this subsection, four examples will be discussed, for which multiple critical
     \label{fig:ces_min_1}
 \end{figure}
 
-Figure \ref{fig:ces_min_1} shows a minimal example with two critical events with the same $\epsilon$. There are two classical critical events of type b at $\epsilon \approx 2.91$ at the two vertical cell-borders. Both critical events need to be traversed.
+Figure \ref{fig:ces_min_1} shows a minimal example with two critical events with the same $\epsilon$. There are two classical critical events of type b at $\epsilon_0 \approx 2.91$ at the two vertical cell-borders. Both critical events need to be traversed.
 
 View the example from figure \ref{fig:ces_min_1} here: \url{https://abegehr.github.io/frechet/?p=(5_5)(8_5)(2_5)(5_5)&q=(5.5_3)(4.5_7)}
 
@@ -44,7 +44,7 @@ View the example from figure \ref{fig:ces_min_1} here: \url{https://abegehr.gith
     \label{fig:ces_min_2}
 \end{figure}
 
-Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events with the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b with equal $\epsilon = 3$ at the two vertical cell-borders. And two classical critical events of type b with equal $\epsilon = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon = 3$ is needed to traverse this height function $\delta$. Either one of the critical events at $\epsilon = 3$ needs to be traversed.
+Figure \ref{fig:ces_min_2} shows a minimal example of multiple critical events with the same $\epsilon$. There are four critical events to consider. Two classical critical events of type b at $\epsilon_0 = 3$ at the two vertical cell-borders. Also, two classical critical events of type b at $\epsilon_1 = 2$ at the two horizontal cell-borders. The decision problem shows that $\epsilon_0 = 3$ is needed to traverse this height function $\delta$. Either one of the critical events at $\epsilon_0 = 3$ needs to be traversed.
 
 View the example from figure \ref{fig:ces_min_2} here: \url{https://abegehr.github.io/frechet/?p=(4_5)(8_5)(4_5)&q=(5_4)(5_7)(5_4)}
 
@@ -62,7 +62,7 @@ View the example from figure \ref{fig:ces_min_2} here: \url{https://abegehr.gith
     \label{fig:ces_min_3}
 \end{figure}
 
-Figure \ref{fig:ces_min_3} shows three classical critical events of type b at $\epsilon = 5$ to consider: $C_1(6|1)$, $C_2(1|6)$, and $C_3(6|11)$. There are two possible paths through these three critical events: traversing just $C_1$ or traversing $C_2$ and $C_3$. Since the ascends to and descends from $C_1$, $C_2$, and $C_3$ are similar, we choose the path over only $C_1$.
+Figure \ref{fig:ces_min_3} shows three classical critical events of type b at $\epsilon_0 = 5$ to consider: $C_1(6|1)$, $C_2(1|6)$, and $C_3(6|11)$. There are two possible paths through these three critical events: traversing just $C_1$ or traversing $C_2$ and $C_3$. Since the ascends to and descends from $C_1$, $C_2$, and $C_3$ are similar, we choose the path over only $C_1$.
 
 View the example from figure \ref{fig:ces_min_3} here: \url{https://abegehr.github.io/frechet/?p=(3_2)(3_8)(6_4)&q=(2_3)(8_3)(2_3)}
 
@@ -94,7 +94,7 @@ View the example from figure \ref{fig:ces_com_1} to see the decision on which of
     \label{fig:ces_com_2}
 \end{figure}
 
-Figure \ref{fig:ces_com_2} shows a more complex example of multiple critical events with the same $\epsilon$. There are sixteen classical critical events: ten of type b and six of type b. Five critical events are on the bottom side and five are on the top side of $\delta$. Six critical events are on the center row of cells. There are two classical critical events of type c that lye on vertical cell borders.
+Figure \ref{fig:ces_com_2} shows a more complex example of multiple critical events with the same $\epsilon$. There are sixteen classical critical events at $\epsilon_0 = 3$: ten of type b and six of type c. Five critical events are on the bottom side, and five are on the top side of $\delta$. Six critical events are on the centre row of cells. There are two classical critical events of type c that lye on vertical cell borders.
 
 View the example from figure \ref{fig:ces_com_2} to see the decision on which of the sixteen critical events to traverse here: \url{https://abegehr.github.io/frechet/?p=(3_4)(6_4)(3_4)(6_4)(3_4)&q=(6_4)(6_7)(4.5_5.5)(6_7)(6_4)}
 
@@ -105,11 +105,11 @@ We have seen in the examples that in some cases we need to traverse a path throu
 
 \subsubsection{Generate Traversability Graph}
 
-The possible paths through multiple critical events can be represented as a graph. The start node represents the lower left corner $A$ and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_k \in C$ of height $\epsilon_0$ is a node. Edges are directional and denote traversability without another critical event of height $\epsilon_0$ in between.
+The possible paths through multiple critical events are saved in a graph. The start node represents the lower left corner $A$, and the end node represents the upper right corner $B$ of the current $\delta$ subsection. Each critical event $C_k \in C$ of height $\epsilon_0$ is a node. The graph's edges are directional and denote traversability without traversing through another critical event of height $\epsilon_0$.
 
 To generate this graph, first, we use the free-space diagram represented by $L_{ij}^F$ and $B_{ij}^F$ and the decision algorithm (see \citet{altgodau}) to generate the reachable border bounds $L_{ij}^R$ and $B_{ij}^R$ of all cells. Then we use the reachable border bounds and the critical events $C$ at height $\epsilon_0$ to generate for each vertical and horizontal cell-border which subset of critical events $C$ can reach the border. We call the subset of $C$ that reaches the left and bottom border of cell $(i,j)$: $L_{ij}^C$ and $B_{ij}^C$ respectively. After computing each $L_{ij}^C$ and $B_{ij}^C$, we then connect critical events in $L_{ij}^C$ and $B_{ij}^C$ to reachable critical events starting on the top and right border.
 
-See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the starting-point $A$ and the ending-point $b$.
+See the algorithm \ref{alg:gengraph} for more detail on how we generate the traversability graph of multiple critical traversals $C_k$ that are at same height $\epsilon_0$. $p$ and $q$ is the number of cells between the startpoint $A$ and the endpoint $b$.
 
 
 \begin{algorithm}[H]
@@ -117,7 +117,7 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 \begin{algorithmic}[1]
 
 \Function{GenerateTraversalGraph($A, B, C, \epsilon_0$)}{}
-	\State\Comment{$A$ is start-point of traversal. $B$ is ending-point of traversal. $C$ holds all critical events $C_k$.}
+	\State\Comment{$A$ is startpoint of traversal. $B$ is endpoint of traversal. $C$ holds all critical events $C_k$.}
 	
 	\State {Add $A$ and $B$ as critical events to $C$.}
 
@@ -126,7 +126,7 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 	\State $L^R, B^R \gets$ \Call{DecisionAlgorithm'}{$A, B, \epsilon_0$}
 
 	\For {$C_k \in C$}
-		\State {Add $C_k.B$ (ending-points) to $L_{ij}^C$ or $B_{ij}^C$ where $C_k.B$ lies.}
+		\State {Add $C_k.B$ (endpoints) to $L_{ij}^C$ or $B_{ij}^C$ where $C_k.B$ lies.}
 	\EndFor
 
 	\For {$i := 0$ to $p$} {determine $L_{i, 0}^C$} \EndFor
@@ -181,9 +181,9 @@ Reachability intervals $I_{ij}$ of right and top borders can be computed as foll
 	\item From bottom to top: $I_{ij}^{b \rightarrow t} = B_{i, j}^R \cap B_{i, j+1}^R$
 \end{enumerate}
 
-The superscript denotes the sides of the cell. $I_{ij}^{b \rightarrow t}$ for example represents the reachability interval of the top border for traversals coming from the bottom border.
+The superscript denotes the sides of the cell. $I_{ij}^{b \rightarrow t}$, for example, represents the reachability interval of the top border for traversals coming from the bottom border.
 
-It can be considered to use solely these reachability intervals $I_{ij}$ to decide if $C_{k2}$ can be reached from $C_{k1}$. One would simply check if $C_{k2}$ lies in the reachability intervals from the side on which $C_{k1}$ lies. This is not sufficient, as the example visualized in figure \ref{fig:gengraph_ex1} shows.
+It can be considered to use these reachability intervals $I_{ij}$ solely to decide if $C_{k2}$ can be reached from $C_{k1}$. Simply check if $C_{k2}$ lies in the reachability intervals from the side on which $C_{k1}$ lies. Using reachability intervals $I_{ij}$ solely is not sufficient, as the example visualised in figure \ref{fig:gengraph_ex1} shows.
 
 \begin{figure}[H]
     \centering
@@ -195,11 +195,11 @@ It can be considered to use solely these reachability intervals $I_{ij}$ to deci
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(5_5)(5_7.8)(4_6)(4_8)(6_6)&q=(6_6)(3_6)(6_6)}}
 
-In figure \ref{fig:gengraph_ex1} the decision algorithm tells us that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon = 2$ that we consider: $C_1(3, 1)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
+In figure \ref{fig:gengraph_ex1} the decision algorithm tells us that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon_0 = 2$ that we consider: $C_1(3, 1)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
 
 \subsubsection{Can $C_{k1}$ reach $C_{k2}$? – Minimum $x$-/$y$-Coordinates}
 
-To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorize for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then, when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
+To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorise for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then, when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals, and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
 
 We can now define two helper algorithms in more detail. First, the algorithm for determining if $C_{k1}$ can reach $C_{k2}$. And second, the algorithm that constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$.
 
@@ -265,12 +265,12 @@ We can now define two helper algorithms in more detail. First, the algorithm for
 
 The two functions defined in algorithm \ref{alg:gengraph_help} are necessary for algorithm \ref{alg:gengraph} to generate the correct traversability graph for a set of critical events at the same height $\epsilon_0$.
 
-Checking if $C_{k2}.A$ lies in the respective reachability interval seems superfluous, because we are already checking for the minimum $x$- or $y$-coordinate. Nevertheless, also checking the reachability interval $I_{ij}$ does not hurt valid functioning.
+Checking if $C_{k2}.A$ lies in the respective reachability interval seems superfluous because we are already checking for the minimum $x$- or $y$-coordinate. Nevertheless, also checking the reachability interval $I_{ij}$ does not hurt correct functioning.
 
 
 \subsection{Traversal Cross-Section $f(t)$ and Profile $\hat{f}(s)$}\label{sec:trav_csp}
 
-In this section we will define a traversals cross-section $f(t)$ and its profile $\hat{f}(s)$.
+In this section the traversal cross-section $f(t)$ and its profile $\hat{f}(s)$ are defined.
 
 \subsubsection{Hyperbolas}
 
@@ -278,19 +278,19 @@ Due to our input being two paths consisting of connected straight line-segments,
 
 $$h: \epsilon(t) = \sqrt{u^2 + a(t - v)^2}$$
 
-Each hyperbola has three parameters $u$, $a$, and $v$. A hyperbola is always a cross-section though a segment of the height function $\delta$. An equation system is used to determine the three parameters $u$, $a$, and $v$. There are two cases to consider:
+Each hyperbola has three parameters $u$, $a$, and $v$. A hyperbola is always a cross-section through a segment of the height function $\delta$. An equation system is used to determine the three parameters $u$, $a$, and $v$. There are two cases to consider:
 
 \begin{enumerate}
-	\item For a horizontal of vertical cross-section, $a = 1$. Therefore, only two points $(t, \epsilon)$ are needed to determine $u$ and $v$. The two points $(t, \epsilon)$ are calculated by sampling two pairs of points from the input line-segments and determining there $t$ and distance $\epsilon$.
-	\item For a diagonal cross-section three points $(t, \epsilon)$ are needed to determine $u$, $a$ and $v$. The two points $(t, \epsilon)$ are calculated by sampling three pairs of points from the input line-segments and determining there $t$ and distance $\epsilon$.
+	\item For a horizontal of vertical cross-section, $a = 1$. Therefore, only two points $(t, \epsilon)$ are needed to determine $u$ and $v$. The two points $(t, \epsilon)$ are calculated by sampling two pairs of points from the input line-segments and determining the corresponding $t$ and distance $\epsilon$.
+	\item For a diagonal cross-section three points $(t, \epsilon)$ are needed to determine $u$, $a$ and $v$. The two points $(t, \epsilon)$ are calculated by sampling three pairs of points from the input line-segments and determining the corresponding $t$ and distance $\epsilon$.
 \end{enumerate}
 
-For simplicity, we define the hyperbolas all as starting at $t=0$. This can be done by adjusting the parameter $v$.
+For simplicity, we define the hyperbolas all as starting at $t=0$ which can be done by adjusting the parameter $v$.
 
 
 \subsubsection{Cross-Section $f(t)$}
 
-To attain a cross-section $f(t)$ of an entire traversal, we simply create a composite function of the $N$ hyperbolas and move them along the $t$-axis to the correct position. This yields $f(t)$. $t_k$ is the time interval in which the $k^{th}$ hyperbola is traversed.
+To attain a cross-section $f(t)$ of an entire traversal, we create a composite function of the $N$ hyperbolas and move them along the $t$-axis to the correct position. This yields $f(t)$. The $k^{th}$ hyperbola is traversed in the time interval [$t_{k-1}$, $t_k$].
 
 \[ f(t) =
 \begin{cases} 
@@ -333,7 +333,7 @@ Figure \ref{fig:ces_min_1_csp} shows the profile function $\hat{f}(s)$ in additi
     \label{fig:ces_min_1_csp}
 \end{figure}
 
-The profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that each hyperbola function $h_j(t)$ is defined so that $0 \leq t \leq t_j - t_{j-1}$; therefore, we can simply sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
+The profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas. It is important to note that we defined each hyperbola function $h_j(t)$ so that $0 \leq t \leq t_j - t_{j-1}$; therefore, we can sum up the inverses of the hyperbolas in these bounds to calculate the profile in the following two steps:
 
 \begin{enumerate}
 	\item Compute the inverse function of a hyperbolas function $h^{-1}(\epsilon)$. First solve $\epsilon(t)$ for $t$:
@@ -347,7 +347,7 @@ The profile function $\hat{f}(s)$ is defined using the cross-section hyperbolas.
 		v \pm \sqrt{\frac{\epsilon^2 - u^2}{a}} & = t\\
 	\end{align*}
 	
-	This results in the following definition for $h^{-1}(\epsilon)$:
+	Resulting in the following definition for $h^{-1}(\epsilon)$:
 	
 	\begin{align}
 		h_j^{-1}: t_j(\epsilon) = 
@@ -369,9 +369,9 @@ Now we have defined the profile function $\hat{f}(s)$ for a traversal with cross
 
 \subsection{Multiple Ascents to and Descents from $\epsilon_0$}
 
-To fulfill our goal of a lexicographic traversal, we want to minimize the time during which the height $\epsilon$ exceeds a threshold $s$.\cite{rotelex} Concerning our examples, we want to minimize the time needed to ascend to and descend from our critical height $\epsilon_0$.
+To fulfil our goal of a lexicographic traversal, we want to minimise the time during which the height $\epsilon$ exceeds a threshold $s$.\cite{rotelex} Concerning our examples, we want to minimise the time needed to ascend to and descend from our critical height $\epsilon_0$.
 
-If we have multiple critical events at the critical height $\epsilon_0$, we need to decide which to choose while fulfilling our goal of a lexicographic traversal. The profile function $\hat{f}(s)$, introduced in section \ref{sec:trav_csp}, defines the time that a traversals exceeds a threshold $s$. Our goal of a lexicographic traversal is to minimize this time. This means that for two profile functions $\hat{f}(s)$ and $\hat{g}(s)$ that both are critical at $\epsilon_0$, we need to compare the derivatives.
+If we have multiple critical events at the critical height $\epsilon_0$, we need to decide which to choose while fulfilling our goal of a lexicographic traversal. The profile function $\hat{f}(s)$, introduced in section \ref{sec:trav_csp}, defines the time that a traversals exceeds a threshold $s$. Our goal of a lexicographic traversal is to minimise this time. Meaning that for two profile functions $\hat{f}(s)$ and $\hat{g}(s)$ that both are critical at $\epsilon_0$, we need to compare the derivatives.
 
 $$\hat{f'}(s) = \left[ \sum_{j=0}^N {h_j^{-1}(s)} \right]'$$
 
@@ -384,9 +384,9 @@ $$\hat{f'}(s) = \sum_{j=0}^N {[h_j^{-1}]'(s)}$$
 
 Due to the form of $h_j^{-1}$ (see equation \ref{eq:hinv}), the derivative of $h_j^{-1}$ is not trivial. $h_j^{-1}$ is a composite function and has a $\pm$. We circumvent this problem by only looking at hyperbolas that ascend to and descend from the critical height $\epsilon_0$.
 
-For a critical event $C_k$ at $\epsilon_0$, we will denote the ascent hyperbola with $h_{k\uparrow}$ and the descent hyperbola with $h_{k\downarrow}$.
+For a critical event $C_k$ at $\epsilon_0$, the ascent hyperbola is denoted with $h_{k\uparrow}$ and the descent hyperbola is denoted with $h_{k\downarrow}$.
 
-We will only consider critical events with one ascent and one descent hyperbola, analogous to classical critical events of type b. Classical critical events of type c can easily be modeled by multiple critical events of type b. Classical critical events of type a and new type of lexicographic critical events consist of only one ascent or descent hyperbola.
+We only consider critical events with one ascent and one descent hyperbola, analogous to classical critical events of type b. Two classical critical events of type b can easily model classical critical events of type c. Classical critical events of type a and new type of lexicographic critical events consist of only one ascent or descent hyperbola.
 
 Because of simplicity we move the hyperbolas so that $t = 0$ for the critical height $\epsilon$: $h(0) = \epsilon_0$.
 
@@ -418,7 +418,7 @@ We can write a simple equation for $[h^{-1}]'(\epsilon_0)$ by using the equation
 	[h^{-1}]'(\epsilon_0)  &= \frac{ \epsilon_0 }{ a \left| v \right| }\label{eq:hinvd1eps0}
 \end{align}
 
-Having an equation for $[h^{-1}]'(\epsilon_0)$, we will now determine the slope at $\hat{f}_{\epsilon_0}(\epsilon_0)$ by adding the ascending and descending slopes of all critical events $C$ at critical height $\epsilon_0$:
+Having an equation for $[h^{-1}]'(\epsilon_0)$, next we determine the slope at $\hat{f}_{\epsilon_0}(\epsilon_0)$ by adding the ascending and descending slopes of all critical events $C$ at critical height $\epsilon_0$:
 
 \begin{align*}
 	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { [h_{k\downarrow}^{-1}]'(\epsilon_0) + [h_{k\uparrow}^{-1}]'(\epsilon_0)}\\
@@ -478,9 +478,9 @@ Let us consider an example where we can decide from looking at the first derivat
 
 In the example depicted in figure \ref{fig:ces_ad_1}, there are two classical critical events of type b at critical height $\epsilon_0 = 3$ to consider: $C_1(1, 4)$ and $C_2(4, 1)$.
 
-The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in section \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$ (traversal path $f$) or over $C_2$ (traversal path $g$).
+The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in section \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the startpoint to the endpoint over $C_1$ (traversal path $f$) or over $C_2$ (traversal path $g$).
 
-We determine the hyperbolas representing the ascent to and descent from of $C_1$ and $C_2$. Decimal numbers are rounded to three places after the decimal point.
+We determine the hyperbolas representing the ascent to and descent from of $C_1$ and $C_2$. Decimal numbers are rounded to three decimal places.
 
 \begin{align*}
 	h_{f1\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-3))^2} = \left| t + 3 \right|\\
@@ -514,7 +514,7 @@ The descent from height $\epsilon_0$ is steeper when taking path $g$ over $C_2(4
 
 \subsubsection{Example: Second Derivative}
 
-Figure \ref{fig:ces_ad_2} shows an example where it will not be possible to decide from looking at the first derivative which path to traverse.
+Figure \ref{fig:ces_ad_2} shows an example where it is not possible to decide from looking at the first derivative which path to traverse.
 
 \begin{figure}[H]
 	\centering
@@ -528,9 +528,9 @@ Figure \ref{fig:ces_ad_2} shows an example where it will not be possible to deci
 
 In the example depicted in figure \ref{fig:ces_ad_2}, there are two classical critical events of type b at critical height $\epsilon_0 = 5$ to consider: $C_1(6, 1)$ and $C_2(6, 9)$.
 
-The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in section \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the starting-point to the ending-point over $C_1$ (traversal path $f$) or over $C_2$ (traversal path $g$).
+The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in section \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the startpoint to the endpoint over $C_1$ (traversal path $f$) or over $C_2$ (traversal path $g$).
 
-We determine the hyperbolas representing the ascent to and descent from of $C_1$ and $C_2$.
+We determine the hyperbolas representing the ascent to and descent from $C_1$ and $C_2$.
 
 \begin{align*}
 	h_{f1\uparrow}(t) &= \sqrt{0^2 + 1\cdot(t - (-5))^2} = \left| t + 5 \right|\\
@@ -601,6 +601,6 @@ While the descent from height $\epsilon_0$ is equally steep for both paths $f$ a
     \label{fig:ces_ad_2_csp}
 \end{figure}
 	
-	Looking at figure \ref{fig:ces_ad_2_csp}, the two critical events with $\epsilon_0$ can be seen. The left one is $C_1$, the right one is $C_2$. The slopes at both critical events are equal, but looking at the descent from $C_2$ one can see that it bends upward and flattens.
+	Looking at figure \ref{fig:ces_ad_2_csp}, the two critical events with $\epsilon_0 = 5$ can be seen. The left one is $C_1$, the right one is $C_2$. The slopes at both critical events are equal, but looking at the descent from $C_2$ one can see that it bends upward and flattens.
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  12 JUL 2018 05:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.8)  12 JUL 2018 11:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -672,33 +672,33 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 65.
 
 [3] [4]
-<./graphics/freespace_lower.png, id=311, 1003.75pt x 668.4975pt>
+<./graphics/freespace_lower.png, id=310, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_lower.png Graphic file (type png)
 <use ./graphics/freespace_lower.png>
 Package pdftex.def Info: ./graphics/freespace_lower.png  used on input line 109.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_eq.png, id=313, 1003.75pt x 668.4975pt>
+<./graphics/freespace_eq.png, id=312, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_eq.png Graphic file (type png)
 <use ./graphics/freespace_eq.png>
 Package pdftex.def Info: ./graphics/freespace_eq.png  used on input line 112.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/freespace_higher.png, id=314, 1003.75pt x 668.4975pt>
+<./graphics/freespace_higher.png, id=313, 1003.75pt x 668.4975pt>
 File: ./graphics/freespace_higher.png Graphic file (type png)
 <use ./graphics/freespace_higher.png>
 Package pdftex.def Info: ./graphics/freespace_higher.png  used on input line 115.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
  [5 <./graphics/freespace_lower.png> <./graphics/freespace_eq.png> <./graphics/freespace_higher.png>]
-<./graphics/classical_critical_event_a.png, id=339, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_a.png, id=338, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_a.png Graphic file (type png)
 <use ./graphics/classical_critical_event_a.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_a.png  used on input line 146.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_b.png, id=342, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_b.png, id=341, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_b.png Graphic file (type png)
 <use ./graphics/classical_critical_event_b.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_b.png  used on input line 149.
 (pdftex.def)             Requested size: 105.30167pt x 70.128pt.
-<./graphics/classical_critical_event_c.png, id=345, 1003.75pt x 668.4975pt>
+<./graphics/classical_critical_event_c.png, id=344, 1003.75pt x 668.4975pt>
 File: ./graphics/classical_critical_event_c.png Graphic file (type png)
 <use ./graphics/classical_critical_event_c.png>
 Package pdftex.def Info: ./graphics/classical_critical_event_c.png  used on input line 152.
@@ -714,31 +714,31 @@ l.169
                                                   \fi \fi 
 l.169 
        <./graphics/classical_critical_event_a.png> <./graphics/classical_critical_event_b.png> <./graphics/classical_critical_event_c.png>] [7]
-<./graphics/new_critical_event.png, id=384, 1003.75pt x 668.4975pt>
+<./graphics/new_critical_event.png, id=383, 1003.75pt x 668.4975pt>
 File: ./graphics/new_critical_event.png Graphic file (type png)
 <use ./graphics/new_critical_event.png>
 Package pdftex.def Info: ./graphics/new_critical_event.png  used on input line 202.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 215.
  [8 <./graphics/new_critical_event.png>] [9]) (./3_main.tex [10]
-<./graphics/ces_min_1_tra.png, id=413, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_1_tra.png, id=412, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_1_tra.png Graphic file (type png)
 <use ./graphics/ces_min_1_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_1_tra.png  used on input line 24.
 (pdftex.def)             Requested size: 234.00238pt x 155.84227pt.
-<./graphics/ces_min_2_tra.png, id=417, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_2_tra.png, id=416, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_2_tra.png Graphic file (type png)
 <use ./graphics/ces_min_2_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_2_tra.png  used on input line 41.
 (pdftex.def)             Requested size: 234.00238pt x 155.84227pt.
  [11 <./graphics/ces_min_1_tra.png>]
-<./graphics/ces_min_3_tra.png, id=429, 1003.75pt x 668.4975pt>
+<./graphics/ces_min_3_tra.png, id=428, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_min_3_tra.png Graphic file (type png)
 <use ./graphics/ces_min_3_tra.png>
 Package pdftex.def Info: ./graphics/ces_min_3_tra.png  used on input line 59.
 (pdftex.def)             Requested size: 234.00238pt x 155.84227pt.
  [12 <./graphics/ces_min_2_tra.png> <./graphics/ces_min_3_tra.png>]
-<./graphics/ces_com_1.png, id=442, 1003.75pt x 668.4975pt>
+<./graphics/ces_com_1.png, id=441, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_com_1.png Graphic file (type png)
 <use ./graphics/ces_com_1.png>
 Package pdftex.def Info: ./graphics/ces_com_1.png  used on input line 75.
@@ -748,7 +748,7 @@ Overfull \hbox (17.5502pt too wide) in paragraph at lines 83--84
 \OT1/cmtt/m/n/12 (0 _ 0 ) (4 _ 0 ) (3 _ 2 ) (4 _ 3 ) (2 _ 3 ) (3 _ 4 ) (2 _ 6 ) (6 _ 6 ) &q = (0 _ 0 ) (0 _ 4 ) (2 _ 3 ) (3 _ 4 ) (3 _
  []
 
-<./graphics/ces_com_2.png, id=446, 1003.75pt x 668.4975pt>
+<./graphics/ces_com_2.png, id=445, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_com_2.png Graphic file (type png)
 <use ./graphics/ces_com_2.png>
 Package pdftex.def Info: ./graphics/ces_com_2.png  used on input line 91.
@@ -779,7 +779,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 160.
 
 [15]
-<./graphics/gengraph_ex1.png, id=478, 1003.75pt x 668.4975pt>
+<./graphics/gengraph_ex1.png, id=477, 1003.75pt x 668.4975pt>
 File: ./graphics/gengraph_ex1.png Graphic file (type png)
 <use ./graphics/gengraph_ex1.png>
 Package pdftex.def Info: ./graphics/gengraph_ex1.png  used on input line 191.
@@ -825,10 +825,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 200.
 
-
-Overfull \vbox (0.54309pt too high) has occurred while \output is active []
-
- [17 <./graphics/gengraph_ex1.png>] [18]
+[17 <./graphics/gengraph_ex1.png>] [18]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 271.
@@ -854,7 +851,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 291.
 
 [19]
-<./graphics/ces_min_1_cs.png, id=518, 1003.75pt x 334.24875pt>
+<./graphics/ces_min_1_cs.png, id=517, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_cs.png Graphic file (type png)
 <use ./graphics/ces_min_1_cs.png>
 Package pdftex.def Info: ./graphics/ces_min_1_cs.png  used on input line 309.
@@ -868,7 +865,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 317.
 
-<./graphics/ces_min_1_csp.png, id=528, 1003.75pt x 334.24875pt>
+<./graphics/ces_min_1_csp.png, id=527, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_min_1_csp.png Graphic file (type png)
 <use ./graphics/ces_min_1_csp.png>
 Package pdftex.def Info: ./graphics/ces_min_1_csp.png  used on input line 330.
@@ -891,31 +888,31 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 370.
 
 [22] [23] [24] [25]
-<./graphics/ces_ad_1.png, id=586, 1003.75pt x 668.4975pt>
+<./graphics/ces_ad_1.png, id=585, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_ad_1.png Graphic file (type png)
 <use ./graphics/ces_ad_1.png>
 Package pdftex.def Info: ./graphics/ces_ad_1.png  used on input line 472.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
  [26 <./graphics/ces_ad_1.png>]
-<./graphics/ces_ad_2.png, id=604, 1003.75pt x 668.4975pt>
+<./graphics/ces_ad_2.png, id=603, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_ad_2.png Graphic file (type png)
 <use ./graphics/ces_ad_2.png>
 Package pdftex.def Info: ./graphics/ces_ad_2.png  used on input line 522.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
  [27] [28 <./graphics/ces_ad_2.png>] [29]
-<./graphics/ces_ad_2_tra.png, id=631, 1003.75pt x 668.4975pt>
+<./graphics/ces_ad_2_tra.png, id=630, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_ad_2_tra.png Graphic file (type png)
 <use ./graphics/ces_ad_2_tra.png>
 Package pdftex.def Info: ./graphics/ces_ad_2_tra.png  used on input line 587.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
-<./graphics/ces_ad_2_csp.png, id=635, 1003.75pt x 334.24875pt>
+<./graphics/ces_ad_2_csp.png, id=634, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_ad_2_csp.png Graphic file (type png)
 <use ./graphics/ces_ad_2_csp.png>
 Package pdftex.def Info: ./graphics/ces_ad_2_csp.png  used on input line 598.
 (pdftex.def)             Requested size: 312.00119pt x 103.89655pt.
  [30 <./graphics/ces_ad_2_tra.png>]) (./4_conclusion.tex
-Overfull \hbox (0.32234pt too wide) in paragraph at lines 10--11
-[]\OT1/cmr/m/n/12 The prob-lem of de-gen-er-ate in-puts in terms of lex-i-co-graphic Fr^^Sechet match-
+Overfull \hbox (1.88899pt too wide) in paragraph at lines 10--11
+[]\OT1/cmr/m/n/12 The prob-lem of de-gen-er-ate in-puts con-cern-ing lex-i-co-graphic Fr^^Sechet match-
  []
 
 [31 <./graphics/ces_ad_2_csp.png>]
@@ -936,50 +933,50 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 35.
 
 [32]
-<./graphics/ces_wrong_1.png, id=662, 1003.75pt x 668.4975pt>
+<./graphics/ces_wrong_1.png, id=661, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_wrong_1.png Graphic file (type png)
 <use ./graphics/ces_wrong_1.png>
 Package pdftex.def Info: ./graphics/ces_wrong_1.png  used on input line 43.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
-<./graphics/ces_wrong_1_tra.png, id=667, 1003.75pt x 668.4975pt>
+<./graphics/ces_wrong_1_tra.png, id=666, 1003.75pt x 668.4975pt>
 File: ./graphics/ces_wrong_1_tra.png Graphic file (type png)
 <use ./graphics/ces_wrong_1_tra.png>
 Package pdftex.def Info: ./graphics/ces_wrong_1_tra.png  used on input line 59.
 (pdftex.def)             Requested size: 312.00119pt x 207.7931pt.
  [33 <./graphics/ces_wrong_1.png>]
-<./graphics/ces_wrong_1_csp.png, id=681, 1003.75pt x 334.24875pt>
+<./graphics/ces_wrong_1_csp.png, id=680, 1003.75pt x 334.24875pt>
 File: ./graphics/ces_wrong_1_csp.png Graphic file (type png)
 <use ./graphics/ces_wrong_1_csp.png>
 Package pdftex.def Info: ./graphics/ces_wrong_1_csp.png  used on input line 70.
 (pdftex.def)             Requested size: 272.99881pt x 90.9063pt.
 ) (./5_appendix.tex [34 <./graphics/ces_wrong_1_tra.png> <./graphics/ces_wrong_1_csp.png>]
-Overfull \hbox (5.74632pt too wide) in paragraph at lines 19--20
-\OT1/cmr/m/n/12 The web app is ac-ces-si-ble at: []$\OT1/cmtt/m/n/12 https : / / abegehr . github . io / frechet/$[]\OT1/cmr/m/n/12 . While
+Overfull \hbox (0.52415pt too wide) in paragraph at lines 19--20
+\OT1/cmr/m/n/12 The web app is ac-ces-si-ble at []$\OT1/cmtt/m/n/12 https : / / abegehr . github . io / frechet/$[]\OT1/cmr/m/n/12 . While
  []
 
 [35]
-<./graphics/webapp_input.png, id=702, 1035.87pt x 834.11626pt>
+<./graphics/webapp_input.png, id=700, 1035.87pt x 834.11626pt>
 File: ./graphics/webapp_input.png Graphic file (type png)
 <use ./graphics/webapp_input.png>
 Package pdftex.def Info: ./graphics/webapp_input.png  used on input line 44.
 (pdftex.def)             Requested size: 312.00119pt x 251.22955pt.
-<./graphics/webapp_options.png, id=703, 1014.28937pt x 81.80562pt>
+<./graphics/webapp_options.png, id=701, 1014.28937pt x 81.80562pt>
 File: ./graphics/webapp_options.png Graphic file (type png)
 <use ./graphics/webapp_options.png>
 Package pdftex.def Info: ./graphics/webapp_options.png  used on input line 53.
 (pdftex.def)             Requested size: 390.0pt x 31.45468pt.
  [36 <./graphics/webapp_input.png> <./graphics/webapp_options.png>]
-<./graphics/webapp_2d.png, id=715, 1003.75pt x 668.4975pt>
+<./graphics/webapp_2d.png, id=713, 1003.75pt x 668.4975pt>
 File: ./graphics/webapp_2d.png Graphic file (type png)
 <use ./graphics/webapp_2d.png>
 Package pdftex.def Info: ./graphics/webapp_2d.png  used on input line 61.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
-<./graphics/webapp_3d.png, id=716, 1003.75pt x 668.4975pt>
+<./graphics/webapp_3d.png, id=714, 1003.75pt x 668.4975pt>
 File: ./graphics/webapp_3d.png Graphic file (type png)
 <use ./graphics/webapp_3d.png>
 Package pdftex.def Info: ./graphics/webapp_3d.png  used on input line 68.
 (pdftex.def)             Requested size: 272.99881pt x 181.81259pt.
-<./graphics/webapp_cps.png, id=717, 1003.75pt x 334.24875pt>
+<./graphics/webapp_cps.png, id=715, 1003.75pt x 334.24875pt>
 File: ./graphics/webapp_cps.png Graphic file (type png)
 <use ./graphics/webapp_cps.png>
 Package pdftex.def Info: ./graphics/webapp_cps.png  used on input line 75.
@@ -1000,22 +997,22 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15319 strings out of 492649
- 260502 string characters out of 6129623
- 716213 words of memory out of 5000000
- 18807 multiletter control sequences out of 15000+600000
+ 15318 strings out of 492649
+ 260494 string characters out of 6129623
+ 716205 words of memory out of 5000000
+ 18806 multiletter control sequences out of 15000+600000
  11753 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,16n,49p,876b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,16n,49p,878b,1375s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (42 pages, 2657239 bytes).
+Output written on /Users/anton/Documents/Studium/BA/frechet/thesis/.texpadtmp/thesis.pdf (42 pages, 2658703 bytes).
 PDF statistics:
- 845 PDF objects out of 1000 (max. 8388607)
- 700 compressed objects within 7 object streams
+ 843 PDF objects out of 1000 (max. 8388607)
+ 698 compressed objects within 7 object streams
  173 named destinations out of 1000 (max. 500000)
  525 words of extra memory for PDF output out of 10000 (max. 10000000)
 

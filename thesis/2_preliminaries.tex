@@ -1,7 +1,7 @@
 \section{Preliminaries}
 \subsection{Polygonal Chains}
 
-Given are two polygonal chains $P$ and $Q$. A polygonal chain is defined by a list of points, sorted by the order of the chain, ascending from beginning to end. The first point of the list is the start of the polygonal curve and the last point of the list is the end of the polygonal curve. This order implies the direction of the directional polygonal curve.
+Given are two polygonal chains $P$ and $Q$. A polygonal chain is defined by a list of points, sorted by order of the chain, ascending from beginning to end. The first point of the list is the start of the polygonal curve and the last point of the list is the end of the polygonal curve. This order implies the direction of the directional polygonal curve.
 
 $P$ and $Q$ are polygonal chains consisting of $n$ and $m$ points respectively.
 
@@ -12,11 +12,11 @@ Points of P and Q are expressed as vectors:
 
 $$P_{i} = \begin{pmatrix}x_{Pi} \\ y_{Pi}\end{pmatrix}, Q_{j} = \begin{pmatrix}x_{Qj} \\ y_{Qj}\end{pmatrix}$$
 
-For simplification we assume all points $P_{i}$ of $P$ and $Q_{j}$ of $Q$ lie in the $xy$-plane, but the results generalize easily to arbitrary dimensions\cite{rotelex}.
+For simplification we assume all points $P_{i}$ of $P$ and $Q_{j}$ of $Q$ lie in the $xy$-plane, but the results generalise easily to arbitrary dimensions\cite{rotelex}.
 
 \subsection{Parametrisation}
 
-We will use an arc-length parametrisation to define the polygonal curves $P$ and $Q$ going forward. We are using the arc-length parametrisation, instead of an unit-length parameter, to achieve visualizations with proportional scaled cells in the further course of this examination.
+We will use an arc-length parametrisation to define the polygonal curves $P$ and $Q$ from now on. We are using the arc-length parametrisation, instead of an unit-length parameter, to achieve visualisations with proportional scaled cells in the further course of this examination.
 
 First we calculate the Euclidean distances between the points of $P$ and $Q$ in the order they appear:
 
@@ -70,19 +70,19 @@ Let us revisit the ``dog walking"-metaphor from section \ref{dogwalking} of the 
 	\item Both $P$ and $Q$ are traversed monotonically ascending in the direction of $P$ and $Q$ respectively. Meaning, a traverser on either $P$ or $Q$ can stand idle and go forwards, but may never go backwards.\label{travcondb}
 \end{enumerate}
 
-We traverse both $P$ and $Q$ together. This means that at every point in time one of the following cases holds true:
+We traverse both $P$ and $Q$ together so that at every point in time one of the following cases holds true:
 \begin{itemize}
 	\item Both the traverser on $P$ and the traverser on $Q$ are moving.
-	\item The traverser on $P$ is moving and the traverser on $Q$ is standing idle.
-	\item The traverser on $Q$ is moving and the traverser on $P$ is standing idle.
-	\item Neither the traverser on P, nor the traverser on $Q$ is moving.
+	\item The traverser on $P$ is moving, and the traverser on $Q$ is standing idle.
+	\item The traverser on $Q$ is moving, and the traverser on $P$ is standing idle.
+	\item Neither the traverser on P nor the traverser on $Q$ is moving.
 \end{itemize}
 
 The last case is identical to the end of both traversals. Both traverses have reached the end of their polygonal chains.
 
 We define a traversal of both $P$ and $Q$ together as a joint parametrisation $(\alpha(t), \beta(t))$. This joint parametrisation represents a continuous curve in the parameter area $R$. The curve represented by $(\alpha(t), \beta(t))$ is a monotonic curve, because of above condition \ref{travcondb} which states that both $P$ and $Q$ are traversed only forwards and never backwards.
 
-Revisiting the ``dog walking"-metaphor from Section \ref{dogwalking}, the Fréchet distance is the length of the shortest leash with which it is possible for the man and his dog to traverse their paths completely by only travelling forward. In other words, the Fréchet distance is defined as the largest distance between the traverser on path $P$ and the traverser on path $Q$ of the traversal with the smallest maximum distance between the respective traversers.
+The Fréchet distance is the length of the shortest leash with which it is possible for the man and his dog to traverse their paths entirely by only travelling forward. In other words, the Fréchet distance is defined as the largest distance between the traverser on path $P$ and the traverser on path $Q$ of the traversal with the smallest maximum distance between the respective traversers.
 
 Using the joint parametrisation $(\alpha(t), \beta(t))$ as representative for a traversal, next the distance function $f(t)$ for the joint parametrisation needs to be defined to determine the Fréchet distance. The height function defined in Section \ref{heightfunc} will be used to define the distance function $f(t)$ for a joint parametrisation $(\alpha(t), \beta(t))$:
 
@@ -98,7 +98,7 @@ The fundamental insight of Alt and Godau\cite{altgodau} is that the Fréchet dis
 
 \subsection{Decision Problem}
 
-The decision problem asks, if a height function $\delta$ can be traversed monotonically while not exceeding the height of a given $\epsilon$. In their paper, Alt and Godau\cite{altgodau} define the decision algorithm which solves the decision problem by using the free-space diagram $F_{\epsilon}$.
+The decision problem asks if a height function $\delta$ can be traversed monotonically while not exceeding the height of a given $\epsilon$. In their paper, Alt and Godau\cite{altgodau} define the decision algorithm which solves the decision problem by using the free-space diagram $F_{\epsilon}$.
 
 In the following example we will see three free-space diagrams $F_\epsilon$ for the same height function with different $\epsilon$. $\epsilon_F$ denotes the Fréchet distance.
 
@@ -160,7 +160,7 @@ In Figure \ref{fig:classical_critical_events} example free-space diagrams for ea
 \stepcounter{footnote}\footnotetext{Classical critical event of type b at height $\epsilon_F$ is at vertical border connecting the left to the right cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(1_2)(4_5)(7_2)&q=(1_3)(7_3)}}
 \stepcounter{footnote}\footnotetext{Classical critical event of type c at height $\epsilon_F$ is at vertical border connecting the left to the right cell over the middle cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(4_3)(7_4)(1_4)(4_3)&q=(1_3)(7_3)}}
 
-Critical events will be denoted with $C_k$, where $C_k.A$ is the starting-point and $C_k.B$ is the end-point. For classical critical events of type a or b the starting-point and end-point are the same.
+Critical events will be denoted with $C_k$ where $C_k.A$ is the startpoint and $C_k.B$ is the endpoint. For classical critical events of type a or b the startpoint and endpoint are the same.
 
 
 \subsection{Computing the Classical Fréchet Distance}
@@ -172,11 +172,11 @@ We now have the tools to compute the classical Fréchet distance. To compute the
 
 In his \citeyear{rotelex} paper \citetitle{rotelex}, \citeauthor{rotelex} extended upon the findings from \citeauthor*{altgodau} in their paper \citetitle{altgodau} to establish an algorithm that produces a lexicographic Fréchet matching.
 
-Taking a lexicographic approach roughly means that we want to minimize the time $T(s)$ during which the height exceeds a threshold $s$.\cite{rotelex} We want to spend as little time as possible at the current height and want to descend as quickly as possible.
+Taking a lexicographic approach roughly means that we want to minimise the time $T(s)$ during which the height exceeds a threshold $s$.\cite{rotelex} We want to spend as little time as possible at the current height and want to descend as quickly as possible.
 
 \subsection{Steepest Descent}
 
-To achieve a lexicographically optimized traversal, \citeauthor{rotelex} makes use of the steepest descent. Therefore he developed a steepest descent algorithm.
+To achieve a lexicographically optimised traversal, \citeauthor{rotelex} makes use of the steepest descent. Therefore he developed a steepest descent algorithm.
 
 Because we chose our input to be two paths consisting of straight line segments, the level set in a cell consists of concentric ellipses. \citeauthor{rotelex} defines two lines for every cell, $l$ and $l'$:
 
@@ -204,12 +204,12 @@ Figure \ref{fig:new_critical_event} shows a minimal example of these new lexicog
 	\caption{Example of new lexicographic type of critical event\protect\footnotemark}
     \label{fig:new_critical_event}
 \end{figure}
-\footnotetext{New lexicographic critical event of type a below height $\epsilon_F$ connecting the middle of the left cell to the vertical border between the middle and the right cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(3_2)(5_4)(3_3)(5_3)&q=(2_7)(5_7)}}
+\footnotetext{New lexicographic critical event of type a below height $\epsilon_F$ connects the middle of the left cell to the vertical border between the middle and the right cell. View the example here: \url{https://abegehr.github.io/frechet/?p=(3_2)(5_4)(3_3)(5_3)&q=(2_7)(5_7)}}
 
 
 \subsection{Lexicographic Fréchet Matching Algorithm}\label{sec:lex_frechet_alg}
 
-We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for lexicographic Fréchet matchings\cite{rotelex} under \textit{general inputs} (not yet regarding degenerate inputs, as we'll discuss in section \ref{lex_frechet_deg}). In contrary to the algorithm for computing the classical Fréchet distance, the algorithm for lexicographic Fréchet matching utilizes recursion to result in a local traversal that is lexicographically optimized. The algorithm as described here is aligned to the implementation of the online visualization.
+We now have the tools needed to understand \citeauthor{rotelex}'s algorithm for lexicographic Fréchet matchings\cite{rotelex} under \textit{general inputs} (not yet regarding degenerate inputs, as will be discussed in section \ref{lex_frechet_deg}). In contrary to the algorithm for computing the classical Fréchet distance, the algorithm for lexicographic Fréchet matching utilises recursion to result in a local traversal that is lexicographically optimised. The algorithm as described here is aligned to the implementation of the online visualisation.
 
 \begin{algorithm}[H]
 \caption{Requirements for Lexicographic Fréchet Matching Algorithm}\label{alg:lex_frechet_alg_req}

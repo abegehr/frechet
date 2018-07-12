@@ -1,11 +1,11 @@
 \section{Introduction}
 
 \subsection{Motivation}
-	The classical Fréchet distance is a measure of dissimilarity between two curves. In comparison to the root-mean-square error (RMSE), the Fréchet distance has a longer runtime, but therefore it takes into account the position and ordering of points. This is important for a wide range of use-cases: Comparing molecule chains like proteins, handwriting recognition, route comparison, computer vision, and WiFi access point planning being just a few of the real world use-cases of the Fréchet distance.
+	The classical Fréchet distance is a measure of dissimilarity between two curves. In comparison to the root-mean-square error (RMSE), the Fréchet distance has a longer runtime, but therefore it takes into account the position and order of points which is important for a wide range of use cases: Comparing molecule chains like proteins, handwriting recognition, route comparison, computer vision, and WiFi access point planning being just a few of the real world use cases of the Fréchet distance.
 	
-	Lexicographical Fréchet matchings extend the capabilities of the classical Fréchet distance by not just finding one global Fréchet distance for two input paths, it also applies the algorithm for all local sub-traversals to attain a lexicographically optimized traversal.
+	Lexicographical Fréchet matchings extend the capabilities of the classical Fréchet distance by not just finding one global Fréchet distance for two input paths, it also applies the algorithm for all local sub-traversals to attain a lexicographically optimised traversal.
 	
-	The goal of this paper is to introduce both the classical Fréchet distance and lexicographical Fréchet matchings; and ultimately to investigate degenerate inputs for lexicographical Fréchet matchings, as revealed by \citeauthor{rotelex} in section 7 of his \citeyear{rotelex} paper \citetitle{rotelex}\cite{rotelex}.
+	The goal of this paper is to introduce both the classical Fréchet distance and lexicographical Fréchet matchings, and ultimately to investigate degenerate inputs for lexicographical Fréchet matchings, as revealed by \citeauthor{rotelex} in section 7 of his \citeyear{rotelex} paper \citetitle{rotelex}\cite{rotelex}.
 	
 
 \subsection{Problem Metaphor (Dog Walking)} \label{dogwalking}
@@ -18,8 +18,11 @@ Imagine two curves:
 	\item Curve $C_Q$ tracing the walking curve of the man's dog
 \end{itemize}
 
-The Fréchet Distance then is the shortest possible length of a leash, the man would need to keep ahold of his dog. Both the man and his dog have to traverse their entire paths and neither are allowed to walk backwards.
+The Fréchet Distance then is the shortest possible length of a leash, the man would need to keep ahold of his dog. Both the man and his dog have to traverse their entire paths, and neither are allowed to walk backwards.
 
-Both the man and his dog can independently vary their respective speeds. With the conditions described above, at every point in time, either both the man and his dog are walking forwards along their respective paths or one is idle while the other is walking along his path.
+Both the man and his dog can independently vary their respective speeds. With the conditions described above, at every point in time, either both the man and his dog are walking forwards along their respective paths, or one is idle while the other is walking along his path.
 
-To make calculating the Fréchet distance more feasible by simplification, the arbitrary curves $C_P$ on which the man is walking, and $C_Q$ on which his dog is walking, are each approximated by a connected chain of line segments, a polygonal chain. The arbitrary curve $C_P$ is approximated by the polygonal chain $P$. The arbitrary curve $C_Q$ is approximated by the polygonal chain $Q$.
+To make calculating the Fréchet distance more feasible by simplification, the arbitrary curves $C_P$ on which the man is walking, and $C_Q$ on which his dog is walking, are each approximated by a connected chain of line segments, a polygonal chain. The polygonal chain $P$ approximates the arbitrary curve $C_P$. The polygonal chain $Q$ approximates the arbitrary curve $C_Q$.
+
+
+
