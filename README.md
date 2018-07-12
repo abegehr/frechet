@@ -2,7 +2,7 @@
 
 ## Bachelor Thesis
 
-My Bachelors Thesis "Lexicographic Fréchet Matchings with Degenerate Inputs" will be released and linked here on 12. July 2018.
+My Bachelors Thesis "Lexicographic Fréchet Matchings with Degenerate Inputs" can be accessed at: [https://github.com/abegehr/frechet/blob/master/thesis/thesis.pdf](https://github.com/abegehr/frechet/blob/master/thesis/thesis.pdf)
 
 ## Live Version
 
@@ -24,4 +24,6 @@ And a cool example of degenerate inputs: [https://abegehr.github.io/frechet/?p=(
 3. Install dependancies: ```yarn install``` or ```npm install```
 3. Run React app in development env: ```yarn start``` or ```npm start```
 
+## GitHub Repository
 
+The GitHub repository with current source code can be accessed at: [https://github.com/abegehr/frechet](https://github.com/abegehr/frechet)
