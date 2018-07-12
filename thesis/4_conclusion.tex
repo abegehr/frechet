@@ -21,11 +21,14 @@ After taking three derivatives, the values of these three derivatives can be use
 
 We can extrapolate this to multiple hyperbola inverses: If we are comparing $N$ hyperbola inverses to $N$ other hyperbola inverses, we need to compare at most $3\cdot N$ derivatives, because with $3\cdot N$ derivatives an equation system can be established from which the parameters $u$, $a$, and $v$ can be calculated for each one of the $N$ hyperbola inverses. Therefore the $N$ hyperbolas would be exactly the same. This procedure is only possible for $f$s and $g$s that have the same number $N$ of critical events.
 
-It would be interesting to try to find or construct examples where higher derivatives than the second one are needed. This could lead to a prof that only a finite number of derivatives is needed. It might also make sense to look at more derivatives of $h^{-1}(\epsilon)$. See the first four derivatives below:
+It would be interesting to try to find or construct examples where higher derivatives than the second one are needed. Researching could possibly lead to a proof that only a finite number of derivatives is needed. It might also make sense to look at more derivatives of $h^{-1}(\epsilon)$. See the first five derivatives here:
 
 \begin{align*}
 	[h^{-1}]'(\epsilon) &= \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} }\\
 	[h^{-1}]''(\epsilon) &= -\frac{u^2}{a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\\
+	[h^{-1}]'''(\epsilon) &= \frac{3u^2\epsilon}{a^3\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{5}{2}}}\\
+	[h^{-1}]''''(\epsilon) &= \frac{3u^2\left(-u^2-4\epsilon^2\right)}{a^4\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{7}{2}}}\\
+	[h^{-1}]'''''(\epsilon) &= \frac{15u^2\epsilon\left(3u^2+4\epsilon^2\right)}{a^5\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{9}{2}}}\\
 \end{align*}
 
 	
@@ -37,7 +40,7 @@ In section \ref{sec:ces_min_2} we saw an example where two paths were exactly eq
 \begin{figure}[H]
 	\centering
     
-    \includegraphics[width=0.8\textwidth]{ces_wrong_1.png}
+    \includegraphics[width=0.7\textwidth]{ces_wrong_1.png}
 		
 	\caption{Equal descents at $\epsilon_0$, unequal descents below\protect\footnotemark}
     \label{fig:ces_wrong_1}
@@ -64,7 +67,7 @@ At height $\epsilon_0 = 3$ the profiles of both paths are equal, but at $\epsilo
 \begin{figure}[H]
 	\centering
     
-    \includegraphics[width=0.8\textwidth]{ces_wrong_1_csp.png}
+    \includegraphics[width=0.7\textwidth]{ces_wrong_1_csp.png}
 		
 	\caption{Cross-sections and profiles\textsuperscript{\ref{ftn:ces_wrong_1}}}
     \label{fig:ces_wrong_1_csp}
