@@ -1,15 +1,12 @@
 \section{Introduction}
 
-\subsection{Motivation} !!!TODO!!!
-	compare two paths
-
-\subsection{Applications} !!!TODO!!!
-	This is a short overview of real world applications of the Fréchet Distance.
-\subsubsection{Molecule Chains (Proteins)}
-\subsubsection{Handwriting Recognition}
-\subsubsection{Comparing Routes}
-\subsubsection{Computer Vision}
-\subsubsection{Wifi access point placing}
+\subsection{Motivation}
+	The classical Fréchet distance is a measure of dissimilarity between two curves. In comparison to the root-mean-square error (RMSE), the Fréchet distance has a longer runtime, but therefore it takes into account the position and ordering of points. This is important for a wide range of use-cases: Comparing molecule chains like proteins, handwriting recognition, route comparison, computer vision, and WiFi access point planning being just a few of the real world use-cases of the Fréchet distance.
+	
+	Lexicographical Fréchet matchings extend the capabilities of the classical Fréchet distance by not just finding one global Fréchet distance for two input paths, it also applies the algorithm for all local sub-traversals to attain a lexicographically optimized traversal.
+	
+	The goal of this paper is to introduce both the classical Fréchet distance and lexicographical Fréchet matchings; and ultimately to investigate degenerate inputs for lexicographical Fréchet matchings, as revealed by \citeauthor{rotelex} in section 7 of his \citeyear{rotelex} paper \citetitle{rotelex}\cite{rotelex}.
+	
 
 \subsection{Problem Metaphor (Dog Walking)} \label{dogwalking}
 

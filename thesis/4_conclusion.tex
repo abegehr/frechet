@@ -17,6 +17,63 @@ $$[h^{-1}]'(\epsilon) = \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} }$
 
 Due to the square root in the denominator of $[h^{-1}]'(\epsilon)$, $[h^{-1}]'(\epsilon)$ potentially has infinite derivatives.
 
-After taking three derivatives, the values of these three derivatives can be used in an equation system to calculate the three parameters $u$, $a$, and $v$. If we compare two hyperbola inverses, it is enough to compare three derivatives, because if the first three derivatives are the same for two hyperbola inverses, the two hyperbola inverses have the same parameters $u$, $a$, and $v$. This can be extrapolated to multiple hyperbola inverses: If we are comparing $N$ hyperbola inverses to $N$ other hyperbola inverses, we need to compare at most $3\cdot N$ derivatives, because with $3\cdot N$ derivatives an equation system can be established from which the parameters $u$, $a$, and $v$ can be calculated for each one of the $N$ hyperbola inverses.
+After taking three derivatives, the values of these three derivatives can be used in an equation system to calculate the three parameters $u$, $a$, and $v$. If we compare two hyperbola inverses, it is enough to compare three derivatives, because if the first three derivatives are the same for two hyperbola inverses, the two hyperbola inverses have the same parameters $u$, $a$, and $v$.
 
-It would be interesting to try to find or construct examples where higher derivatives are needed, if this is possible. On the other hand one might be able to prove that only a finite number of derivatives is needed. 
+We can extrapolate this to multiple hyperbola inverses: If we are comparing $N$ hyperbola inverses to $N$ other hyperbola inverses, we need to compare at most $3\cdot N$ derivatives, because with $3\cdot N$ derivatives an equation system can be established from which the parameters $u$, $a$, and $v$ can be calculated for each one of the $N$ hyperbola inverses. Therefore the $N$ hyperbolas would be exactly the same. This procedure is only possible for $f$s and $g$s that have the same number $N$ of critical events.
+
+It would be interesting to try to find or construct examples where higher derivatives than the second one are needed. This could lead to a prof that only a finite number of derivatives is needed. It might also make sense to look at more derivatives of $h^{-1}(\epsilon)$. See the first four derivatives below:
+
+\begin{align*}
+	[h^{-1}]'(\epsilon) &= \frac{ \epsilon }{ a\sqrt{\frac{\epsilon^2 - u^2}{a}} }\\
+	[h^{-1}]''(\epsilon) &= -\frac{u^2}{a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\\
+\end{align*}
+
+	
+\subsection{Equal Descents at $\epsilon_0$, Unequal Descents Below}
+%https://abegehr.github.io/frechet/?p=(4_5)(8_5.5)(4_6)&q=(5_4)(5_7)(5_4)
+
+In section \ref{sec:ces_min_2} we saw an example where two paths were exactly equal. The example shown in figure \ref{fig:ces_wrong_1} is constructed by slightly mutating the example from section \ref{sec:ces_min_2}.
+
+\begin{figure}[H]
+	\centering
+    
+    \includegraphics[width=0.8\textwidth]{ces_wrong_1.png}
+		
+	\caption{Equal descents at $\epsilon_0$, unequal descents below\protect\footnotemark}
+    \label{fig:ces_wrong_1}
+\end{figure}
+\footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(4_5)(6.5_5.5)(8_5.5)(6.5_5.5)(4_6)&q=(5_4)(5_7)(5_4)}\label{ftn:ces_wrong_1}}
+
+The critical height $\epsilon_0 = 3$. There are two critical events: $C_1(4.03, 1.5)$ and $C_1(4.03, 4.5)$. Coordinates are rounded to two decimal places.
+
+The are two paths through the height map $\delta$. One over the classical critical event of type b $C_1(4.03, 1.5)$ and one over the classical critical event of type b $C_1(4.03, 4.5)$.
+
+The hyperbolas representing the ascents to and the descents from $C_1$ and $C_2$ are the same. The contain equal parameters. Therefore both paths are traversed (see figure \ref{fig:ces_wrong_1_tra}).
+
+\begin{figure}[H]
+	\centering
+    
+    \includegraphics[width=0.8\textwidth]{ces_wrong_1_tra.png}
+		
+	\caption{Equal descents at $\epsilon_0$, unequal descents below, traversed\textsuperscript{\ref{ftn:ces_wrong_1}}}
+    \label{fig:ces_wrong_1_tra}
+\end{figure}
+
+At height $\epsilon_0 = 3$ the profiles of both paths are equal, but at $\epsilon_1 \approx 1.765$ the profile of the lower path over $C_1$ turns out to have been the better choice. Figure \ref{fig:ces_wrong_1_csp} shows the cross-sections and profiles of both traversals.
+
+\begin{figure}[H]
+	\centering
+    
+    \includegraphics[width=0.8\textwidth]{ces_wrong_1_csp.png}
+		
+	\caption{Cross-sections and profiles\textsuperscript{\ref{ftn:ces_wrong_1}}}
+    \label{fig:ces_wrong_1_csp}
+\end{figure}
+
+The traversal \#0 depicts the cross-section and profile for the lower traversal over $C_1$. The traversal \#1 depicts the cross-section and profile for the upper traversal over $C_2$. It can be seen clearly by looking at the cross-sections and profiles of the two traversals that traversing the path over $C_1(4.03, 1.5)$ yields the lexicographically optimal traversal.
+
+The problem is that when the algorithm decides if $C_1$ or $C_2$ should be traversed, the algorithm does not yet know what happens below $\epsilon_0 = 3$. The algorithm would need to traverse both paths and decide at $\epsilon_1 = 1.765$ which one of both to discard and which one to keep traversing.
+
+
+
+
