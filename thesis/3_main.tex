@@ -139,7 +139,7 @@ See the algorithm \ref{alg:gengraph} for more detail on how we generate the trav
 				\For {$C_{k1} \in L_{i, j}^C \cup B_{i, j}^C$}
 					
 					\If {$C_{k1}$ can reach $C_{k2}$} \label{alg:gengraph_reach}
-						\State {Add edge $(C_k1$, $C_k2)$ to graph.}
+						\State {Add edge $(C_{k1}$, $C_{k2})$ to graph.}
 					\EndIf
 					
 				\EndFor
@@ -195,11 +195,11 @@ It can be considered to use these reachability intervals $I_{ij}$ solely to deci
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(5_5)(5_7.8)(4_6)(4_8)(6_6)&q=(6_6)(3_6)(6_6)}}
 
-In figure \ref{fig:gengraph_ex1} the decision algorithm tells us that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon_0 = 2$ that we consider: $C_1(3, 1)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
+In figure \ref{fig:gengraph_ex1} the decision algorithm tells us that the classical Fréchet distance is $\epsilon_F = 2$. There are two critical events of type b with $\epsilon_0 = 2$ that we consider: $C_1(1, 3)$ and $C_2(\sim6.86, 4)$. If we were to use solely the reachability intervals to check if $C_{k2}$ is reachable from $C_{k1}$ as described above, the generated graph would find an edge between $C_1$ and $C_2$, even though there exists no such path, because it is closed by the right border of cell $(0, 1)$: $L_{1, 1}^R$. Using solely the reachability intervals, $C_2$ would still appear reachable from $C_1$, because $L_{2, 1}^R$ starts below $L_{1, 1}^R$, since $L_{2, 1}^R$ can also be reached from $B_{1,1}^R$, and not just from $L_{1, 1}^R$. We can now learn from this counter example and apply better measures.
 
 \subsubsection{Can $C_{k1}$ reach $C_{k2}$? – Minimum $x$-/$y$-Coordinates}
 
-To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorise for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then, when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals, and we determine if the $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
+To solve the problem of reachability intervals for generating a traversability graph of critical events, we need to memorise for each critical event not just that it can reach border $L_{ij}$ or $B_{ij}$, but also for vertical borders the minimum $y$-coordinate and for horizontal borders the minimum $x$-coordinate that it needs to reach the border, as these can differ for different critical events that both reach a border. Then, when we connect a critical event $C_{k1}$ to $C_{k2}$, we test the reachability intervals, and we determine if $C_{k2}$ lies on or above the minimum $x$- or $y$-coordinate that $C_{k1}$ needs to reach the border in question.
 
 We can now define two helper algorithms in more detail. First, the algorithm for determining if $C_{k1}$ can reach $C_{k2}$. And second, the algorithm that constructs $L_{i+1, j}^C$ and $B_{i, j+1}^C$ from $L_{ij}^C$, $B_{ij}^C$, $L_{i+1, j}^R$, $B_{i, j+1}^R$.
 
@@ -421,8 +421,8 @@ We can write a simple equation for $[h^{-1}]'(\epsilon_0)$ by using the equation
 Having an equation for $[h^{-1}]'(\epsilon_0)$, next we determine the slope at $\hat{f}_{\epsilon_0}(\epsilon_0)$ by adding the ascending and descending slopes of all critical events $C$ at critical height $\epsilon_0$:
 
 \begin{align*}
-	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { [h_{k\downarrow}^{-1}]'(\epsilon_0) + [h_{k\uparrow}^{-1}]'(\epsilon_0)}\\
-	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { \frac{\epsilon_0}{a_{k\downarrow} \left| v_{k\downarrow} \right|} + \frac{\epsilon_0}{a_{k\uparrow} \left| v_{k\uparrow} \right|}}
+	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { [h_{k\uparrow}^{-1}]'(\epsilon_0) + [h_{k\downarrow}^{-1}]'(\epsilon_0)}\\
+	\hat{f}'_{\epsilon_0}(\epsilon_0) &= \sum_{C_k \in C(\epsilon_0)} { \frac{\epsilon_0}{a_{k\uparrow} \left| v_{k\uparrow} \right|} + \frac{\epsilon_0}{a_{k\downarrow} \left| v_{k\downarrow} \right|}}
 \end{align*}
 
 There are three cases to consider:
@@ -572,14 +572,14 @@ From the specific second derivatives, $\hat{f}''_{\epsilon_0}(\epsilon_0)$ and $
 
 \begin{align*}
 	\hat{f}''_{\epsilon_0}(\epsilon_0) &= h_{f1\uparrow}''(\epsilon_0) + h_{f1\downarrow}''(\epsilon_0) = 0\\
-	\hat{g}''_{\epsilon_0}(\epsilon_0) &= h_{g1\uparrow}''(\epsilon_0) + h_{g1\downarrow}''(\epsilon_0) = -0.141\\
+	\hat{g}''_{\epsilon_0}(\epsilon_0) &= h_{g1\uparrow}''(\epsilon_0) + h_{g1\downarrow}''(\epsilon_0) \approx -0.141\\
 \end{align*}
 
 The result is clear.
 
 $$\hat{f}'l_{\epsilon_0}(\epsilon_0) = 0 > \hat{g}''_{\epsilon_0}(\epsilon_0) \approx -0.141$$
 
-While the descent from height $\epsilon_0$ is equally steep for both paths $f$ and $g$, the steepness of path $g$'s descent flattens as can be seen by viewing the second derivative. Figure \ref{fig:ces_ad_2_tra} shows the two possible traversal paths. The traversal through the bottom is the path $g$. The traversal through the top is path $f$.
+While the descent from height $\epsilon_0$ is equally steep for both paths $f$ and $g$, the steepness of path $g$'s descent flattens as can be seen by viewing the second derivative. Figure \ref{fig:ces_ad_2_tra} shows the two possible traversal paths. The traversal through the bottom is the path $f$. The traversal through the top is path $g$.
 
 \begin{figure}[H]
 	\centering
