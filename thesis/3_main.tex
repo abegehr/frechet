@@ -428,8 +428,8 @@ Having an equation for $[h^{-1}]'(\epsilon_0)$, next we determine the slope at $
 There are three cases to consider:
 
 \begin{enumerate}
-	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) > \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $f$.
-	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) < \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $g$.
+	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) < \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $f$.
+	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) > \hat{g}'_{\epsilon_0}(\epsilon_0)$: Choose traversal for $g$.
 	\item $\hat{f}'_{\epsilon_0}(\epsilon_0) = \hat{g}'_{\epsilon_0}(\epsilon_0)$: Cannot decide.
 \end{enumerate}
 
@@ -453,7 +453,7 @@ The calculation of $h^{-1}$'s second derivative:
 	[h^{-1}]''(\epsilon)  &= - \frac{u^2}{a^2\left(\frac{\epsilon^2 - u^2}{a}\right)^{\frac{3}{2}}}\label{eq:hinvd2}
 \end{align}
 
-We can write a simple equation for $[h^{-1}]'(\epsilon_0)$ by using the equations \ref{eq:hinvd2} and \ref{eq:veps0}:
+We can write a simple equation for $[h^{-1}]''(\epsilon_0)$ by using the equations \ref{eq:hinvd2} and \ref{eq:veps0}:
 
 \begin{align}
 	[h^{-1}]''(\epsilon_0)  &= - \frac{u^2}{a^2 \left| v \right|^3}\label{eq:hinvd2eps0}
@@ -476,7 +476,7 @@ Let us consider an example where we can decide from looking at the first derivat
 \end{figure}
 \footnotetext{View the example here: \url{https://abegehr.github.io/frechet/?p=(0_1)(4_1)(2_2)&q=(1_0)(1_4)(3_3)}}
 
-In the example depicted in figure \ref{fig:ces_ad_1}, there are two classical critical events of type b at critical height $\epsilon_0 = 3$ to consider: $C_1(1, 4)$ and $C_2(4, 1)$.
+In the example depicted in figure \ref{fig:ces_ad_1}, there are two classical critical events of type b at critical height $\epsilon_0 = 3$ to consider: $C_1(4, 1)$ and $C_2(1, 4)$.
 
 The algorithm \ref{alg:gengraph} that generates a traversability graph for multiple critical events at the same height as defined in section \ref{sec:gengraph} returns that there are two possible paths through the critical events $C_1$ and $C_2$. Either the graph is traversed from the startpoint to the endpoint over $C_1$ (traversal path $f$) or over $C_2$ (traversal path $g$).
 
@@ -509,7 +509,7 @@ The result is clear.
 
 $$\hat{f}'_{\epsilon_0}(\epsilon_0) \approx 2.118 < \hat{g}'_{\epsilon_0}(\epsilon_0) \approx 3.236$$
 
-The descent from height $\epsilon_0$ is steeper when taking path $g$ over $C_2(4, 1)$. This can also be seen in figure \ref{fig:ces_ad_1}. The contour lines (lines of equal $\epsilon$) are closer together on the right of $C_2(4, 1)$ than they are above $C_1(1, 4)$.
+The descent from height $\epsilon_0$ is steeper when taking path $f$ over $C_1(4, 1)$. This can also be seen in figure \ref{fig:ces_ad_1}. The contour lines (lines of equal $\epsilon$) are closer together on the right of $C_2(4, 1)$ than they are above $C_2(1, 4)$.
 
 
 \subsubsection{Example: Second Derivative}
