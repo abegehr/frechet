@@ -34,7 +34,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {4.3}Lexicographic Fr\IeC {\'e}chet Matching Algorithm}{8}{subsection.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Lexicographic Fr\IeC {\'e}chet Distance with Degenerate Inputs}{10}{section.5}
+\contentsline {section}{\numberline {5}Lexicographic Fr\IeC {\'e}chet Matchings with Degenerate Inputs}{10}{section.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {5.1}Problem}{10}{subsection.5.1}
 \defcounter {refsection}{0}\relax 
